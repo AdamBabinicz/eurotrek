@@ -11,7 +11,9 @@ const LanguageContext = createContext<LanguageContextType>({
   changeLanguage: () => {}
 });
 
-export const useLanguage = () => useContext(LanguageContext);
+export function useLanguage() {
+  return useContext(LanguageContext);
+}
 
 interface LanguageProviderProps {
   children: ReactNode;
