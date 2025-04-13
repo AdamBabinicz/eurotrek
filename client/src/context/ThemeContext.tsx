@@ -20,17 +20,21 @@ interface ThemeProviderProps {
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Check if theme is stored in localStorage
-    const savedTheme = localStorage.getItem("theme");
+    try {
+      // Check if theme is stored in localStorage
+      const savedTheme = localStorage.getItem("theme");
     
-    // If theme is stored, use it
-    if (savedTheme === "dark" || savedTheme === "light") {
-      return savedTheme;
-    }
+      // If theme is stored, use it
+      if (savedTheme === "dark" || savedTheme === "light") {
+        return savedTheme as Theme;
+      }
     
-    // Otherwise, check user system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return "dark";
+      // Otherwise, check user system preference
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return "dark";
+      }
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
     }
     
     // Default to light theme
@@ -46,7 +50,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     }
     
     // Store theme preference in localStorage
-    localStorage.setItem("theme", theme);
+    try {
+      localStorage.setItem("theme", theme);
+    } catch (error) {
+      console.error("Error setting theme in localStorage:", error);
+    }
   }, [theme]);
 
   const toggleTheme = () => {

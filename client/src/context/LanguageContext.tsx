@@ -19,19 +19,23 @@ interface LanguageProviderProps {
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   const [language, setLanguage] = useState<string>(() => {
-    // Check if language is stored in localStorage
-    const savedLanguage = localStorage.getItem("language");
-    
-    if (savedLanguage) {
-      return savedLanguage;
-    }
-    
-    // Check browser language
-    const browserLang = navigator.language.split("-")[0];
-    const supportedLanguages = ["en", "fr", "es", "de", "it", "pl"];
-    
-    if (supportedLanguages.includes(browserLang)) {
-      return browserLang;
+    try {
+      // Check if language is stored in localStorage
+      const savedLanguage = localStorage.getItem("language");
+      
+      if (savedLanguage) {
+        return savedLanguage;
+      }
+      
+      // Check browser language
+      const browserLang = navigator.language.split("-")[0];
+      const supportedLanguages = ["en", "fr", "es", "de", "it", "pl"];
+      
+      if (supportedLanguages.includes(browserLang)) {
+        return browserLang;
+      }
+    } catch (error) {
+      console.error("Error accessing localStorage or navigator:", error);
     }
     
     // Default to English
@@ -43,7 +47,11 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     i18n.changeLanguage(language);
     
     // Store language preference in localStorage
-    localStorage.setItem("language", language);
+    try {
+      localStorage.setItem("language", language);
+    } catch (error) {
+      console.error("Error setting language in localStorage:", error);
+    }
   }, [language]);
 
   const changeLanguage = (lang: string) => {
