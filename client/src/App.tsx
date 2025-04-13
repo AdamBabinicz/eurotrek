@@ -24,7 +24,7 @@ function App() {
   const [location] = useLocation();
 
   return (
-    <div className={`min-h-screen flex flex-col ${theme}`}>
+    <div className="min-h-screen flex flex-col">
       <Navbar currentPath={location} />
       <main className="flex-grow">
         <Router />

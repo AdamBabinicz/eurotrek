@@ -28,7 +28,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     
     // Check browser language
     const browserLang = navigator.language.split("-")[0];
-    const supportedLanguages = ["en", "fr", "es", "de", "it"];
+    const supportedLanguages = ["en", "fr", "es", "de", "it", "pl"];
     
     if (supportedLanguages.includes(browserLang)) {
       return browserLang;
