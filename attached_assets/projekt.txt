@@ -1,0 +1,158 @@
+✅ Stack technologiczny
+Frontend Framework: React (z Vite jako bundlerem)
+
+Stylowanie: CSS Modules lub TailwindCSS (dla szybszego prototypowania)
+
+Routing: React Router DOM
+
+Multilingual: react-i18next
+
+Formularz: HTML5 + Netlify Forms
+
+Popup / Modal: React Portals + własna obsługa modala
+
+Ikony: react-icons
+
+Responsywność: CSS Media Queries / Tailwind
+
+SEO & OpenGraph: react-helmet-async
+
+Tryb Dark/Light: useContext + localStorage
+
+Dostępność: aria-labels, focus-traps, alt, odpowiedni kontrast
+
+Obrazy: Format .avif (z fallbackiem .webp jeśli chcesz)
+
+Favicons: pakiet z RealFaviconGenerator
+
+Hosting: Netlify / Replit
+
+Brak bazy danych – dane statyczne (obrazy + teksty) trzymane lokalnie lub w plikach .json
+
+🧭 Struktura projektu
+pgsql
+Kopiuj
+Edytuj
+/public
+  └── favicons/
+  └── index.html
+/src
+  ├── assets/images/ (wszystkie .avif)
+  ├── components/
+  │   ├── Navbar.jsx
+  │   ├── Footer.jsx
+  │   ├── LanguageSelector.jsx
+  │   ├── ThemeToggle.jsx
+  │   ├── ImageSlider.jsx
+  │   └── Modal.jsx
+  ├── pages/
+  │   ├── Home.jsx
+  │   ├── About.jsx
+  │   ├── Travels/
+  │   │   ├── Prague.jsx
+  │   │   ├── Naples.jsx
+  │   │   ├── Capri.jsx
+  │   │   ├── Berlin.jsx
+  │   │   ├── Paris.jsx
+  │   │   └── Lisbon.jsx
+  │   └── Contact.jsx
+  ├── translations/
+  │   ├── pl.json
+  │   ├── en.json
+  │   ├── fr.json
+  │   └── es.json
+  ├── App.jsx
+  ├── main.jsx
+  └── i18n.js
+📌 Funkcjonalności (technicznie)
+Navbar:
+
+Logo z ikonką samolotu (react-icons - np. FaPlane)
+
+Linki: Start, O nas, Podróże (z dropdownem), Kontakt
+
+Języki: przycisk zmieniający język (react-i18next)
+
+Dark/Light toggle – ikonka słońce/księżyc (z localStorage)
+
+O nas:
+
+Zdjęcie zbiorowe .avif
+
+Opis grupy (dostosowany do języka)
+
+Podróże:
+
+6 oddzielnych stron (Praga, Neapol, Capri, Berlin, Paryż, Lizbona)
+
+Każda zawiera slider z opisami zdjęć
+
+Po najechaniu obraz się powiększa i otwiera modal z powiększeniem
+
+Kontakt:
+
+Formularz z nazwą, mailem, wiadomością (walidacja + Netlify Forms)
+
+Aria-labels dla dostępności
+
+Info kontaktowe
+
+Stopka:
+
+Media społecznościowe (ikony: Facebook, Instagram, X itp.)
+
+Linki nawigacyjne
+
+Data aktualna (new Date().getFullYear())
+
+🌐 SEO + Open Graph + UX
+react-helmet-async:
+
+Meta tagi opisujące każdą podstronę
+
+Open Graph dla Facebooka, Twittera (og:title, og:image, og:description)
+
+Strukturalne dane JSON-LD (typ: Organization + WebSite)
+
+Canonical URLs
+
+lang atrybuty na <html>
+
+Responsywność:
+
+Użycie CSS Grid + Flexbox + media queries
+
+Touch-friendly (min. 48x48px elementy dotykowe)
+
+Favicony z generatora (Apple, Android, Windows)
+
+Kontrast i a11y:
+
+Sprawdzony przez Lighthouse lub a11y color checker
+
+aria-* tam, gdzie trzeba (np. aria-labels dla przycisków, nav z role="navigation")
+
+focus management (dla modali)
+
+🆕 Propozycje uzupełniające:
+Animacje: framer-motion do przejść między sekcjami
+
+Lazy-loading zdjęć: loading="lazy" + srcset dla responsywnych obrazów
+
+Scroll to top on route change
+
+Loader podczas ładowania danych/zdjęć
+
+404 Page Not Found
+
+Accessibility Skip Link na górze do przeskoczenia na główną treść
+
+✨ Styl wizualny
+Lekki, nowoczesny „lifestyle”
+
+Dużo bieli i kolorów pastelowych (z trybem ciemnym w kontrze)
+
+Fonty np. Poppins, Inter, Open Sans
+
+Animacje hoverów, fade-in zdjęć, smooth scroll
+
