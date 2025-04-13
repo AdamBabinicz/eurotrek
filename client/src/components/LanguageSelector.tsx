@@ -9,7 +9,8 @@ const languages = [
   { code: "fr", label: "Français" },
   { code: "es", label: "Español" },
   { code: "de", label: "Deutsch" },
-  { code: "it", label: "Italiano" }
+  { code: "it", label: "Italiano" },
+  { code: "pl", label: "Polski" }
 ];
 
 const LanguageSelector = () => {
