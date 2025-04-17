@@ -1,0 +1,754 @@
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { useSwipeable } from "react-swipeable";
+
+interface SlideImage {
+  id: string;
+  src: string;
+  alt: string;
+  location: string;
+  description: string;
+}
+
+interface ImageSliderProps {
+  images: SlideImage[];
+  autoPlayInterval?: number;
+  onImageClick?: (index: number) => void;
+}
+
+const ImageSlider = ({
+  images,
+  autoPlayInterval = 6000,
+  onImageClick,
+}: ImageSliderProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (autoPlayInterval <= 0 || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, autoPlayInterval);
+
+    return () => clearInterval(interval);
+  }, [autoPlayInterval, images.length]);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
+  };
+
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  return (
+    <div className="image-slider h-full relative">
+      <div className="slider-container h-full relative overflow-hidden">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentIndex}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <img
+              src={images?.[currentIndex]?.src}
+              alt={images?.[currentIndex]?.alt}
+              className="w-full h-full object-cover cursor-pointer"
+              onClick={() => onImageClick?.(currentIndex)}
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Navigation buttons */}
+      <Button
+        onClick={handlePrevious}
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10"
+      >
+        <ChevronLeft />
+      </Button>
+      <Button
+        onClick={handleNext}
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10"
+      >
+        <ChevronRight />
+      </Button>
+
+      {/* Dots indicator */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handleDotClick(index)}
+            className={`w-2.5 h-2.5 rounded-full ${
+              currentIndex === index ? "bg-white" : "bg-white/50"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Image information */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white z-10 w-full">
+        <h3 className="font-bold text-xl left-4 p-2">
+          {t(`photos.${images[currentIndex].id}.title`)}
+        </h3>
+        <p className="text-sm left-4 p-2">
+          {t(`photos.${images[currentIndex].id}.location`)}
+        </p>
+        <p className="text-sm mt-2 left-4 p-2">
+          {t(`photos.${images[currentIndex].id}.description`)}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default ImageSlider;
+
+
+-----------------------------------
+
+<motion.div
+            key={currentIndex}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+
+
+------------------------
+
+import { useTranslation } from "react-i18next";
+import { Camera, MapPin, Globe } from "lucide-react";
+
+const AboutSection = () => {
+  const { t } = useTranslation();
+
+  return (
+    <section id="about" className="py-16 bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl mb-4">{t('about.title')}</h2>
+          <div className="h-1 w-20 bg-accent mx-auto mb-6"></div>
+          <p className="mb-6 text-gray-600 dark:text-gray-300">
+            {t('about.description1')}
+          </p>
+          <p className="mb-8 text-gray-600 dark:text-gray-300">
+            {t('about.description2')}
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col items-center">
+              <span className="text-primary text-3xl mb-2">
+                <Camera className="h-8 w-8" />
+              </span>
+              <h3 className="font-heading font-semibold text-lg mb-2">{t('about.feature1.title')}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 text-center">{t('about.feature1.description')}</p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col items-center">
+              <span className="text-primary text-3xl mb-2">
+                <MapPin className="h-8 w-8" />
+              </span>
+              <h3 className="font-heading font-semibold text-lg mb-2">{t('about.feature2.title')}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 text-center">{t('about.feature2.description')}</p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col items-center">
+              <span className="text-primary text-3xl mb-2">
+                <Globe className="h-8 w-8" />
+              </span>
+              <h3 className="font-heading font-semibold text-lg mb-2">{t('about.feature3.title')}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 text-center">{t('about.feature3.description')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AboutSection;
+
+
+-----------------------------
+
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useLocation } from "wouter";
+import {
+  FaGlobe,
+  FaInstagram,
+  FaTwitter,
+  FaFacebook,
+  FaLinkedin,
+} from "react-icons/fa";
+
+const Footer = () => {
+  const { t } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [, setLocation] = useLocation();
+
+  const goToHome = () => {
+    setLocation("/");
+    setIsMobileMenuOpen(false);
+    window.scrollTo(0, 0);
+  };
+  const scrollToParis = () => {
+    const element = document.getElementById("paris");
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Przewijaj po załadowaniu strony, jeżeli jest hash w URL
+    if (window.location.hash === "#paris") {
+      scrollToParis();
+    }
+  }, []);
+
+  return (
+    <footer className="bg-gray-800 text-white py-10">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-2xl">🌍</span>
+              <span className="font-heading font-bold text-xl">EuroTrek</span>
+            </div>
+            <p className="text-gray-300 mb-4 max-w-md">
+              {t("footer.description")}
+            </p>
+            <div className="flex gap-4">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.instagram")}
+              >
+                <FaInstagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.twitter")}
+              >
+                <FaTwitter className="h-5 w-5" />
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.facebook")}
+              >
+                <FaFacebook className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.linkedin")}
+              >
+                <FaLinkedin className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-heading font-bold text-lg mb-4">
+              {t("footer.quickLinks")}
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("navbar.home")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("navbar.about")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="text-gray-300 hover:text-white transition-colors"
+                  href="/#paris"
+                >
+                  {t("footer.parisCollection")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("navbar.contact")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-heading font-bold text-lg mb-4">
+              {t("footer.resources")}
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("footer.submitPhotos")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {t("footer.privacyPolicy")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {t("footer.termsOfUse")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {t("footer.accessibility")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+          <p>
+            &copy; {new Date().getFullYear()} EuroTrek. {t("footer.copyright")}
+          </p>
+          <p className="mt-2">{t("footer.tagline")}</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+
+
+-------------------------------
+
+import { Switch, Route, useLocation } from "wouter";
+import { Toaster } from "@/components/ui/toaster";
+import NotFound from "@/pages/not-found";
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { useTheme } from "@/context/ThemeContext";
+import DestinationPage from "@/pages/Destination";
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/destination/:id" component={DestinationPage} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function App() {
+  // const { theme } = useTheme();
+  const themeContext = useTheme();
+  console.log("themeContext in App:", themeContext);
+  const [location] = useLocation();
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar currentPath={location} />
+      <main className="flex-grow px-0 md:px-40">
+        <Router />
+      </main>
+      <Footer />
+      <Toaster />
+    </div>
+  );
+}
+
+export default App;
+
+
+--------------------------------
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import PhotoLightbox from "./PhotoLightbox";
+
+export interface Photo {
+  id: string;
+  src: string;
+  alt: string;
+  title: string;
+  location: string;
+  city: string;
+}
+
+interface PhotoGridProps {
+  photos: Photo[];
+  city?: string;
+  onPhotoClick: (index: number) => void;
+}
+
+const PhotoGrid = ({ photos, city, onPhotoClick }: PhotoGridProps) => {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const { t } = useTranslation();
+
+  const filteredPhotos = city
+    ? photos.filter((photo) => photo.city === city)
+    : photos;
+
+  const handlePhotoClick = (index: number) => {
+    console.log("Photo clicked, setting lightboxOpen to true");
+    setCurrentPhotoIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const container = {
+    show: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
+  if (filteredPhotos.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-40">
+        <p className="text-gray-500 dark:text-gray-400">
+          {t("photos.noPhotos")}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
+        {filteredPhotos.map((photo, index) => (
+          <motion.div
+            key={photo.id}
+            className="group relative overflow-hidden rounded-lg shadow-md aspect-[4/3] cursor-pointer"
+            onClick={() => handlePhotoClick(index)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handlePhotoClick(index);
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-label={t("photos.view", {
+              title: t(`photos.${photo.id}.title`),
+            })}
+            variants={item}
+          >
+            <img
+              src={photo.src}
+              alt={t(`photos.${photo.id}.alt`)}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 group-focus:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus:translate-y-0 group-focus:opacity-100 transition-all duration-300">
+              <h3 className="text-white font-accent text-lg">
+                {t(`photos.${photo.id}.title`)}
+              </h3>
+              <p className="text-white/90 text-sm">
+                {t(`photos.${photo.id}.location`)}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <PhotoLightbox
+        isOpen={lightboxOpen}
+        photos={filteredPhotos}
+        currentIndex={currentPhotoIndex}
+        onClose={() => setLightboxOpen(false)}
+        onNext={() =>
+          setCurrentPhotoIndex(
+            (prevIndex) => (prevIndex + 1) % filteredPhotos.length
+          )
+        }
+        onPrevious={() =>
+          setCurrentPhotoIndex(
+            (prevIndex) =>
+              (prevIndex - 1 + filteredPhotos.length) % filteredPhotos.length
+          )
+        }
+      />
+    </>
+  );
+};
+
+export default PhotoGrid;
+
+
+-------------------------------
+
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import PhotoGrid from "./PhotoGrid";
+import { destinations } from "@/data/destinations";
+import { photos } from "@/data/photos";
+
+const DestinationTabs = () => {
+  const [activeTab, setActiveTab] = useState("all");
+  const { t } = useTranslation();
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(
+    null
+  );
+  const handlePhotoClick = (index: number) => {
+    console.log(`Clicked photo index: ${index}`);
+    setSelectedPhotoIndex(index);
+    // Tu możesz dodać logikę, np. otwarcie lightboxa lub jakiekolwiek inne działanie
+  };
+
+  return (
+    <section className="py-10 container mx-auto px-4" id="destinations">
+      <div className="mb-8 text-center">
+        <h2 className="font-heading font-bold text-2xl md:text-3xl mb-2">
+          {t("destinations.exploreTitle")}
+        </h2>
+        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          {t("destinations.exploreDescription")}
+        </p>
+      </div>
+
+      <div
+        className="flex flex-wrap justify-center gap-2 mb-8"
+        role="tablist"
+        aria-label={t("destinations.ariaLabel")}
+      >
+        <Button
+          variant={activeTab === "all" ? "default" : "outline"}
+          className={
+            activeTab === "all"
+              ? ""
+              : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+          }
+          onClick={() => setActiveTab("all")}
+          role="tab"
+          aria-selected={activeTab === "all"}
+          aria-controls="all-tab"
+        >
+          {t("destinations.allDestinations")}
+        </Button>
+
+        {destinations.map((destination) => (
+          <Button
+            key={destination.id}
+            variant={activeTab === destination.id ? "default" : "outline"}
+            className={
+              activeTab === destination.id
+                ? ""
+                : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+            }
+            onClick={() => setActiveTab(destination.id)}
+            role="tab"
+            aria-selected={activeTab === destination.id}
+            aria-controls={`${destination.id}-tab`}
+            id={destination.id}
+          >
+            {t(`destinations.${destination.id}`)}
+          </Button>
+        ))}
+      </div>
+
+      <div id={`${activeTab}-tab`} role="tabpanel" aria-labelledby={activeTab}>
+        <PhotoGrid
+          photos={photos}
+          onPhotoClick={handlePhotoClick}
+          city={activeTab === "all" ? undefined : activeTab}
+        />
+      </div>
+
+      <div className="mt-8 text-center">
+        <Button className="px-6 py-3">{t("destinations.loadMore")}</Button>
+      </div>
+    </section>
+  );
+};
+
+export default DestinationTabs;
+
+
+------------------------------
+
+// Hero slider images
+export const heroImages = [
+  {
+    id: "paris-hero",
+    src: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    alt: "Eiffel Tower in Paris",
+    location: "Paris, France",
+    description:
+      "The city of lights through a student's lens - capturing the magic of Parisian architecture and culture.",
+  },
+  {
+    id: "lisbon-hero",
+    src: "https://images.unsplash.com/photo-1513735492246-483525079686?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    alt: "Tram in Lisbon",
+    location: "Lisbon, Portugal",
+    description:
+      "Experience the charm of Portugal's capital - where historic trams meet modern culture.",
+  },
+  {
+    id: "berlin-hero",
+    src: "https://images.unsplash.com/photo-1560969184-10fe8719e047?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    alt: "Brandenburg Gate in Berlin",
+    location: "Berlin, Germany",
+    description:
+      "Discover Berlin's unique blend of history and modernity - a city that never ceases to reinvent itself.",
+  },
+];
+
+// Gallery photos
+export const photos = [
+  {
+    id: "lisbon-tram",
+    src: "/assets/lizbona/3.avif",
+    alt: "Historic Tram in Lisbon",
+    title: "Historic Tram",
+    location: "Lisbon, Portugal",
+    city: "lisbon",
+  },
+  {
+    id: "lisbon-belem",
+    src: "/assets/lizbona/4.avif",
+    alt: "Belém Tower in Lisbon",
+    title: "Belém Tower",
+    location: "Lisbon, Portugal",
+    city: "lisbon",
+  },
+  {
+    id: "lisbon-bele",
+    src: "/assets/lizbona/5.avif",
+    alt: "Belém Tower in Lisbon",
+    title: "Belém Tower",
+    location: "Lisbon, Portugal",
+    city: "lisbon",
+  },
+  {
+    id: "paris-eiffel",
+    src: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    alt: "Eiffel Tower in Paris",
+    title: "Eiffel Tower",
+    location: "Paris, France",
+    city: "paris",
+  },
+  {
+    id: "paris-louvre",
+    src: "https://images.unsplash.com/photo-1543349689-9a4d426bee8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    alt: "Louvre Museum in Paris",
+    title: "Louvre Museum",
+    location: "Paris, France",
+    city: "paris",
+  },
+  {
+    id: "berlin-gate",
+    src: "https://images.unsplash.com/photo-1560969184-10fe8719e047?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    alt: "Brandenburg Gate in Berlin",
+    title: "Brandenburg Gate",
+    location: "Berlin, Germany",
+    city: "berlin",
+  },
+  {
+    id: "berlin-wall",
+    src: "https://images.unsplash.com/photo-1477894387642-00a731c511b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    alt: "East Side Gallery in Berlin",
+    title: "East Side Gallery",
+    location: "Berlin, Germany",
+    city: "berlin",
+  },
+  {
+    id: "capri-marina",
+    src: "https://images.unsplash.com/photo-1559628129-9d914a9bc6f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    alt: "Marina Grande in Capri",
+    title: "Marina Grande",
+    location: "Capri, Italy",
+    city: "capri",
+  },
+  {
+    id: "naples-view",
+    src: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    alt: "View of Naples and Vesuvius",
+    title: "Naples Panorama",
+    location: "Naples, Italy",
+    city: "naples",
+  },
+  {
+    id: "prague-bridge",
+    src: "https://images.unsplash.com/photo-1562008970-5e02d67d0833?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    alt: "Charles Bridge in Prague",
+    title: "Charles Bridge",
+    location: "Prague, Czech Republic",
+    city: "prague",
+  },
+];

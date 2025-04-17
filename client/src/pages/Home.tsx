@@ -12,7 +12,11 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <section id="home" className="relative h-[70vh] overflow-hidden" aria-label={t('home.heroAriaLabel')}>
+      <section
+        id="home"
+        className="relative h-[70vh] overflow-hidden"
+        aria-label={t("home.heroAriaLabel")}
+      >
         <ImageSlider images={heroImages} />
       </section>
 
@@ -23,7 +27,7 @@ const Home = () => {
       <AboutSection />
 
       {/* Featured Destination */}
-      <FeaturedDestination />
+      {/* <FeaturedDestination /> */}
 
       {/* Contact Section */}
       <ContactSection />

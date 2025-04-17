@@ -1,27 +1,32 @@
 export const destinations = [
   {
+    id: "lisbon",
+    name: "Lisbon",
+    country: "Portugal",
+  },
+  {
     id: "paris",
     name: "Paris",
-    country: "France"
+    country: "France",
   },
   {
-    id: "rome",
-    name: "Rome",
-    country: "Italy"
+    id: "berlin",
+    name: "Berlin",
+    country: "Germany",
   },
   {
-    id: "barcelona",
-    name: "Barcelona",
-    country: "Spain"
+    id: "capri",
+    name: "Capri",
+    country: "Italy",
   },
   {
-    id: "amsterdam",
-    name: "Amsterdam",
-    country: "Netherlands"
+    id: "naples",
+    name: "Naples",
+    country: "Italy",
   },
   {
     id: "prague",
     name: "Prague",
-    country: "Czech Republic"
-  }
+    country: "Czech Republic",
+  },
 ];

@@ -1,0 +1,80 @@
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+
+interface SlideImage {
+  id: string;
+  src: string;
+  alt: string;
+  location: string;
+  description: string;
+}
+
+interface ImageSliderProps {
+  images: SlideImage[];
+  autoPlayInterval?: number;
+  onImageClick?: (index: number) => void;
+}
+
+const ImageSlider = ({
+  images,
+  autoPlayInterval = 6000,
+  onImageClick,
+}: ImageSliderProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (autoPlayInterval <= 0 || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, autoPlayInterval);
+
+    return () => clearInterval(interval);
+  }, [autoPlayInterval, images.length]);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
+  };
+
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  return (
+    <div className="image-slider h-full relative">
+      <div className="slider-container h-full relative overflow-hidden">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentIndex}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <img
+              src={images?.[currentIndex]?.src}
+              alt={images?.[currentIndex]?.alt}
+              className="w-full h-full object-cover cursor-pointer"
+              onClick={() => onImageClick?.(currentIndex)}
+            />
+            {/* ... reszta kodu ImageSlider ... */}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      {/* ... reszta kodu ImageSlider ... */}
+    </div>
+  );
+};
+
+export default ImageSlider;

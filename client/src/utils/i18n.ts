@@ -7,35 +7,35 @@ import esTranslation from "../translations/es";
 import deTranslation from "../translations/de";
 import itTranslation from "../translations/it";
 import plTranslation from "../translations/pl";
+import cs from "../translations/cs.ts";
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        translation: enTranslation
-      },
-      fr: {
-        translation: frTranslation
-      },
-      es: {
-        translation: esTranslation
-      },
-      de: {
-        translation: deTranslation
-      },
-      it: {
-        translation: itTranslation
-      },
-      pl: {
-        translation: plTranslation
-      }
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      translation: enTranslation,
     },
-    lng: "en", // Default language
-    fallbackLng: "en",
-    interpolation: {
-      escapeValue: false // React already escapes values
-    }
-  });
+    fr: {
+      translation: frTranslation,
+    },
+    es: {
+      translation: esTranslation,
+    },
+    de: {
+      translation: deTranslation,
+    },
+    it: {
+      translation: itTranslation,
+    },
+    pl: {
+      translation: plTranslation,
+    },
+    cs: { translation: cs },
+  },
+  lng: "pl", // Default language
+  fallbackLng: "en",
+  interpolation: {
+    escapeValue: false, // React already escapes values
+  },
+});
 
 export default i18n;

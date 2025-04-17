@@ -1,0 +1,1830 @@
+import { useParams } from "wouter";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import type { Photo } from "@/components/PhotoGrid";
+import { destinations } from "@/data/destinations";
+import { photos } from "@/data/photos";
+import ImageSlider from "@/components/ImageSlider";
+import PhotoLightbox from "@/components/PhotoLightbox";
+
+const DestinationPage = () => {
+  const { id } = useParams();
+  const { t } = useTranslation();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+
+  const destination = destinations.find((d) => d.id === id);
+  const destinationPhotos = photos.filter((photo) => photo.city === id);
+
+  if (!destination) {
+    return (
+      <div className="container mx-auto px-4 py-8">Podróży nie znaleziono</div>
+    );
+  }
+
+  const sliderImages = destinationPhotos.map((photo) => ({
+    id: photo.id,
+    src: photo.src,
+    alt: photo.alt || "",
+    location: photo.location || "",
+    description: photo.title || "",
+  }));
+  console.log("Slider images:", sliderImages);
+  console.log("Destination photos:", destinationPhotos); // Sprawdź dane
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-3xl font-bold mb-6">
+        {t(`destinations.${destination.id}`)}
+      </h2>
+
+      {/* Image Slider */}
+      <div className="h-[80vh] mb-8 rounded-lg overflow-hidden">
+        <ImageSlider
+          images={sliderImages}
+          onImageClick={(index) => {
+            console.log("Opening lightbox with photo index:", index);
+            setCurrentPhotoIndex(index);
+            console.log("Setting lightboxOpen to true");
+            setLightboxOpen(true);
+          }}
+        />
+      </div>
+      {lightboxOpen && (
+        <PhotoLightbox
+          isOpen={lightboxOpen}
+          photos={destinationPhotos}
+          currentIndex={currentPhotoIndex}
+          onClose={() => {
+            console.log("Zamykam lightbox");
+            setLightboxOpen(false);
+          }}
+          onNext={() =>
+            setCurrentPhotoIndex(
+              (prevIndex) => (prevIndex + 1) % destinationPhotos.length
+            )
+          }
+          onPrevious={() =>
+            setCurrentPhotoIndex(
+              (prevIndex) =>
+                (prevIndex - 1 + destinationPhotos.length) %
+                destinationPhotos.length
+            )
+          }
+        />
+      )}
+    </div>
+  );
+};
+
+export default DestinationPage;
+
+
+------------------------
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
+import path from "path";
+import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    runtimeErrorOverlay(),
+    themePlugin(),
+    ...(process.env.NODE_ENV !== "production" &&
+    process.env.REPL_ID !== undefined
+      ? [
+          await import("@replit/vite-plugin-cartographer").then((m) =>
+            m.cartographer()
+          ),
+        ]
+      : []),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@shared": path.resolve(import.meta.dirname, "shared"),
+      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    },
+  },
+  root: path.resolve(import.meta.dirname, "client"),
+  build: {
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    emptyOutDir: true,
+  },
+});
+
+
+----------------------------
+
+import { useState, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+
+interface SlideImage {
+  id: string;
+  src: string;
+  alt: string;
+  location: string;
+  description: string;
+}
+
+interface ImageSliderProps {
+  images: SlideImage[];
+  autoPlayInterval?: number;
+  onImageClick?: (index: number) => void;
+}
+
+const ImageSlider = ({
+  images,
+  autoPlayInterval = 6000,
+  onImageClick,
+}: ImageSliderProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
+  const [isAnimating, setIsAnimating] = useState(false);
+  const { t } = useTranslation();
+
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  useEffect(() => {
+    if (autoPlayInterval <= 0 || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      if (!isAnimating) {
+        setDirection("next");
+        setIsAnimating(true);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }
+    }, autoPlayInterval);
+
+    return () => clearInterval(interval);
+  }, [autoPlayInterval, images.length, isAnimating]);
+
+  const handleNext = () => {
+    if (!isAnimating) {
+      setDirection("next");
+      setIsAnimating(true);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (!isAnimating) {
+      setDirection("prev");
+      setIsAnimating(true);
+      setCurrentIndex(
+        (prevIndex) => (prevIndex - 1 + images.length) % images.length
+      );
+    }
+  };
+
+  const handleDotClick = (index: number) => {
+    if (!isAnimating) {
+      setCurrentIndex(index);
+      setIsAnimating(true);
+    }
+  };
+
+  const handleAnimationComplete = () => {
+    setIsAnimating(false);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current - touchEndX.current > 50) {
+      handleNext();
+    }
+
+    if (touchEndX.current - touchStartX.current > 50) {
+      handlePrevious();
+    }
+  };
+
+  return (
+    <div
+      className="image-slider h-full relative"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div className="slider-container h-full relative overflow-hidden">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentIndex}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction === "next" ? "100%" : "-100%" }}
+            transition={{
+              duration: 0.5, // Krótszy czas animacji
+              type: "spring",
+              stiffness: 300, // Zwiększona sztywność, aby animacja była bardziej dynamiczna
+              damping: 20, // Dodatkowe wygładzanie
+            }}
+            onAnimationComplete={handleAnimationComplete}
+          >
+            <img
+              src={images?.[currentIndex]?.src}
+              alt={images?.[currentIndex]?.alt}
+              className="w-full h-full object-cover cursor-pointer"
+              onClick={() => onImageClick?.(currentIndex)}
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <Button
+        onClick={handlePrevious}
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10"
+      >
+        <ChevronLeft />
+      </Button>
+      <Button
+        onClick={handleNext}
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10"
+      >
+        <ChevronRight />
+      </Button>
+
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handleDotClick(index)}
+            className={`w-2.5 h-2.5 rounded-full ${
+              currentIndex === index ? "bg-white" : "bg-white/50"
+            }`}
+          />
+        ))}
+      </div>
+
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white z-10 w-full">
+        <h3 className="font-bold text-xl left-4 p-2">
+          {t(`photos.${images[currentIndex].id}.title`)}
+        </h3>
+        <p className="text-sm left-4 p-2">
+          {t(`photos.${images[currentIndex].id}.location`)}
+        </p>
+        <p className="text-sm mt-2 left-4 p-2">
+          {t(`photos.${images[currentIndex].id}.description`)}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default ImageSlider;
+
+
+---------------------------
+
+import { Description } from "@radix-ui/react-toast";
+
+export default {
+  // Navbar
+  navbar: {
+    home: "Strona główna",
+    destinations: "Podróże",
+    about: "O nas",
+    contact: "Kontakt",
+  },
+
+  // Destinations
+  destinations: {
+    exploreTitle: "Odkryj Podróże",
+    exploreDescription:
+      "Przeglądaj naszą kolekcję studenckich zdjęć z podróży po najpiękniejszych miastach Europy.",
+    allDestinations: "Wszystkie Podróże",
+    lisbon: "Lizbona",
+    paris: "Paryż",
+    berlin: "Berlin",
+    capri: "Capri",
+    naples: "Neapol",
+    prague: "Praga",
+    loadMore: "Załaduj więcej",
+    ariaLabel: "Kategorie podróży",
+  },
+
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "Paryż, Francja",
+      description:
+        "Miasto świateł oczami studenta - uchwycenie czaru paryskiej architektury i kultury.",
+    },
+    "rome-hero": {
+      location: "Neapol, Włochy",
+      description:
+        "Neapol to miejsce, gdzie życie toczy się w rytmie espresso, rozmów na ulicy i zapachu świeżo wypiekanej pizzy unoszącego się w ciepłym, śródziemnomorskim powietrzu.",
+    },
+    "lisbon-hero": {
+      location: "Lizbona, Portugalia",
+      description:
+        "Lizbona to miasto pełne światła, gdzie brukowane uliczki wiją się między kolorowymi kamienicami, a życie płynie spokojnie w rytmie fado i aromatu świeżych 'pasteis de nata'.",
+    },
+    "frankfurt-hero": {
+      location: "Frankfurt nad Menem, Niemcy",
+      description:
+        "Lizbona to miasto pełne światła, gdzie brukowane uliczki wiją się między kolorowymi kamienicami, a życie płynie spokojnie w rytmie fado i aromatu świeżych 'pasteis de nata'.",
+    },
+  },
+
+  // Photos
+  photos: {
+    view: "Zobacz zdjęcie {{title}}",
+    noPhotos: "Nie ma jeszcze dostępnych zdjęć dla tej podróży.",
+    "paris-sunset": {
+      title: "Zachód słońca w Paryżu",
+      location: "Paryż, Francja",
+      alt: "Wieża Eiffla o zachodzie słońca w Paryżu",
+    },
+    "lisbon-tram": {
+      title: "Widok na Teatr Narodowy D. Marii II",
+      location: "Lizbona, Portugalia",
+      description:
+        "Zabytkowy budynek teatru jest jednym z najbardziej prestiżowych sal Portugalii i znajduje się na placu Rossio w centrum miasta.",
+    },
+    "lisbon-belem": {
+      title: "Dachy Starego Miasta",
+      location: "Lizbona, Portugalia",
+      description:
+        "Najstarszą dzielnicą Lizbony jest Alfama, wybudowana na zboczu nad Tagiem w czasach panowania Maurów. To właśnie tutaj można poczuć klimat średniowiecznej Lizbony.",
+    },
+    "lisbon-bele": {
+      title: "Wieża Belema",
+      location: "Lizbona, Portugalia",
+      description: "Średniowieczna twierdza z widokime na ukście rzeki Tagus",
+    },
+    "boca do inferno": {
+      title: "Usta Piekieł",
+      location: "Cascais, Portugalia",
+      description:
+        "Przepaść położona w nadmorskich klifach blisko portugalskiego miasta Cascais",
+    },
+    "capri-marina": {
+      title: "Plaża Luigia u Faraglioni",
+      location: "Capri, Włochy",
+      description:
+        "Usytuowana w Morzu Tyrreńskim, zajmuje 19. miejsce wśród 118 plaż regionu neapolitańskiego.",
+    },
+    "paris-hero": {
+      title: "Wersal – Perła Baroku",
+      location: "Paryż, Francja",
+      alt: "Pałac Wersalski pod Paryżem",
+      description:
+        "Wersal jest symbolem francuskiej monarchii absolutnej i jednym z najwspanialszych przykładów barokowej architektury na świecie.",
+    },
+    "naples-view": {
+      title: "Droga nad Morzem Tyrreńskim",
+      location: "Neapol, Włochy",
+      alt: "Droga u podnóża góry",
+    },
+    "lisbon-hero": {
+      title: "Klasztor Hieronimitów",
+      location: "Lizbona, Portugalia",
+      alt: "Klasztor Hieronimitów w Belem",
+      description:
+        "Zbudowany w I połowie XVI w., uważany jest za perłę i kwintesencję stylu manuelińskiego, będącego specyficznym dla Portugalii połączeniem gotyku i renesansu.",
+    },
+    "paris-eiffel": {
+      title: "Wieża Eiffla",
+      location: "Paryż, Francja",
+      alt: "Wieczorna iluminacja Wieży Eiffla w Paryżu",
+    },
+    "frankfurt-hero": {
+      title: "Stara Opera (Alte Oper), Frankfurt",
+      location: "Frankfurt nad Menem, Niemcy",
+      alt: "Stara Opera (Alte Oper), Frankfurt",
+      description:
+        "Wznosząca się nad malowniczym placem ozdobionym elegancką fontanną znajduje się Opera, posiadająca fasadę w stylu renesansowym.",
+    },
+    "berlin-gate": {
+      title: "Brama Brandenburska",
+      location: "Berlin, Niemcy",
+      alt: "Brama Brandenburska",
+    },
+    "prague-bridge": {
+      title: "Widok na Wełtawę w Pradze",
+      location: "Praga, Czechy",
+      alt: "Rzeka Wełtawa w Pradze",
+    },
+  },
+
+  // About Section
+  about: {
+    title: "O EuroTrek",
+    description1:
+      "EuroTrek to kolektywny dziennik fotograficzny stworzony przez studentów uniwersyteckich studiujących w Polsce. Naszą misją jest prezentowanie piękna, kultury i doświadczeń podróży studenckich poprzez autentyczną fotografię.",
+    description2:
+      "Ta platforma służy zarówno jako inspiracja dla przyszłych studentów-podróżników, jak i księga wspomnień dla tych, którzy już rozpoczęli swoje europejskie przygody. Wszystkie zdjęcia są wykonane przez studentów, ukazujących Europę przez świeżą, młodzieńczą perspektywę.",
+    pageTitle: "O Naszej Podróży",
+    pageDescription1:
+      "EuroTrek narodził się z pasji do fotografii podróżniczej i pragnienia uchwycenia unikalnych doświadczeń studentów-odkrywców w najbardziej tętniących życiem miastach Europy.",
+    pageDescription2:
+      "To, co zaczęło się jako mała grupa dzielenia się zdjęciami wśród kolegów z klasy studiujących w Polsce, przekształciło się w platformę łączącą studentów-fotografów z różnych krajów, środowisk i dyscyplin akademickich, którzy dzielą wspólną miłość do odkrywania i wizualnego opowiadania historii.",
+    pageDescription3:
+      "Nasi współpracownicy to studenci tacy jak Ty, którzy równoważą swoje studia z przygodami po całym kontynencie, uwieczniając autentyczne momenty po drodze.",
+    mission: {
+      title: "Nasza Misja",
+      description:
+        "Inspirować do podróży studenckich poprzez autentyczne wizualne opowiadanie historii i tworzyć wspierającą społeczność dla młodych fotografów odkrywających Europę.",
+    },
+    team: {
+      title: "Studencki Kolektyw",
+      description:
+        "Nasz zespół składa się wyłącznie ze studentów-fotografów, pisarzy i programistów internetowych z uniwersytetów na całym świecie. Każdy współpracownik wnosi swoją unikalną perspektywę i doświadczenie do platformy.",
+    },
+    feature1: {
+      title: "Studenci-Fotografowie",
+      description:
+        "Zdjęcia wykonane przez studentów z zagranicy z całego świata",
+    },
+    feature2: {
+      title: "Autentyczne Doświadczenia",
+      description:
+        "Prawdziwe momenty podróży poza typowymi atrakcjami turystycznymi",
+    },
+    feature3: {
+      title: "Wiele Podróży",
+      description: "Rosnąca kolekcja zdjęć z całego kontynentu europejskiego",
+    },
+    image1: {
+      title: "Lizbona",
+      description: "Klasztor Hieronimitów.",
+    },
+    image2: {
+      title: "Niemcy i Francja",
+      description: "Niezapomniana podróż przez Niemcy i Francję.",
+    },
+    image3: {
+      title: "Neapol",
+      description: "Niezwykłe krajobrazy Neapolu.",
+    },
+  },
+
+  // Featured Section
+  featured: {
+    title: "Polecane: Wiosna w Paryżu",
+    description1:
+      "Paryż wiosną to marzenie dla studentów-fotografów. Miasto ożywa kwitnącymi wiśniami, kawiarnianymi ogródkami i idealnym światłem do uchwycenia ikonicznych zabytków.",
+    description2:
+      "Nasza polecana kolekcja pokazuje czar Paryża oczami polskich studentów, którzy spędzili swoje wakacje za granicą w Mieście Światła.",
+    exploreLink: "Odkryj Kolekcję Paryż",
+    image1Alt: "Wieża Eiffla wiosną",
+    image2Alt: "Rzeka Sekwana w Paryżu",
+    image3Alt: "Paryska kawiarnia",
+    image4Alt: "Muzeum Luwr",
+  },
+
+  // Contact Section
+  contact: {
+    title: "Kontakt",
+    description:
+      "Masz pytania lub chcesz przesłać własne studenckie zdjęcia z podróży? Chętnie Cię poznamy!",
+    pageTitle: "Skontaktuj Się",
+    getInTouch: "Jak Możemy Ci Pomóc?",
+    getInTouchDescription:
+      "Niezależnie od tego, czy chcesz przesłać swoje zdjęcia z podróży, masz pytania dotyczące naszej platformy, czy po prostu chcesz się przywitać, jesteśmy tu, aby pomóc.",
+    email: {
+      title: "Napisz do Nas",
+      description: "W sprawie ogólnych zapytań i przesyłania zdjęć",
+    },
+    location: {
+      title: "Nasza Lokalizacja",
+      description: "Odwiedź nasze biuro studenckiego kolektywu",
+      address: "University Creative Hub, European Campus, Amsterdam",
+    },
+    phone: {
+      title: "Zadzwoń do Nas",
+      description: "Dostępni w dni powszednie od 10:00 do 18:00 CET",
+    },
+    form: {
+      name: "Twoje Imię",
+      namePlaceholder: "Wpisz swoje imię",
+      nameError: "Imię jest wymagane",
+      email: "Twój Email",
+      emailPlaceholder: "Wpisz swój email",
+      emailError: "Wymagany jest prawidłowy email",
+      subject: "Temat",
+      subjectPlaceholder: "O czym chcesz porozmawiać?",
+      subjectError: "Temat jest wymagany",
+      message: "Wiadomość",
+      messagePlaceholder: "Wpisz swoją wiadomość tutaj...",
+      messageError: "Wiadomość musi zawierać co najmniej 10 znaków",
+      send: "Wyślij Wiadomość",
+      sending: "Wysyłanie...",
+      successTitle: "Wiadomość Wysłana!",
+      successMessage: "Dziękujemy za kontakt. Odezwiemy się wkrótce.",
+    },
+  },
+
+  // Footer
+  footer: {
+    description:
+      "Wizualna podróż przez Europę, uchwycona obiektywem studentów odkrywających najpiękniejsze destynacje kontynentu.",
+    quickLinks: "Szybkie Linki",
+    resources: "Zasoby",
+    parisCollection: "Kolekcja Paryż",
+    submitPhotos: "Prześlij Zdjęcia",
+    privacyPolicy: "Polityka Prywatności",
+    termsOfUse: "Warunki Użytkowania",
+    accessibility: "Dostępność",
+    copyright: "Wszelkie prawa zastrzeżone.",
+    tagline: "Stworzone z ❤ przez studentów, dla studentów.",
+    instagram: "Śledź nas na Instagramie",
+    twitter: "Śledź nas na Twitterze",
+    facebook: "Śledź nas na Facebooku",
+    pinterest: "Śledź nas na Pintereście",
+  },
+
+  // Slider Controls
+  slider: {
+    previous: "Poprzedni slajd",
+    next: "Następny slajd",
+    goToSlide: "Przejdź do slajdu {{index}}",
+  },
+
+  // Lightbox
+  lightbox: {
+    close: "Zamknij przeglądarkę",
+    previous: "Poprzednie zdjęcie",
+    next: "Następne zdjęcie",
+  },
+
+  // Theme Toggle
+  theme: {
+    toggleLight: "Przełącz na tryb jasny",
+    toggleDark: "Przełącz na tryb ciemny",
+  },
+
+  // Language
+  language: {
+    changeLanguage: "Zmień język",
+  },
+
+  // Home
+  home: {
+    heroAriaLabel: "Polecane destynacje",
+  },
+};
+
+
+--------------------------
+
+import { useEffect } from "react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { Photo } from "./PhotoGrid";
+
+interface PhotoLightboxProps {
+  isOpen: boolean;
+  photos: Photo[];
+  currentIndex: number;
+  onClose: () => void;
+  onNext: () => void;
+  onPrevious: () => void;
+}
+
+const PhotoLightbox = ({
+  isOpen,
+  photos,
+  currentIndex,
+  onClose,
+  onNext,
+  onPrevious,
+}: PhotoLightboxProps) => {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    console.log("Lightbox is open:", isOpen);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+
+      switch (e.key) {
+        case "Escape":
+          console.log("Escape key pressed");
+          onClose();
+          break;
+        case "ArrowRight":
+          console.log("ArrowRight key pressed");
+          onNext();
+          break;
+        case "ArrowLeft":
+          console.log("ArrowLeft key pressed");
+          onPrevious();
+          break;
+        default:
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    if (isOpen) {
+      console.log("Blocking body scroll");
+      document.body.style.overflow = "hidden";
+    } else {
+      console.log("Releasing body scroll");
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose, onNext, onPrevious]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && photos.length > 0 && (
+        <motion.div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 transition-colors focus:outline-none"
+            // onClick={onClose}
+            onClick={() => onClose()}
+            aria-label={t("lightbox.close")}
+          >
+            <X className="h-6 w-6" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute left-4 text-white text-2xl hover:text-gray-300 transition-colors focus:outline-none"
+            onClick={onPrevious}
+            aria-label={t("lightbox.previous")}
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </Button>
+
+          <div className="max-w-4xl max-h-[80vh] px-4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center"
+              >
+                {photos[currentIndex] ? (
+                  <img
+                    src={photos[currentIndex].src}
+                    alt={t(`photos.${photos[currentIndex].id}.alt`)}
+                    className="max-w-full max-h-[70vh] object-contain"
+                  />
+                ) : (
+                  <div>Nie znaleziono zdjęcia</div>
+                )}
+                <div className="mt-4 text-white text-center">
+                  <h3 className="font-accent text-xl">
+                    {t(`photos.${photos[currentIndex].id}.title`)}
+                  </h3>
+                  <p className="text-white/80">
+                    {t(`photos.${photos[currentIndex].id}.location`)}
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-4 text-white text-2xl hover:text-gray-300 transition-colors focus:outline-none"
+            onClick={onNext}
+            aria-label={t("lightbox.next")}
+          >
+            <ChevronRight className="h-6 w-6" />
+          </Button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+export default PhotoLightbox;
+
+
+------------------------------------
+
+export default {
+  // Navbar
+  navbar: {
+    home: "Startseite",
+    destinations: "Reiseziele",
+    about: "Über Uns",
+    contact: "Kontakt"
+  },
+  
+  // Destinations
+  destinations: {
+    exploreTitle: "Reiseziele Entdecken",
+    exploreDescription: "Durchstöbern Sie unsere Sammlung von Reisefotografien von Studenten aus den schönsten Städten Europas.",
+    allDestinations: "Alle Reiseziele",
+    paris: "Paris",
+    rome: "Rom",
+    barcelona: "Barcelona",
+    amsterdam: "Amsterdam",
+    prague: "Prag",
+    loadMore: "Mehr Laden",
+    ariaLabel: "Reisezielkategorien"
+  },
+  
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "Paris, Frankreich",
+      description: "Die Stadt der Lichter durch die Linse eines Studenten - die Magie der Pariser Architektur und Kultur einfangen."
+    },
+    "rome-hero": {
+      location: "Rom, Italien",
+      description: "Entdeckung antiker Geschichte und modernen Lebens in der Ewigen Stadt - ein Muss für jedes europäische Abenteuer."
+    },
+    "barcelona-hero": {
+      location: "Barcelona, Spanien",
+      description: "Lebendige Farben und atemberaubende Architektur - Barcelona bietet ein unvergessliches Erlebnis für reisende Studenten."
+    }
+  },
+  
+  // Photos
+  photos: {
+    view: "Foto {{title}} ansehen",
+    noPhotos: "Noch keine Fotos für dieses Reiseziel verfügbar.",
+    "paris-sunset": {
+      title: "Paris Sonnenuntergang",
+      location: "Paris, Frankreich",
+      alt: "Eiffelturm bei Sonnenuntergang in Paris"
+    },
+    "paris-notredame": {
+      title: "Notre Dame",
+      location: "Paris, Frankreich",
+      alt: "Notre Dame Kathedrale in Paris"
+    },
+    "rome-colosseum": {
+      title: "Kolosseum",
+      location: "Rom, Italien",
+      alt: "Kolosseum in Rom"
+    },
+    "rome-steps": {
+      title: "Spanische Treppe",
+      location: "Rom, Italien", 
+      alt: "Spanische Treppe in Rom"
+    },
+    "barcelona-guell": {
+      title: "Park Güell",
+      location: "Barcelona, Spanien",
+      alt: "Park Güell in Barcelona"
+    },
+    "barcelona-sagrada": {
+      title: "Sagrada Familia",
+      location: "Barcelona, Spanien",
+      alt: "Sagrada Familia in Barcelona"
+    },
+    "amsterdam-canals": {
+      title: "Amsterdamer Kanäle", 
+      location: "Amsterdam, Niederlande",
+      alt: "Kanäle in Amsterdam"
+    },
+    "prague-bridge": {
+      title: "Karlsbrücke",
+      location: "Prag, Tschechische Republik",
+      alt: "Karlsbrücke in Prag"
+    }
+  },
+  
+  // About Section
+  about: {
+    title: "Über EuroTrek",
+    description1: "EuroTrek ist ein kollektives Fototagebuch, erstellt von Universitätsstudenten, die in Europa im Ausland studieren. Unsere Mission ist es, die Schönheit, Kultur und Erfahrungen studentischer Reisen durch authentische Fotografie zu präsentieren.",
+    description2: "Diese Plattform dient sowohl als Inspiration für zukünftige studentische Reisende als auch als Erinnerungsbuch für diejenigen, die sich bereits auf ihre europäischen Abenteuer begeben haben. Alle Fotos werden von Studenten aufgenommen und fangen Europa durch eine frische, jugendliche Perspektive ein.",
+    pageTitle: "Über Unsere Reise",
+    pageDescription1: "EuroTrek entstand aus einer Leidenschaft für Reisefotografie und dem Wunsch, die einzigartigen Erfahrungen von Studenten-Entdeckern in den lebendigsten Städten Europas festzuhalten.",
+    pageDescription2: "Was als kleine Foto-Sharing-Gruppe unter Kommilitonen im Auslandsstudium begann, hat sich zu einer Plattform entwickelt, die Studentenfotografen aus verschiedenen Ländern, Hintergründen und akademischen Disziplinen verbindet, die eine gemeinsame Liebe zur Erkundung und visuellen Erzählung teilen.",
+    pageDescription3: "Unsere Mitwirkenden sind Studenten wie Sie, die ihr Studium mit Abenteuern auf dem ganzen Kontinent in Einklang bringen und dabei authentische Momente festhalten.",
+    mission: {
+      title: "Unsere Mission",
+      description: "Studentisches Reisen durch authentisches visuelles Geschichtenerzählen zu inspirieren und eine unterstützende Gemeinschaft für junge Fotografen zu schaffen, die Europa erkunden."
+    },
+    team: {
+      title: "Das Studenten-Kollektiv",
+      description: "Unser Team besteht ausschließlich aus Studentenfotografen, Schriftstellern und Webentwicklern von Universitäten auf der ganzen Welt. Jeder Mitwirkende bringt seine einzigartige Perspektive und Erfahrung in die Plattform ein."
+    },
+    feature1: {
+      title: "Studentische Fotografen",
+      description: "Fotos aufgenommen von Auslandsstudierenden aus der ganzen Welt"
+    },
+    feature2: {
+      title: "Authentische Erfahrungen",
+      description: "Echte Reisemomente jenseits der typischen Touristenattraktionen"
+    },
+    feature3: {
+      title: "Mehrere Reiseziele",
+      description: "Wachsende Sammlung von Fotos aus ganz Europa"
+    }
+  },
+  
+  // Featured Section
+  featured: {
+    title: "Empfohlen: Frühling in Paris",
+    description1: "Paris im Frühling ist ein Traum für Studentenfotografen. Die Stadt erwacht mit Kirschblüten, Straßencafés und dem perfekten Licht, um ikonische Wahrzeichen einzufangen.",
+    description2: "Unsere empfohlene Sammlung zeigt die Magie von Paris durch die Augen internationaler Studenten, die ihr Auslandssemester in der Stadt des Lichts verbracht haben.",
+    exploreLink: "Paris-Sammlung Entdecken",
+    image1Alt: "Eiffelturm im Frühling",
+    image2Alt: "Seine-Fluss in Paris",
+    image3Alt: "Pariser Café",
+    image4Alt: "Louvre-Museum"
+  },
+  
+  // Contact Section
+  contact: {
+    title: "Kontaktieren Sie Uns",
+    description: "Haben Sie Fragen oder möchten Sie Ihre eigenen studentischen Reisefotos einreichen? Wir würden gerne von Ihnen hören!",
+    pageTitle: "Kontakt Aufnehmen",
+    getInTouch: "Wie Können Wir Ihnen Helfen?",
+    getInTouchDescription: "Egal, ob Sie Ihre Reisefotos einreichen möchten, Fragen zu unserer Plattform haben oder einfach nur Hallo sagen möchten, wir sind hier, um zu helfen.",
+    email: {
+      title: "E-Mail an Uns",
+      description: "Für allgemeine Anfragen und Foto-Einreichungen"
+    },
+    location: {
+      title: "Unser Standort",
+      description: "Besuchen Sie unser Studentenkollektivbüro",
+      address: "University Creative Hub, European Campus, Amsterdam"
+    },
+    phone: {
+      title: "Rufen Sie Uns An",
+      description: "Verfügbar an Wochentagen von 10 bis 18 Uhr MEZ"
+    },
+    form: {
+      name: "Ihr Name",
+      namePlaceholder: "Geben Sie Ihren Namen ein",
+      nameError: "Name ist erforderlich",
+      email: "Ihre E-Mail",
+      emailPlaceholder: "Geben Sie Ihre E-Mail ein",
+      emailError: "Gültige E-Mail ist erforderlich",
+      subject: "Betreff",
+      subjectPlaceholder: "Worum geht es?",
+      subjectError: "Betreff ist erforderlich",
+      message: "Nachricht",
+      messagePlaceholder: "Geben Sie Ihre Nachricht hier ein...",
+      messageError: "Nachricht muss mindestens 10 Zeichen enthalten",
+      send: "Nachricht Senden",
+      sending: "Senden...",
+      successTitle: "Nachricht Gesendet!",
+      successMessage: "Danke für Ihre Kontaktaufnahme. Wir werden uns bald bei Ihnen melden."
+    }
+  },
+  
+  // Footer
+  footer: {
+    description: "Eine visuelle Reise durch Europa, eingefangen durch die Linse von Studenten, die die schönsten Reiseziele des Kontinents erkunden.",
+    quickLinks: "Schnelllinks",
+    resources: "Ressourcen",
+    parisCollection: "Paris-Sammlung",
+    submitPhotos: "Fotos Einreichen",
+    privacyPolicy: "Datenschutzrichtlinie",
+    termsOfUse: "Nutzungsbedingungen",
+    accessibility: "Barrierefreiheit",
+    copyright: "Alle Rechte vorbehalten.",
+    tagline: "Mit ❤ gemacht von Studenten, für Studenten.",
+    instagram: "Folgen Sie uns auf Instagram",
+    twitter: "Folgen Sie uns auf Twitter",
+    facebook: "Folgen Sie uns auf Facebook",
+    pinterest: "Folgen Sie uns auf Pinterest"
+  },
+  
+  // Slider Controls
+  slider: {
+    previous: "Vorherige Folie",
+    next: "Nächste Folie",
+    goToSlide: "Zu Folie {{index}} gehen"
+  },
+  
+  // Lightbox
+  lightbox: {
+    close: "Bildanzeige schließen",
+    previous: "Vorheriges Bild",
+    next: "Nächstes Bild"
+  },
+  
+  // Theme Toggle
+  theme: {
+    toggleLight: "Zum hellen Modus wechseln",
+    toggleDark: "Zum dunklen Modus wechseln"
+  },
+  
+  // Language
+  language: {
+    changeLanguage: "Sprache ändern"
+  },
+  
+  // Home
+  home: {
+    heroAriaLabel: "Empfohlene Reiseziele"
+  }
+};
+
+
+-------------------------------
+
+export default {
+  // Navbar
+  navbar: {
+    home: "Home",
+    destinations: "Destinations",
+    about: "About",
+    contact: "Contact"
+  },
+  
+  // Destinations
+  destinations: {
+    exploreTitle: "Explore Destinations",
+    exploreDescription: "Browse our collection of student travel photography from across Europe's most beautiful cities.",
+    allDestinations: "All Destinations",
+    paris: "Paris",
+    rome: "Rome",
+    barcelona: "Barcelona",
+    amsterdam: "Amsterdam",
+    prague: "Prague",
+    loadMore: "Load More",
+    ariaLabel: "Destination categories"
+  },
+  
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "Paris, France",
+      description: "The city of lights through a student's lens - capturing the magic of Parisian architecture and culture."
+    },
+    "rome-hero": {
+      location: "Rome, Italy",
+      description: "Exploring ancient history and modern life in the Eternal City - a must-visit for every European adventure."
+    },
+    "barcelona-hero": {
+      location: "Barcelona, Spain",
+      description: "Vibrant colors and stunning architecture - Barcelona offers an unforgettable experience for student travelers."
+    }
+  },
+  
+  // Photos
+  photos: {
+    view: "View {{title}} photo",
+    noPhotos: "No photos available for this destination yet.",
+    "paris-sunset": {
+      title: "Paris Sunset",
+      location: "Paris, France",
+      alt: "Eiffel Tower at sunset in Paris"
+    },
+    "paris-notredame": {
+      title: "Notre Dame",
+      location: "Paris, France",
+      alt: "Notre Dame Cathedral in Paris"
+    },
+    "rome-colosseum": {
+      title: "Colosseum",
+      location: "Rome, Italy",
+      alt: "Colosseum in Rome"
+    },
+    "rome-steps": {
+      title: "Spanish Steps",
+      location: "Rome, Italy", 
+      alt: "Spanish Steps in Rome"
+    },
+    "barcelona-guell": {
+      title: "Park Güell",
+      location: "Barcelona, Spain",
+      alt: "Park Güell in Barcelona"
+    },
+    "barcelona-sagrada": {
+      title: "Sagrada Familia",
+      location: "Barcelona, Spain",
+      alt: "Sagrada Familia in Barcelona"
+    },
+    "amsterdam-canals": {
+      title: "Amsterdam Canals", 
+      location: "Amsterdam, Netherlands",
+      alt: "Canals in Amsterdam"
+    },
+    "prague-bridge": {
+      title: "Charles Bridge",
+      location: "Prague, Czech Republic",
+      alt: "Charles Bridge in Prague"
+    }
+  },
+  
+  // About Section
+  about: {
+    title: "About EuroTrek",
+    description1: "EuroTrek is a collective photo journal created by university students studying abroad in Europe. Our mission is to showcase the beauty, culture, and experiences of student travel through authentic photography.",
+    description2: "This platform serves as both an inspiration for future student travelers and a memory book for those who have already embarked on their European adventures. All photos are taken by students, capturing Europe through a fresh, youthful perspective.",
+    pageTitle: "About Our Journey",
+    pageDescription1: "EuroTrek was born from a passion for travel photography and the desire to capture the unique experiences of student explorers across Europe's most vibrant cities.",
+    pageDescription2: "What started as a small photo-sharing group among classmates studying abroad has evolved into a platform that connects student photographers from different countries, backgrounds, and academic disciplines who share a common love for exploration and visual storytelling.",
+    pageDescription3: "Our contributors are students just like you, who balance their studies with adventures across the continent, capturing authentic moments along the way.",
+    mission: {
+      title: "Our Mission",
+      description: "To inspire student travel through authentic visual storytelling and to create a supportive community for young photographers exploring Europe."
+    },
+    team: {
+      title: "The Student Collective",
+      description: "Our team consists entirely of student photographers, writers, and web developers from universities across the globe. Each contributor brings their unique perspective and experience to the platform."
+    },
+    feature1: {
+      title: "Student Photographers",
+      description: "Photos captured by study abroad students from around the world"
+    },
+    feature2: {
+      title: "Authentic Experiences",
+      description: "Real travel moments beyond the typical tourist attractions"
+    },
+    feature3: {
+      title: "Multiple Destinations",
+      description: "Growing collection of photos from across the European continent"
+    }
+  },
+  
+  // Featured Section
+  featured: {
+    title: "Featured: Spring in Paris",
+    description1: "Paris in springtime is a dream for student photographers. The city comes alive with cherry blossoms, outdoor cafés, and the perfect light for capturing iconic landmarks.",
+    description2: "Our featured collection showcases the magic of Paris through the eyes of international students who spent their semester abroad in the City of Light.",
+    exploreLink: "Explore Paris Collection",
+    image1Alt: "Eiffel Tower in spring",
+    image2Alt: "Seine River in Paris",
+    image3Alt: "Parisian café",
+    image4Alt: "Louvre Museum"
+  },
+  
+  // Contact Section
+  contact: {
+    title: "Contact Us",
+    description: "Have questions or want to submit your own student travel photos? We'd love to hear from you!",
+    pageTitle: "Get In Touch",
+    getInTouch: "How Can We Help You?",
+    getInTouchDescription: "Whether you're looking to submit your travel photos, have questions about our platform, or just want to say hello, we're here to help.",
+    email: {
+      title: "Email Us",
+      description: "For general inquiries and photo submissions"
+    },
+    location: {
+      title: "Our Location",
+      description: "Visit our student collective office",
+      address: "University Creative Hub, European Campus, Amsterdam"
+    },
+    phone: {
+      title: "Call Us",
+      description: "Available weekdays from 10 AM to 6 PM CET"
+    },
+    form: {
+      name: "Your Name",
+      namePlaceholder: "Enter your name",
+      nameError: "Name is required",
+      email: "Your Email",
+      emailPlaceholder: "Enter your email",
+      emailError: "Valid email is required",
+      subject: "Subject",
+      subjectPlaceholder: "What is this about?",
+      subjectError: "Subject is required",
+      message: "Message",
+      messagePlaceholder: "Enter your message here...",
+      messageError: "Message must be at least 10 characters",
+      send: "Send Message",
+      sending: "Sending...",
+      successTitle: "Message Sent!",
+      successMessage: "Thanks for reaching out. We'll get back to you soon."
+    }
+  },
+  
+  // Footer
+  footer: {
+    description: "A visual journey through Europe, captured through the lens of students exploring the continent's most beautiful destinations.",
+    quickLinks: "Quick Links",
+    resources: "Resources",
+    parisCollection: "Paris Collection",
+    submitPhotos: "Submit Photos",
+    privacyPolicy: "Privacy Policy",
+    termsOfUse: "Terms of Use",
+    accessibility: "Accessibility",
+    copyright: "All rights reserved.",
+    tagline: "Made with ❤ by students, for students.",
+    instagram: "Follow us on Instagram",
+    twitter: "Follow us on Twitter",
+    facebook: "Follow us on Facebook",
+    pinterest: "Follow us on Pinterest"
+  },
+  
+  // Slider Controls
+  slider: {
+    previous: "Previous slide",
+    next: "Next slide",
+    goToSlide: "Go to slide {{index}}"
+  },
+  
+  // Lightbox
+  lightbox: {
+    close: "Close lightbox",
+    previous: "Previous image",
+    next: "Next image"
+  },
+  
+  // Theme Toggle
+  theme: {
+    toggleLight: "Switch to light mode",
+    toggleDark: "Switch to dark mode"
+  },
+  
+  // Language
+  language: {
+    changeLanguage: "Change language"
+  },
+  
+  // Home
+  home: {
+    heroAriaLabel: "Featured destinations"
+  }
+};
+
+
+--------------------------------
+
+export default {
+  // Navbar
+  navbar: {
+    home: "Inicio",
+    destinations: "Destinos",
+    about: "Acerca de",
+    contact: "Contacto"
+  },
+  
+  // Destinations
+  destinations: {
+    exploreTitle: "Explorar Destinos",
+    exploreDescription: "Navega por nuestra colección de fotografías de viajes de estudiantes de las ciudades más hermosas de Europa.",
+    allDestinations: "Todos los Destinos",
+    paris: "París",
+    rome: "Roma",
+    barcelona: "Barcelona",
+    amsterdam: "Ámsterdam",
+    prague: "Praga",
+    loadMore: "Cargar Más",
+    ariaLabel: "Categorías de destinos"
+  },
+  
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "París, Francia",
+      description: "La ciudad de las luces a través del lente de un estudiante - capturando la magia de la arquitectura y cultura parisina."
+    },
+    "rome-hero": {
+      location: "Roma, Italia",
+      description: "Explorando la historia antigua y la vida moderna en la Ciudad Eterna - una visita obligada para cada aventura europea."
+    },
+    "barcelona-hero": {
+      location: "Barcelona, España",
+      description: "Colores vibrantes y arquitectura impresionante - Barcelona ofrece una experiencia inolvidable para los estudiantes viajeros."
+    }
+  },
+  
+  // Photos
+  photos: {
+    view: "Ver foto de {{title}}",
+    noPhotos: "Aún no hay fotos disponibles para este destino.",
+    "paris-sunset": {
+      title: "Atardecer en París",
+      location: "París, Francia",
+      alt: "Torre Eiffel al atardecer en París"
+    },
+    "paris-notredame": {
+      title: "Notre Dame",
+      location: "París, Francia",
+      alt: "Catedral de Notre Dame en París"
+    },
+    "rome-colosseum": {
+      title: "Coliseo",
+      location: "Roma, Italia",
+      alt: "Coliseo en Roma"
+    },
+    "rome-steps": {
+      title: "Escaleras Españolas",
+      location: "Roma, Italia", 
+      alt: "Escaleras Españolas en Roma"
+    },
+    "barcelona-guell": {
+      title: "Parque Güell",
+      location: "Barcelona, España",
+      alt: "Parque Güell en Barcelona"
+    },
+    "barcelona-sagrada": {
+      title: "Sagrada Familia",
+      location: "Barcelona, España",
+      alt: "Sagrada Familia en Barcelona"
+    },
+    "amsterdam-canals": {
+      title: "Canales de Ámsterdam", 
+      location: "Ámsterdam, Países Bajos",
+      alt: "Canales en Ámsterdam"
+    },
+    "prague-bridge": {
+      title: "Puente de Carlos",
+      location: "Praga, República Checa",
+      alt: "Puente de Carlos en Praga"
+    }
+  },
+  
+  // About Section
+  about: {
+    title: "Acerca de EuroTrek",
+    description1: "EuroTrek es un diario fotográfico colectivo creado por estudiantes universitarios que estudian en el extranjero en Europa. Nuestra misión es mostrar la belleza, la cultura y las experiencias del viaje estudiantil a través de fotografías auténticas.",
+    description2: "Esta plataforma sirve tanto como inspiración para futuros estudiantes viajeros como libro de recuerdos para aquellos que ya han comenzado sus aventuras europeas. Todas las fotos son tomadas por estudiantes, capturando Europa a través de una perspectiva fresca y juvenil.",
+    pageTitle: "Sobre Nuestro Viaje",
+    pageDescription1: "EuroTrek nació de la pasión por la fotografía de viajes y el deseo de capturar las experiencias únicas de los estudiantes exploradores en las ciudades más vibrantes de Europa.",
+    pageDescription2: "Lo que comenzó como un pequeño grupo de intercambio de fotos entre compañeros de clase estudiando en el extranjero se ha convertido en una plataforma que conecta a fotógrafos estudiantes de diferentes países, orígenes y disciplinas académicas que comparten un amor común por la exploración y la narración visual.",
+    pageDescription3: "Nuestros colaboradores son estudiantes como tú, que equilibran sus estudios con aventuras por todo el continente, capturando momentos auténticos en el camino.",
+    mission: {
+      title: "Nuestra Misión",
+      description: "Inspirar los viajes estudiantiles a través de la narración visual auténtica y crear una comunidad solidaria para jóvenes fotógrafos que exploran Europa."
+    },
+    team: {
+      title: "El Colectivo Estudiantil",
+      description: "Nuestro equipo está formado íntegramente por fotógrafos, escritores y desarrolladores web estudiantes de universidades de todo el mundo. Cada colaborador aporta su perspectiva y experiencia únicas a la plataforma."
+    },
+    feature1: {
+      title: "Fotógrafos Estudiantes",
+      description: "Fotos capturadas por estudiantes de intercambio de todo el mundo"
+    },
+    feature2: {
+      title: "Experiencias Auténticas",
+      description: "Momentos de viaje reales más allá de las atracciones turísticas típicas"
+    },
+    feature3: {
+      title: "Múltiples Destinos",
+      description: "Creciente colección de fotos de todo el continente europeo"
+    }
+  },
+  
+  // Featured Section
+  featured: {
+    title: "Destacado: Primavera en París",
+    description1: "París en primavera es un sueño para los fotógrafos estudiantes. La ciudad cobra vida con los cerezos en flor, las cafeterías al aire libre y la luz perfecta para capturar monumentos icónicos.",
+    description2: "Nuestra colección destacada muestra la magia de París a través de los ojos de estudiantes internacionales que pasaron su semestre en el extranjero en la Ciudad de la Luz.",
+    exploreLink: "Explorar Colección de París",
+    image1Alt: "Torre Eiffel en primavera",
+    image2Alt: "Río Sena en París",
+    image3Alt: "Café parisino",
+    image4Alt: "Museo del Louvre"
+  },
+  
+  // Contact Section
+  contact: {
+    title: "Contáctanos",
+    description: "¿Tienes preguntas o quieres enviar tus propias fotos de viajes de estudiantes? ¡Nos encantaría saber de ti!",
+    pageTitle: "Ponte en Contacto",
+    getInTouch: "¿Cómo Podemos Ayudarte?",
+    getInTouchDescription: "Ya sea que quieras enviar tus fotos de viaje, tengas preguntas sobre nuestra plataforma o simplemente quieras saludar, estamos aquí para ayudarte.",
+    email: {
+      title: "Envíanos un Email",
+      description: "Para consultas generales y envío de fotos"
+    },
+    location: {
+      title: "Nuestra Ubicación",
+      description: "Visita nuestra oficina colectiva de estudiantes",
+      address: "University Creative Hub, European Campus, Ámsterdam"
+    },
+    phone: {
+      title: "Llámanos",
+      description: "Disponible días laborables de 10 AM a 6 PM CET"
+    },
+    form: {
+      name: "Tu Nombre",
+      namePlaceholder: "Introduce tu nombre",
+      nameError: "El nombre es obligatorio",
+      email: "Tu Email",
+      emailPlaceholder: "Introduce tu email",
+      emailError: "Se requiere un email válido",
+      subject: "Asunto",
+      subjectPlaceholder: "¿De qué se trata?",
+      subjectError: "El asunto es obligatorio",
+      message: "Mensaje",
+      messagePlaceholder: "Escribe tu mensaje aquí...",
+      messageError: "El mensaje debe tener al menos 10 caracteres",
+      send: "Enviar Mensaje",
+      sending: "Enviando...",
+      successTitle: "¡Mensaje Enviado!",
+      successMessage: "Gracias por contactarnos. Te responderemos pronto."
+    }
+  },
+  
+  // Footer
+  footer: {
+    description: "Un viaje visual a través de Europa, capturado a través del lente de estudiantes explorando los destinos más hermosos del continente.",
+    quickLinks: "Enlaces Rápidos",
+    resources: "Recursos",
+    parisCollection: "Colección de París",
+    submitPhotos: "Enviar Fotos",
+    privacyPolicy: "Política de Privacidad",
+    termsOfUse: "Términos de Uso",
+    accessibility: "Accesibilidad",
+    copyright: "Todos los derechos reservados.",
+    tagline: "Hecho con ❤ por estudiantes, para estudiantes.",
+    instagram: "Síguenos en Instagram",
+    twitter: "Síguenos en Twitter",
+    facebook: "Síguenos en Facebook",
+    pinterest: "Síguenos en Pinterest"
+  },
+  
+  // Slider Controls
+  slider: {
+    previous: "Diapositiva anterior",
+    next: "Siguiente diapositiva",
+    goToSlide: "Ir a la diapositiva {{index}}"
+  },
+  
+  // Lightbox
+  lightbox: {
+    close: "Cerrar visor",
+    previous: "Imagen anterior",
+    next: "Siguiente imagen"
+  },
+  
+  // Theme Toggle
+  theme: {
+    toggleLight: "Cambiar a modo claro",
+    toggleDark: "Cambiar a modo oscuro"
+  },
+  
+  // Language
+  language: {
+    changeLanguage: "Cambiar idioma"
+  },
+  
+  // Home
+  home: {
+    heroAriaLabel: "Destinos destacados"
+  }
+};
+
+
+-------------------------------
+
+export default {
+  // Navbar
+  navbar: {
+    home: "Accueil",
+    destinations: "Destinations",
+    about: "À Propos",
+    contact: "Contact"
+  },
+  
+  // Destinations
+  destinations: {
+    exploreTitle: "Explorer les Destinations",
+    exploreDescription: "Parcourez notre collection de photographies de voyage d'étudiants dans les plus belles villes d'Europe.",
+    allDestinations: "Toutes les Destinations",
+    paris: "Paris",
+    rome: "Rome",
+    barcelona: "Barcelone",
+    amsterdam: "Amsterdam",
+    prague: "Prague",
+    loadMore: "Charger Plus",
+    ariaLabel: "Catégories de destinations"
+  },
+  
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "Paris, France",
+      description: "La ville des lumières à travers l'objectif d'un étudiant - capturer la magie de l'architecture et de la culture parisienne."
+    },
+    "rome-hero": {
+      location: "Rome, Italie",
+      description: "Explorer l'histoire ancienne et la vie moderne dans la Ville Éternelle - un incontournable pour chaque aventure européenne."
+    },
+    "barcelona-hero": {
+      location: "Barcelone, Espagne",
+      description: "Couleurs vibrantes et architecture étonnante - Barcelone offre une expérience inoubliable pour les étudiants voyageurs."
+    }
+  },
+  
+  // Photos
+  photos: {
+    view: "Voir la photo {{title}}",
+    noPhotos: "Aucune photo disponible pour cette destination pour le moment.",
+    "paris-sunset": {
+      title: "Coucher de Soleil à Paris",
+      location: "Paris, France",
+      alt: "Tour Eiffel au coucher du soleil à Paris"
+    },
+    "paris-notredame": {
+      title: "Notre Dame",
+      location: "Paris, France",
+      alt: "Cathédrale Notre-Dame à Paris"
+    },
+    "rome-colosseum": {
+      title: "Colisée",
+      location: "Rome, Italie",
+      alt: "Colisée à Rome"
+    },
+    "rome-steps": {
+      title: "Escaliers Espagnols",
+      location: "Rome, Italie", 
+      alt: "Escaliers Espagnols à Rome"
+    },
+    "barcelona-guell": {
+      title: "Parc Güell",
+      location: "Barcelone, Espagne",
+      alt: "Parc Güell à Barcelone"
+    },
+    "barcelona-sagrada": {
+      title: "Sagrada Familia",
+      location: "Barcelone, Espagne",
+      alt: "Sagrada Familia à Barcelone"
+    },
+    "amsterdam-canals": {
+      title: "Canaux d'Amsterdam", 
+      location: "Amsterdam, Pays-Bas",
+      alt: "Canaux à Amsterdam"
+    },
+    "prague-bridge": {
+      title: "Pont Charles",
+      location: "Prague, République Tchèque",
+      alt: "Pont Charles à Prague"
+    }
+  },
+  
+  // About Section
+  about: {
+    title: "À Propos d'EuroTrek",
+    description1: "EuroTrek est un journal photo collectif créé par des étudiants universitaires étudiant à l'étranger en Europe. Notre mission est de mettre en valeur la beauté, la culture et les expériences des voyages étudiants à travers une photographie authentique.",
+    description2: "Cette plateforme sert à la fois d'inspiration pour les futurs étudiants voyageurs et de livre de souvenirs pour ceux qui se sont déjà lancés dans leurs aventures européennes. Toutes les photos sont prises par des étudiants, capturant l'Europe à travers une perspective fraîche et jeune.",
+    pageTitle: "À Propos de Notre Voyage",
+    pageDescription1: "EuroTrek est né d'une passion pour la photographie de voyage et du désir de capturer les expériences uniques des explorateurs étudiants dans les villes les plus vivantes d'Europe.",
+    pageDescription2: "Ce qui a commencé comme un petit groupe de partage de photos entre camarades de classe étudiant à l'étranger est devenu une plateforme qui connecte des photographes étudiants de différents pays, origines et disciplines académiques qui partagent un amour commun pour l'exploration et la narration visuelle.",
+    pageDescription3: "Nos contributeurs sont des étudiants comme vous, qui équilibrent leurs études avec des aventures à travers le continent, capturant des moments authentiques en cours de route.",
+    mission: {
+      title: "Notre Mission",
+      description: "Inspirer les voyages étudiants par une narration visuelle authentique et créer une communauté solidaire pour les jeunes photographes explorant l'Europe."
+    },
+    team: {
+      title: "Le Collectif Étudiant",
+      description: "Notre équipe est entièrement composée de photographes, écrivains et développeurs web étudiants d'universités du monde entier. Chaque contributeur apporte sa perspective et son expérience uniques à la plateforme."
+    },
+    feature1: {
+      title: "Photographes Étudiants",
+      description: "Photos capturées par des étudiants du monde entier"
+    },
+    feature2: {
+      title: "Expériences Authentiques",
+      description: "Moments de voyage réels au-delà des attractions touristiques typiques"
+    },
+    feature3: {
+      title: "Destinations Multiples",
+      description: "Collection croissante de photos de tout le continent européen"
+    }
+  },
+  
+  // Featured Section
+  featured: {
+    title: "En Vedette: Le Printemps à Paris",
+    description1: "Paris au printemps est un rêve pour les photographes étudiants. La ville s'anime avec les cerisiers en fleurs, les cafés en plein air et la lumière parfaite pour capturer les monuments emblématiques.",
+    description2: "Notre collection en vedette montre la magie de Paris à travers les yeux d'étudiants internationaux qui ont passé leur semestre à l'étranger dans la Ville Lumière.",
+    exploreLink: "Explorer la Collection Paris",
+    image1Alt: "Tour Eiffel au printemps",
+    image2Alt: "La Seine à Paris",
+    image3Alt: "Café parisien",
+    image4Alt: "Musée du Louvre"
+  },
+  
+  // Contact Section
+  contact: {
+    title: "Contactez-Nous",
+    description: "Vous avez des questions ou vous souhaitez soumettre vos propres photos de voyage étudiant? Nous aimerions avoir de vos nouvelles!",
+    pageTitle: "Prendre Contact",
+    getInTouch: "Comment Pouvons-Nous Vous Aider?",
+    getInTouchDescription: "Que vous souhaitiez soumettre vos photos de voyage, avoir des questions sur notre plateforme, ou simplement dire bonjour, nous sommes là pour vous aider.",
+    email: {
+      title: "Envoyez-Nous un Email",
+      description: "Pour les demandes générales et les soumissions de photos"
+    },
+    location: {
+      title: "Notre Emplacement",
+      description: "Visitez notre bureau collectif étudiant",
+      address: "University Creative Hub, European Campus, Amsterdam"
+    },
+    phone: {
+      title: "Appelez-Nous",
+      description: "Disponible en semaine de 10h à 18h CET"
+    },
+    form: {
+      name: "Votre Nom",
+      namePlaceholder: "Entrez votre nom",
+      nameError: "Le nom est requis",
+      email: "Votre Email",
+      emailPlaceholder: "Entrez votre email",
+      emailError: "Un email valide est requis",
+      subject: "Sujet",
+      subjectPlaceholder: "De quoi s'agit-il?",
+      subjectError: "Le sujet est requis",
+      message: "Message",
+      messagePlaceholder: "Entrez votre message ici...",
+      messageError: "Le message doit comporter au moins 10 caractères",
+      send: "Envoyer le Message",
+      sending: "Envoi en cours...",
+      successTitle: "Message Envoyé!",
+      successMessage: "Merci de nous avoir contacté. Nous vous répondrons bientôt."
+    }
+  },
+  
+  // Footer
+  footer: {
+    description: "Un voyage visuel à travers l'Europe, capturé à travers l'objectif d'étudiants explorant les plus belles destinations du continent.",
+    quickLinks: "Liens Rapides",
+    resources: "Ressources",
+    parisCollection: "Collection Paris",
+    submitPhotos: "Soumettre des Photos",
+    privacyPolicy: "Politique de Confidentialité",
+    termsOfUse: "Conditions d'Utilisation",
+    accessibility: "Accessibilité",
+    copyright: "Tous droits réservés.",
+    tagline: "Fait avec ❤ par des étudiants, pour des étudiants.",
+    instagram: "Suivez-nous sur Instagram",
+    twitter: "Suivez-nous sur Twitter",
+    facebook: "Suivez-nous sur Facebook",
+    pinterest: "Suivez-nous sur Pinterest"
+  },
+  
+  // Slider Controls
+  slider: {
+    previous: "Diapositive précédente",
+    next: "Diapositive suivante",
+    goToSlide: "Aller à la diapositive {{index}}"
+  },
+  
+  // Lightbox
+  lightbox: {
+    close: "Fermer la visionneuse",
+    previous: "Image précédente",
+    next: "Image suivante"
+  },
+  
+  // Theme Toggle
+  theme: {
+    toggleLight: "Passer en mode clair",
+    toggleDark: "Passer en mode sombre"
+  },
+  
+  // Language
+  language: {
+    changeLanguage: "Changer de langue"
+  },
+  
+  // Home
+  home: {
+    heroAriaLabel: "Destinations en vedette"
+  }
+};
+
+
+------------------------------
+
+export default {
+  // Navbar
+  navbar: {
+    home: "Home",
+    destinations: "Destinazioni",
+    about: "Chi Siamo",
+    contact: "Contatti"
+  },
+  
+  // Destinations
+  destinations: {
+    exploreTitle: "Esplora Destinazioni",
+    exploreDescription: "Sfoglia la nostra collezione di fotografie di viaggio di studenti dalle più belle città d'Europa.",
+    allDestinations: "Tutte le Destinazioni",
+    paris: "Parigi",
+    rome: "Roma",
+    barcelona: "Barcellona",
+    amsterdam: "Amsterdam",
+    prague: "Praga",
+    loadMore: "Carica Altri",
+    ariaLabel: "Categorie di destinazioni"
+  },
+  
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "Parigi, Francia",
+      description: "La città delle luci attraverso l'obiettivo di uno studente - catturare la magia dell'architettura e della cultura parigina."
+    },
+    "rome-hero": {
+      location: "Roma, Italia",
+      description: "Esplorando la storia antica e la vita moderna nella Città Eterna - una tappa obbligata per ogni avventura europea."
+    },
+    "barcelona-hero": {
+      location: "Barcellona, Spagna",
+      description: "Colori vibranti e architettura impressionante - Barcellona offre un'esperienza indimenticabile per gli studenti in viaggio."
+    }
+  },
+  
+  // Photos
+  photos: {
+    view: "Visualizza foto {{title}}",
+    noPhotos: "Nessuna foto disponibile per questa destinazione ancora.",
+    "paris-sunset": {
+      title: "Tramonto a Parigi",
+      location: "Parigi, Francia",
+      alt: "Torre Eiffel al tramonto a Parigi"
+    },
+    "paris-notredame": {
+      title: "Notre Dame",
+      location: "Parigi, Francia",
+      alt: "Cattedrale di Notre Dame a Parigi"
+    },
+    "rome-colosseum": {
+      title: "Colosseo",
+      location: "Roma, Italia",
+      alt: "Colosseo a Roma"
+    },
+    "rome-steps": {
+      title: "Scalinata di Spagna",
+      location: "Roma, Italia", 
+      alt: "Scalinata di Spagna a Roma"
+    },
+    "barcelona-guell": {
+      title: "Parco Güell",
+      location: "Barcellona, Spagna",
+      alt: "Parco Güell a Barcellona"
+    },
+    "barcelona-sagrada": {
+      title: "Sagrada Familia",
+      location: "Barcellona, Spagna",
+      alt: "Sagrada Familia a Barcellona"
+    },
+    "amsterdam-canals": {
+      title: "Canali di Amsterdam", 
+      location: "Amsterdam, Paesi Bassi",
+      alt: "Canali ad Amsterdam"
+    },
+    "prague-bridge": {
+      title: "Ponte Carlo",
+      location: "Praga, Repubblica Ceca",
+      alt: "Ponte Carlo a Praga"
+    }
+  },
+  
+  // About Section
+  about: {
+    title: "Chi è EuroTrek",
+    description1: "EuroTrek è un diario fotografico collettivo creato da studenti universitari che studiano all'estero in Europa. La nostra missione è mostrare la bellezza, la cultura e le esperienze dei viaggi studenteschi attraverso fotografie autentiche.",
+    description2: "Questa piattaforma serve sia come ispirazione per futuri studenti viaggiatori che come libro di ricordi per coloro che hanno già intrapreso le loro avventure europee. Tutte le foto sono scattate da studenti, catturando l'Europa attraverso una prospettiva fresca e giovanile.",
+    pageTitle: "Sul Nostro Viaggio",
+    pageDescription1: "EuroTrek è nato da una passione per la fotografia di viaggio e dal desiderio di catturare le esperienze uniche degli studenti esploratori nelle città più vivaci d'Europa.",
+    pageDescription2: "Quello che è iniziato come un piccolo gruppo di condivisione di foto tra compagni di classe che studiavano all'estero si è evoluto in una piattaforma che collega fotografi studenti di diversi paesi, background e discipline accademiche che condividono un amore comune per l'esplorazione e la narrazione visiva.",
+    pageDescription3: "I nostri collaboratori sono studenti come te, che bilanciano i loro studi con avventure in tutto il continente, catturando momenti autentici lungo il percorso.",
+    mission: {
+      title: "La Nostra Missione",
+      description: "Ispirare i viaggi studenteschi attraverso la narrazione visiva autentica e creare una comunità di supporto per giovani fotografi che esplorano l'Europa."
+    },
+    team: {
+      title: "Il Collettivo Studentesco",
+      description: "Il nostro team è composto interamente da fotografi, scrittori e sviluppatori web studenti di università di tutto il mondo. Ogni collaboratore porta la propria prospettiva ed esperienza unica alla piattaforma."
+    },
+    feature1: {
+      title: "Fotografi Studenti",
+      description: "Foto catturate da studenti all'estero da tutto il mondo"
+    },
+    feature2: {
+      title: "Esperienze Autentiche",
+      description: "Momenti di viaggio reali oltre le tipiche attrazioni turistiche"
+    },
+    feature3: {
+      title: "Molteplici Destinazioni",
+      description: "Collezione crescente di foto da tutto il continente europeo"
+    }
+  },
+  
+  // Featured Section
+  featured: {
+    title: "In Evidenza: Primavera a Parigi",
+    description1: "Parigi in primavera è un sogno per i fotografi studenti. La città si anima con i fiori di ciliegio, i caffè all'aperto e la luce perfetta per catturare monumenti iconici.",
+    description2: "La nostra collezione in evidenza mostra la magia di Parigi attraverso gli occhi di studenti internazionali che hanno trascorso il loro semestre all'estero nella Città della Luce.",
+    exploreLink: "Esplora la Collezione di Parigi",
+    image1Alt: "Torre Eiffel in primavera",
+    image2Alt: "Fiume Senna a Parigi",
+    image3Alt: "Caffè parigino",
+    image4Alt: "Museo del Louvre"
+  },
+  
+  // Contact Section
+  contact: {
+    title: "Contattaci",
+    description: "Hai domande o vuoi inviare le tue foto di viaggio da studente? Ci piacerebbe sentire da te!",
+    pageTitle: "Mettiti in Contatto",
+    getInTouch: "Come Possiamo Aiutarti?",
+    getInTouchDescription: "Che tu voglia inviare le tue foto di viaggio, abbia domande sulla nostra piattaforma o semplicemente voglia salutare, siamo qui per aiutarti.",
+    email: {
+      title: "Inviaci un'Email",
+      description: "Per richieste generali e invio di foto"
+    },
+    location: {
+      title: "La Nostra Sede",
+      description: "Visita il nostro ufficio collettivo studentesco",
+      address: "University Creative Hub, European Campus, Amsterdam"
+    },
+    phone: {
+      title: "Chiamaci",
+      description: "Disponibile nei giorni feriali dalle 10 alle 18 CET"
+    },
+    form: {
+      name: "Il Tuo Nome",
+      namePlaceholder: "Inserisci il tuo nome",
+      nameError: "Il nome è obbligatorio",
+      email: "La Tua Email",
+      emailPlaceholder: "Inserisci la tua email",
+      emailError: "È richiesta un'email valida",
+      subject: "Oggetto",
+      subjectPlaceholder: "Di cosa si tratta?",
+      subjectError: "L'oggetto è obbligatorio",
+      message: "Messaggio",
+      messagePlaceholder: "Inserisci il tuo messaggio qui...",
+      messageError: "Il messaggio deve contenere almeno 10 caratteri",
+      send: "Invia Messaggio",
+      sending: "Invio in corso...",
+      successTitle: "Messaggio Inviato!",
+      successMessage: "Grazie per averci contattato. Ti risponderemo presto."
+    }
+  },
+  
+  // Footer
+  footer: {
+    description: "Un viaggio visivo attraverso l'Europa, catturato attraverso l'obiettivo di studenti che esplorano le più belle destinazioni del continente.",
+    quickLinks: "Link Rapidi",
+    resources: "Risorse",
+    parisCollection: "Collezione di Parigi",
+    submitPhotos: "Invia Foto",
+    privacyPolicy: "Informativa sulla Privacy",
+    termsOfUse: "Termini di Utilizzo",
+    accessibility: "Accessibilità",
+    copyright: "Tutti i diritti riservati.",
+    tagline: "Fatto con ❤ da studenti, per studenti.",
+    instagram: "Seguici su Instagram",
+    twitter: "Seguici su Twitter",
+    facebook: "Seguici su Facebook",
+    pinterest: "Seguici su Pinterest"
+  },
+  
+  // Slider Controls
+  slider: {
+    previous: "Diapositiva precedente",
+    next: "Diapositiva successiva",
+    goToSlide: "Vai alla diapositiva {{index}}"
+  },
+  
+  // Lightbox
+  lightbox: {
+    close: "Chiudi visualizzatore",
+    previous: "Immagine precedente",
+    next: "Immagine successiva"
+  },
+  
+  // Theme Toggle
+  theme: {
+    toggleLight: "Passa alla modalità chiara",
+    toggleDark: "Passa alla modalità scura"
+  },
+  
+  // Language
+  language: {
+    changeLanguage: "Cambia lingua"
+  },
+  
+  // Home
+  home: {
+    heroAriaLabel: "Destinazioni in evidenza"
+  }
+};

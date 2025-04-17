@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import i18n from "@/utils/i18n";
 
 interface LanguageContextType {
@@ -28,18 +34,18 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
       if (savedLanguage) {
         return savedLanguage;
       }
-      
+
       // Check browser language
       const browserLang = navigator.language.split("-")[0];
-      const supportedLanguages = ["en", "fr", "es", "de", "it", "pl"];
-      
+      const supportedLanguages = ["pl", "en", "fr", "es", "de", "it", "cs"];
+
       if (supportedLanguages.includes(browserLang)) {
         return browserLang;
       }
     } catch (error) {
       console.error("Error accessing localStorage or navigator:", error);
     }
-    
+
     // Default to English
     return "en";
   });
@@ -47,10 +53,10 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   // Apply language changes when the language state changes
   useEffect(() => {
     console.log("Setting language to:", language);
-    
+
     // Update i18n language
     i18n.changeLanguage(language);
-    
+
     // Save language preference to localStorage
     try {
       localStorage.setItem("language", language);
