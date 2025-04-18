@@ -7,6 +7,7 @@ import {
   FaTwitter,
   FaFacebook,
   FaLinkedin,
+  FaFacebookMessenger,
 } from "react-icons/fa";
 
 interface FooterProps {
@@ -88,6 +89,15 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 aria-label={t("footer.linkedin")}
               >
                 <FaLinkedin className="h-5 w-5" />
+              </a>
+              <a
+                href="https://m.me/radomski.szachista.3"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.messenger")}
+              >
+                <FaFacebookMessenger className="h-5 w-5" />{" "}
               </a>
             </div>
           </div>
