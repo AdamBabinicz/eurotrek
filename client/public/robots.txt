@@ -1,0 +1,3 @@
+User-agent: *
+
+Sitemap: https://eurotrek.netlify.app/sitemap.xml
