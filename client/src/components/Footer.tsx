@@ -73,7 +73,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 <FaTwitter className="h-5 w-5" />
               </a>
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/profile.php?id=100011937734013"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-primary transition-colors"
