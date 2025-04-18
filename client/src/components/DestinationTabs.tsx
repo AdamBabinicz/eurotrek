@@ -24,9 +24,9 @@ const DestinationTabs = () => {
   return (
     <section className="py-10 container mx-auto px-4" id="destinations">
       <div className="mb-8 text-center">
-        <h2 className="font-heading font-bold text-2xl md:text-3xl mb-2">
+        <h1 className="font-heading font-bold text-2xl md:text-3xl mb-2">
           {t("destinations.exploreTitle")}
-        </h2>
+        </h1>
         <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           {t("destinations.exploreDescription")}
         </p>
