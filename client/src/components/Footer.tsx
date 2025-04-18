@@ -91,7 +91,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 <FaLinkedin className="h-5 w-5" />
               </a>
               <a
-                href="https://m.me/radomski.szachista.3"
+                href="https://m.me/profile.php?id=100011937734013"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-primary transition-colors"
