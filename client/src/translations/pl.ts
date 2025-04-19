@@ -73,7 +73,7 @@ export default {
     "lisbon-bele": {
       title: "Wieża Belema",
       location: "Lizbona, Portugalia",
-      description: "Średniowieczna twierdza z widokime na ukście rzeki Tagus",
+      description: "Średniowieczna twierdza z widokime na ujście rzeki Tagus",
     },
     "boca do inferno": {
       title: "Usta Piekieł",
