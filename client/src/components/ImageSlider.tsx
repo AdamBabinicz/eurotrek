@@ -134,6 +134,8 @@ const ImageSlider = ({
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
         {images.map((_, index) => (
           <button
+            aria-label={`Przejdź do slajdu ${index + 1}`}
+            aria-current={index === currentIndex ? "true" : undefined}
             key={index}
             onClick={() => handleDotClick(index)}
             className={`w-2.5 h-2.5 rounded-full ${
@@ -159,7 +161,7 @@ const ImageSlider = ({
           </>
         ) : (
           <p className="text-sm left-4 p-2">
-            {t("common.no_photos_data")}{" "}
+            {t("common.no_photos_data")}
             {/* Dodaj tłumaczenie dla braku danych */}
           </p>
         )}
