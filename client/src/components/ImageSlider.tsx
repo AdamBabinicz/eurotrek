@@ -115,6 +115,7 @@ const ImageSlider = ({
         </AnimatePresence>
       </div>
       <Button
+        aria-label="Poprzedni slajd"
         onClick={handlePrevious}
         className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10"
         disabled={images.length <= 1}
@@ -122,6 +123,7 @@ const ImageSlider = ({
         <ChevronLeft />
       </Button>
       <Button
+        aria-label="Następny slajd"
         onClick={handleNext}
         className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10"
         disabled={images.length <= 1}
