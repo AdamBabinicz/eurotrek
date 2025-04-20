@@ -92,9 +92,9 @@ const PhotoGrid = ({ photos, city, onPhotoClick }: PhotoGridProps) => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-300"></div>
             <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus:opacity-100 transition-all duration-300">
-              <h3 className="text-white font-accent text-lg">
+              <p className="text-white font-accent text-lg">
                 {t(`photos.${photo.id}.title`)}
-              </h3>
+              </p>
               <p className="text-white/90 text-sm">
                 {t(`photos.${photo.id}.location`)}
               </p>
