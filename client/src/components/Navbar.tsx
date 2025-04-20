@@ -44,7 +44,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-primary dark:text-primary"
+          className="flex items-center gap-2 text-foreground dark:text-primary"
           onClick={goToHome}
         >
           <span className="text-2xl">🌍</span>
