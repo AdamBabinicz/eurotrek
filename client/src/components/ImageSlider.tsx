@@ -138,11 +138,15 @@ const ImageSlider = ({
             aria-current={index === currentIndex ? "true" : undefined}
             key={index}
             onClick={() => handleDotClick(index)}
-            className={`w-2.5 h-2.5 rounded-full ${
-              currentIndex === index ? "bg-white" : "bg-white/50"
-            }`}
+            className={`p-3 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white hover:bg-white/10 active:bg-white/20`}
             disabled={images.length <= 1}
-          />
+          >
+            <span
+              className={`block w-2.5 h-2.5 rounded-full ${
+                currentIndex === index ? "bg-white" : "bg-white/50"
+              }`}
+            ></span>
+          </button>
         ))}
       </div>
 
