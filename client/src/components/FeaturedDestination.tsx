@@ -26,7 +26,7 @@ const FeaturedDestination = forwardRef<HTMLElement, FeaturedDestinationProps>(
             </p>
             <Link
               href="/#paris"
-              className="inline-flex items-center text-primary font-medium hover:underline"
+              className="inline-flex items-center text-foreground font-medium hover:underline"
             >
               {t("featured.exploreLink")}{" "}
               <ArrowRight className="ml-2 h-4 w-4" />
