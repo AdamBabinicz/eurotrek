@@ -132,8 +132,8 @@ const Navbar = ({ currentPath }: NavbarProps) => {
           <div className="flex gap-6">
             <Link
               href="/"
-              className={`font-medium hover:text-primary dark:hover:text-primary transition-colors ${
-                currentPath === "/" ? "text-primary" : ""
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
+                currentPath === "/" ? "!text-primary" : ""
               }`}
               onClick={goToHome}
             >
@@ -141,13 +141,16 @@ const Navbar = ({ currentPath }: NavbarProps) => {
             </Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 font-medium hover:text-primary dark:hover:text-primary transition-colors">
+              <DropdownMenuTrigger className="flex items-center gap-1 font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors focus:outline-none">
                 {t("navbar.destinations")} <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center">
                 {destinations.map((destination) => (
                   <DropdownMenuItem key={destination.id} asChild>
-                    <Link href={`/destination/${destination.id}`}>
+                    <Link
+                      href={`/destination/${destination.id}`}
+                      className="focus:outline-none focus:bg-accent"
+                    >
                       {t(`destinations.${destination.id}`)}
                     </Link>
                   </DropdownMenuItem>
@@ -157,7 +160,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
 
             <Link
               href="/about"
-              className={`font-medium hover:text-primary dark:hover:text-primary transition-colors ${
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
                 currentPath === "/about" ? "text-primary" : ""
               }`}
             >
@@ -166,7 +169,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
 
             <Link
               href="/contact"
-              className={`font-medium hover:text-primary dark:hover:text-primary transition-colors ${
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
                 currentPath === "/contact" ? "text-primary" : ""
               }`}
             >

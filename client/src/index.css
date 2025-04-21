@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 217 91% 55%; /* Zmiana z poprzedniej sugestii zachowana */
+    --primary: 217 91% 55%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -45,7 +45,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%; /* Zmiana z poprzedniej sugestii zachowana */
+    --primary: 217 91% 60%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -64,10 +64,10 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
-    a:not([class*="text-"]) {
+    /* a:not([class*="text-"]) {
       color: hsl(var(--foreground));
-    } /* <--- Brakowało tej klamry */
-  } /* <--- Koniec bloku .dark */
+    }  */
+  }
 
   * {
     @apply border-border;
