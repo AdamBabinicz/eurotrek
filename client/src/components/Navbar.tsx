@@ -132,7 +132,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
           <div className="flex gap-6">
             <Link
               href="/"
-              className={`font-medium text-foreground hover:text-red-500 dark:hover:!text-yellow-300 transition-colors ${
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
                 currentPath === "/" ? "!text-primary" : ""
               }`}
               onClick={goToHome}
