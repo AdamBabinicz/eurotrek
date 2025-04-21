@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react"; // Dodano React dla typów TouchEvent
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button"; // Upewnij się, że ścieżka jest poprawna
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
-// Interfejsy
+// Interfejsy, Warianty, Przejścia (bez zmian)
 interface SlideImage {
   id: string;
   src: string;
@@ -12,34 +12,25 @@ interface SlideImage {
   location: string;
   description: string;
 }
-
 interface ImageSliderProps {
   images: SlideImage[];
   autoPlayInterval?: number;
   onImageClick?: (index: number) => void;
 }
-
-// Warianty animacji dla Framer Motion
 const variants = {
   enter: (direction: "next" | "prev") => ({
     x: direction === "next" ? "100%" : "-100%",
     opacity: 0,
   }),
-  center: {
-    zIndex: 1, // Aktywny slajd na wierzchu
-    x: 0,
-    opacity: 1,
-  },
+  center: { zIndex: 1, x: 0, opacity: 1 },
   exit: (direction: "next" | "prev") => ({
-    zIndex: 0, // Wychodzący slajd pod spodem
-    x: direction === "next" ? "-100%" : "100%", // Poprawiony kierunek wyjścia
+    zIndex: 0,
+    x: direction === "next" ? "-100%" : "100%",
     opacity: 0,
   }),
 };
-
-// Przejścia animacji
 const transition = {
-  x: { type: "spring", stiffness: 300, damping: 30 },
+  x: { type: "spring", stiffness: 260, damping: 30 },
   opacity: { duration: 0.2 },
 };
 
@@ -51,52 +42,72 @@ const ImageSlider = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
   const { t } = useTranslation();
 
-  // Refy dla obsługi dotyku
+  // Refy
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const justSwiped = useRef(false); // Flaga do ignorowania kliknięcia po swipe
-  const swipeTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref do timeoutu flagi
+  const justSwiped = useRef(false);
+  const swipeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Efekt dla Autoplay
+  // --- Funkcja inicjująca zmianę slajdu ---
+  // Nie potrzebuje już sprawdzania warunków tutaj, bo interwał nie będzie działał, gdy nie powinien
+  const goToNextSlide = () => {
+    setDirection("next");
+    setIsAnimating(true); // Oznacz jako animujący *przed* zmianą indeksu
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  // --- Funkcja startująca interwał ---
+  const startInterval = () => {
+    // Wyczyść stary interwał dla pewności
+    stopInterval();
+    // Ustaw nowy interwał tylko jeśli warunki podstawowe są spełnione
+    if (autoPlayInterval > 0 && images.length > 1) {
+      intervalRef.current = setInterval(goToNextSlide, autoPlayInterval);
+    }
+  };
+
+  // --- Funkcja stopująca interwał ---
+  const stopInterval = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  // --- Główny useEffect do zarządzania cyklem życia interwału ---
   useEffect(() => {
-    if (autoPlayInterval <= 0 || images.length <= 1) return;
+    // Warunek, kiedy interwał powinien być AKTYWNY:
+    const shouldBeRunning =
+      autoPlayInterval > 0 && images.length > 1 && !isHovering && !isAnimating;
 
-    const interval = setInterval(() => {
-      // Używamy funkcji w setState, aby mieć pewność, że bazujemy na najnowszym stanie isAnimating
-      setIsAnimating((currentIsAnimating) => {
-        if (!currentIsAnimating) {
-          setDirection("next");
-          setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-          return true; // Ustaw isAnimating na true
-        }
-        return currentIsAnimating; // Pozostaw bez zmian, jeśli już animuje
-      });
-    }, autoPlayInterval);
+    if (shouldBeRunning) {
+      startInterval(); // Uruchom lub upewnij się, że działa
+    } else {
+      stopInterval(); // Zatrzymaj lub upewnij się, że jest zatrzymany
+    }
 
-    // Cleanup interwału i timeoutu
-    return () => {
-      clearInterval(interval);
-      if (swipeTimeoutRef.current) {
-        clearTimeout(swipeTimeoutRef.current);
-      }
-    };
-  }, [autoPlayInterval, images.length]); // Usunięto isAnimating z zależności, aby uniknąć resetowania interwału przy każdej animacji
+    // Cleanup przy odmontowaniu komponentu
+    return stopInterval;
 
-  // Nawigacja: Następny slajd
+    // Zależności: Wszystkie stany i propsy, które wpływają na decyzję start/stop
+  }, [isHovering, isAnimating, autoPlayInterval, images.length]);
+
+  // --- Nawigacja (Dodano stopInterval) ---
   const handleNext = () => {
     if (!isAnimating && images.length > 1) {
-      // Sprawdzamy > 1 dla bezpieczeństwa
+      stopInterval(); // Zatrzymaj autoplay przy ręcznej akcji
       setDirection("next");
       setIsAnimating(true);
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }
   };
-
-  // Nawigacja: Poprzedni slajd
   const handlePrevious = () => {
     if (!isAnimating && images.length > 1) {
+      stopInterval(); // Zatrzymaj autoplay przy ręcznej akcji
       setDirection("prev");
       setIsAnimating(true);
       setCurrentIndex(
@@ -104,37 +115,33 @@ const ImageSlider = ({
       );
     }
   };
-
-  // Nawigacja: Kliknięcie kropki
   const handleDotClick = (index: number) => {
     if (
       !isAnimating &&
       images.length > 0 &&
       index >= 0 &&
       index < images.length &&
-      index !== currentIndex // Tylko jeśli kliknięto inną kropkę niż aktywna
+      index !== currentIndex
     ) {
-      setDirection(index > currentIndex ? "next" : "prev"); // Ustaw kierunek na podstawie klikniętej kropki
+      stopInterval(); // Zatrzymaj autoplay przy ręcznej akcji
+      setDirection(index > currentIndex ? "next" : "prev");
+      setIsAnimating(true);
       setCurrentIndex(index);
-      setIsAnimating(true); // Rozpocznij animację
     }
   };
 
-  // Wywoływane po zakończeniu animacji Framer Motion
+  // --- Obsługa zdarzeń ---
   const handleAnimationComplete = () => {
     setIsAnimating(false);
+    // Nie ma potrzeby restartować interwału tutaj,
+    // główny useEffect zareaguje na zmianę isAnimating
   };
 
-  // Obsługa kliknięcia obrazka (otwarcie popupu)
+  // Handler kliknięcia obrazka (bez zmian)
   const handleImageClick = () => {
-    // Wywołaj tylko jeśli:
-    // - Nie ma animacji
-    // - Funkcja onImageClick istnieje
-    // - Ostatnia interakcja dotykowa NIE była swipe'em
     if (!isAnimating && onImageClick && !justSwiped.current) {
       onImageClick(currentIndex);
     }
-    // Resetuj flagę justSwiped na wszelki wypadek, chociaż timeout powinien to zrobić
     justSwiped.current = false;
     if (swipeTimeoutRef.current) {
       clearTimeout(swipeTimeoutRef.current);
@@ -142,118 +149,109 @@ const ImageSlider = ({
     }
   };
 
-  // Obsługa dotyku: Początek
+  // Handlery Dotyku (bez zmian)
   const handleTouchStart = (e: React.TouchEvent) => {
-    // Wyczyść poprzedni timeout, jeśli użytkownik szybko zacznie nowy dotyk
     if (swipeTimeoutRef.current) {
       clearTimeout(swipeTimeoutRef.current);
       swipeTimeoutRef.current = null;
     }
-    justSwiped.current = false; // Resetuj flagę swipe na początku nowego dotyku
-    touchStartX.current = e.touches[0]?.clientX ?? 0; // Użyj ?? dla wartości domyślnej
-    touchEndX.current = touchStartX.current; // Zainicjuj EndX na StartX
+    justSwiped.current = false;
+    touchStartX.current = e.touches[0]?.clientX ?? 0;
+    touchEndX.current = touchStartX.current;
   };
-
-  // Obsługa dotyku: Ruch
   const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0]?.clientX ?? 0; // Aktualizuj EndX podczas ruchu
+    touchEndX.current = e.touches[0]?.clientX ?? 0;
   };
-
-  // Obsługa dotyku: Koniec
   const handleTouchEnd = () => {
-    // Upewnij się, że touchStart był zarejestrowany
     if (touchStartX.current === 0) return;
-
     const dx = touchEndX.current - touchStartX.current;
-    const swipeThreshold = 50; // Minimalna odległość swipe'a
-
+    const swipeThreshold = 50;
     if (Math.abs(dx) > swipeThreshold) {
-      // --- Wykryto Swipe ---
-      justSwiped.current = true; // Ustaw flagę, że był swipe
-
+      justSwiped.current = true;
       if (dx < 0) {
-        // Swipe w lewo -> Następny
         handleNext();
       } else {
-        // Swipe w prawo -> Poprzedni
         handlePrevious();
       }
-
-      // Ustaw krótki timeout, aby zignorować potencjalny 'click' po swipe
-      // Jeśli użytkownik kliknie *naprawdę* po tym czasie, flaga będzie false
       swipeTimeoutRef.current = setTimeout(() => {
         justSwiped.current = false;
         swipeTimeoutRef.current = null;
-      }, 300); // 300ms powinno wystarczyć
+      }, 300);
     } else {
-      // --- Nie wykryto Swipe (prawdopodobnie Tap) ---
-      // Nie robimy nic (handleImageClick zajmie się tapnięciem)
-      // Upewnij się, że flaga jest false
       justSwiped.current = false;
     }
-
-    // Resetuj koordynaty dotyku na koniec
     touchStartX.current = 0;
     touchEndX.current = 0;
   };
 
+  // Handlery Myszki (bez zmian)
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
+  // --- Renderowanie JSX (bez zmian) ---
   return (
     <div
-      className="image-slider h-full relative select-none" // Dodano select-none
+      className="image-slider h-full relative select-none"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      style={{ touchAction: "pan-y" }} // Pozwól na pionowe przewijanie strony
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ touchAction: "pan-y" }}
     >
       {/* Kontener na slajdy */}
       <div className="slider-container h-full relative overflow-hidden">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
-            key={currentIndex} // Klucz = index, aby Framer wiedział, co animować
-            custom={direction} // Przekaż kierunek do wariantów
-            variants={variants} // Użyj zdefiniowanych wariantów
+            key={currentIndex}
+            custom={direction}
+            variants={variants}
             initial="enter"
             animate="center"
             exit="exit"
-            transition={transition} // Użyj zdefiniowanych przejść
-            onAnimationComplete={handleAnimationComplete} // Resetuj isAnimating po zakończeniu
-            className="absolute inset-0 w-full h-full" // Upewnij się, że div zajmuje całe miejsce
+            transition={transition}
+            onAnimationComplete={handleAnimationComplete} // Resetuje isAnimating
+            className="absolute inset-0 w-full h-full"
           >
-            <img
-              src={images[currentIndex]?.src} // Używaj bezpośrednio, obsługa braku obrazków poniżej
-              alt={images[currentIndex]?.alt ?? "Slajd galerii"} // Domyślny alt
-              className={`w-full h-full object-cover ${
-                isAnimating || justSwiped.current
-                  ? "cursor-default"
-                  : "cursor-pointer" // Zmień kursor podczas animacji lub po swipe
-              }`}
-              onClick={handleImageClick} // Handler kliknięcia
-              draggable="false" // Zapobiegaj przeciąganiu obrazka
-              // Można rozważyć pointerEvents: none podczas animacji, jeśli kursor to za mało
-              // style={{ pointerEvents: isAnimating ? 'none' : 'auto' }}
-            />
+            {images[currentIndex] && (
+              <img
+                src={images[currentIndex].src}
+                alt={images[currentIndex].alt ?? "Slajd galerii"}
+                className={`w-full h-full object-cover ${
+                  isAnimating || justSwiped.current
+                    ? "cursor-default"
+                    : "cursor-pointer"
+                }`}
+                onClick={handleImageClick}
+                draggable="false"
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Przyciski nawigacyjne (tylko jeśli więcej niż 1 obrazek) */}
+      {/* Przyciski Nawigacyjne */}
       {images.length > 1 && (
         <>
           <Button
-            aria-label={t("imageSlider.previousSlide", "Poprzedni slajd")} // Dodaj klucz tłumaczenia
+            aria-label={t("imageSlider.previousSlide", "Poprzedni slajd")}
             onClick={handlePrevious}
-            className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 z-20" // z-20 aby były nad tekstem
-            disabled={isAnimating} // Wyłącz podczas animacji
-            variant="outline" // Możesz dostosować wariant przycisku
+            className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 z-20"
+            disabled={isAnimating}
+            variant="outline"
             size="icon"
           >
             <ChevronLeft />
           </Button>
           <Button
-            aria-label={t("imageSlider.nextSlide", "Następny slajd")} // Dodaj klucz tłumaczenia
+            aria-label={t("imageSlider.nextSlide", "Następny slajd")}
             onClick={handleNext}
-            className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 z-20" // z-20 aby były nad tekstem
-            disabled={isAnimating} // Wyłącz podczas animacji
+            className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 z-20"
+            disabled={isAnimating}
             variant="outline"
             size="icon"
           >
@@ -262,7 +260,7 @@ const ImageSlider = ({
         </>
       )}
 
-      {/* Kropki nawigacyjne (tylko jeśli więcej niż 1 obrazek) */}
+      {/* Kropki Nawigacyjne */}
       {images.length > 1 && (
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
           {images.map((_, index) => (
@@ -271,7 +269,7 @@ const ImageSlider = ({
                 "imageSlider.goToSlide",
                 "Przejdź do slajdu {{index}}",
                 { index: index + 1 }
-              )} // Klucz tłumaczenia z interpolacją
+              )}
               aria-current={index === currentIndex ? "true" : undefined}
               key={index}
               onClick={() => handleDotClick(index)}
@@ -279,12 +277,11 @@ const ImageSlider = ({
                 isAnimating
                   ? "cursor-wait"
                   : "hover:bg-white/20 active:bg-white/30"
-              }`} // Zmieniony padding i kursor
-              disabled={isAnimating} // Wyłącz podczas animacji
+              }`}
+              disabled={isAnimating}
             >
               <span
                 className={`block w-2 h-2 rounded-full transition-colors duration-300 ${
-                  // Zmniejszone kropki, dodane przejście
                   currentIndex === index ? "bg-white" : "bg-white/50"
                 }`}
               ></span>
@@ -293,44 +290,42 @@ const ImageSlider = ({
         </div>
       )}
 
-      {/* Opis obrazka */}
+      {/* Opis Obrazka */}
       <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-sm z-10 pointer-events-none">
-        {" "}
-        {/* Pozycja lewa-dół, responsywna szerokość, pointer-events na wrapperze */}
         <div className="bg-white/60 backdrop-blur-sm p-3 md:p-4 rounded-lg shadow-lg text-gray-900 text-left pointer-events-auto">
           {images.length > 0 && images[currentIndex] ? (
             <>
               <h3 className="font-semibold text-base md:text-lg mb-1">
                 {" "}
-                {/* Usunięto truncate, jeśli niepotrzebne przy wyrównaniu do lewej */}
                 {t(
                   `photos.${images[currentIndex].id}.title`,
                   images[currentIndex].alt
-                )}
+                )}{" "}
               </h3>
               {images[currentIndex].location && (
                 <p className="text-xs md:text-sm mb-1 opacity-80">
+                  {" "}
                   {t(
                     `photos.${images[currentIndex].id}.location`,
                     images[currentIndex].location
-                  )}
+                  )}{" "}
                 </p>
               )}
               {images[currentIndex].description && (
                 <p className="text-xs md:text-sm opacity-90">
                   {" "}
-                  {/* Zwiększona opacity dla lepszej czytelności */}
                   {t(
                     `photos.${images[currentIndex].id}.description`,
                     images[currentIndex].description
-                  )}
+                  )}{" "}
                 </p>
               )}
             </>
           ) : (
             images.length === 0 && (
               <p className="text-sm opacity-80">
-                {t("common.no_photos_available", "Brak dostępnych zdjęć")}
+                {" "}
+                {t("common.no_photos_available", "Brak dostępnych zdjęć")}{" "}
               </p>
             )
           )}
