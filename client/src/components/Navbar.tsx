@@ -36,7 +36,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md">
+    <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md">
       <nav
         className="container mx-auto px-4 py-3 flex items-center justify-between"
         aria-label="Main navigation"
