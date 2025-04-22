@@ -1,0 +1,692 @@
+<img
+              src={images?.[currentIndex]?.src}
+              alt={images?.[currentIndex]?.alt}
+              className="w-full h-full object-cover cursor-pointer"
+              onClick={() => onImageClick?.(currentIndex)}
+            />
+
+---------------------------
+sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md
+---------------------
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 217 91% 55%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+html {
+  scroll-behavior: smooth;
+}
+
+
+----------------------
+
+ <Link
+              href="/"
+              className={`font-medium hover:text-primary dark:hover:text-primary transition-colors ${
+                currentPath === "/" ? "text-primary" : ""
+              }`}
+              onClick={goToHome}
+            >
+              {t("navbar.home")}
+            </Link>
+
+
+--------------------------
+
+import { useState } from "react";
+import { Link, useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
+import { Menu, Globe, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import ThemeToggle from "./ThemeToggle";
+import LanguageSelector from "./LanguageSelector";
+import { destinations } from "@/data/destinations";
+
+interface NavbarProps {
+  currentPath: string;
+}
+
+const Navbar = ({ currentPath }: NavbarProps) => {
+  const { t } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [, setLocation] = useLocation();
+
+  const goToHome = () => {
+    setLocation("/");
+    setIsMobileMenuOpen(false);
+    window.scrollTo(0, 0);
+  };
+
+  return (
+    <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md">
+      <nav
+        className="container mx-auto px-4 py-3 flex items-center justify-between"
+        aria-label="Main navigation"
+      >
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-foreground dark:text-primary"
+          onClick={goToHome}
+        >
+          <span className="text-2xl">🌍</span>
+          <span className="font-heading font-bold text-lg md:text-xl">
+            EuroTrek
+          </span>
+        </Link>
+
+        {/* Mobile menu button */}
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              aria-label="Toggle menu"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <div className="mt-8 flex flex-col gap-4">
+              <Link
+                href="/"
+                className={`px-2 py-1 rounded-md ${
+                  currentPath === "/" ? "bg-primary/10 text-primary" : ""
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t("navbar.home")}
+              </Link>
+
+              <Accordion type="single" collapsible>
+                <AccordionItem value="destinations">
+                  <AccordionTrigger>
+                    {t("navbar.destinations")}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="flex flex-col space-y-2 pl-4">
+                      {destinations.map((destination) => (
+                        <Link
+                          key={destination.id}
+                          href={`/destination/${destination.id}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="px-2 py-1 rounded-md hover:bg-primary/10 hover:text-primary"
+                        >
+                          {t(`destinations.${destination.id}`)}
+                        </Link>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              <Link
+                href="/about"
+                className={`px-2 py-1 rounded-md ${
+                  currentPath === "/about" ? "bg-primary/10 text-primary" : ""
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t("navbar.about")}
+              </Link>
+
+              <Link
+                href="/contact"
+                className={`px-2 py-1 rounded-md ${
+                  currentPath === "/contact" ? "bg-primary/10 text-primary" : ""
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t("navbar.contact")}
+              </Link>
+
+              <div className="flex items-center justify-between mt-4">
+                <LanguageSelector />
+                <ThemeToggle />
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        {/* Desktop menu */}
+        <div className="hidden md:flex items-center gap-6">
+          <div className="flex gap-6">
+            <Link
+              href="/"
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
+                currentPath === "/" ? "!text-primary" : ""
+              }`}
+              onClick={goToHome}
+            >
+              {t("navbar.home")}
+            </Link>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 font-medium hover:text-primary dark:hover:text-primary transition-colors">
+                {t("navbar.destinations")} <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center">
+                {destinations.map((destination) => (
+                  <DropdownMenuItem key={destination.id} asChild>
+                    <Link href={`/destination/${destination.id}`}>
+                      {t(`destinations.${destination.id}`)}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Link
+              href="/about"
+              className={`font-medium hover:text-primary dark:hover:text-primary transition-colors ${
+                currentPath === "/about" ? "text-primary" : ""
+              }`}
+            >
+              {t("navbar.about")}
+            </Link>
+
+            <Link
+              href="/contact"
+              className={`font-medium hover:text-primary dark:hover:text-primary transition-colors ${
+                currentPath === "/contact" ? "text-primary" : ""
+              }`}
+            >
+              {t("navbar.contact")}
+            </Link>
+          </div>
+
+          {/* Controls */}
+          <div className="flex items-center gap-3">
+            <LanguageSelector />
+            <ThemeToggle />
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
+};
+
+export default Navbar;
+
+
+-----------------------------
+
+font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors
+
+------------------------------
+
+import React, { useState, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+
+// Interfejsy
+interface SlideImage {
+  id: string;
+  src: string;
+  alt: string;
+  location: string;
+  description: string;
+}
+
+interface ImageSliderProps {
+  images: SlideImage[];
+  autoPlayInterval?: number;
+  onImageClick?: (index: number) => void;
+}
+
+// Warianty animacji dla Framer Motion
+const variants = {
+  enter: (direction: "next" | "prev") => ({
+    x: direction === "next" ? "100%" : "-100%",
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: "next" | "prev") => ({
+    zIndex: 0,
+    x: direction === "next" ? "-100%" : "100%",
+    opacity: 0,
+  }),
+};
+
+// Przejścia animacji
+const transition = {
+  x: { type: "spring", stiffness: 300, damping: 30 },
+  opacity: { duration: 0.2 },
+};
+
+const ImageSlider = ({
+  images,
+  autoPlayInterval = 6000,
+  onImageClick,
+}: ImageSliderProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
+  const [isAnimating, setIsAnimating] = useState(false);
+  const { t } = useTranslation();
+
+  // Refy dla obsługi dotyku
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const justSwiped = useRef(false);
+  const swipeTimeoutRef = useRef<NodeJS.Timeout | null>(null); //
+
+  // Efekt dla Autoplay
+  useEffect(() => {
+    if (autoPlayInterval <= 0 || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setIsAnimating((currentIsAnimating) => {
+        if (!currentIsAnimating) {
+          setDirection("next");
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+          return true;
+        }
+        return currentIsAnimating;
+      });
+    }, autoPlayInterval);
+
+    // Cleanup interwału i timeoutu
+    return () => {
+      clearInterval(interval);
+      if (swipeTimeoutRef.current) {
+        clearTimeout(swipeTimeoutRef.current);
+      }
+    };
+  }, [autoPlayInterval, images.length]);
+
+  // Nawigacja: Następny slajd
+  const handleNext = () => {
+    if (!isAnimating && images.length > 1) {
+      setDirection("next");
+      setIsAnimating(true);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }
+  };
+
+  // Nawigacja: Poprzedni slajd
+  const handlePrevious = () => {
+    if (!isAnimating && images.length > 1) {
+      setDirection("prev");
+      setIsAnimating(true);
+      setCurrentIndex(
+        (prevIndex) => (prevIndex - 1 + images.length) % images.length
+      );
+    }
+  };
+
+  // Nawigacja: Kliknięcie kropki
+  const handleDotClick = (index: number) => {
+    if (
+      !isAnimating &&
+      images.length > 0 &&
+      index >= 0 &&
+      index < images.length &&
+      index !== currentIndex
+    ) {
+      setDirection(index > currentIndex ? "next" : "prev");
+      setCurrentIndex(index);
+      setIsAnimating(true);
+    }
+  };
+
+  // Wywoływane po zakończeniu animacji Framer Motion
+  const handleAnimationComplete = () => {
+    setIsAnimating(false);
+  };
+
+  // Obsługa kliknięcia obrazka (otwarcie popupu)
+  const handleImageClick = () => {
+    if (!isAnimating && onImageClick && !justSwiped.current) {
+      onImageClick(currentIndex);
+    }
+
+    justSwiped.current = false;
+    if (swipeTimeoutRef.current) {
+      clearTimeout(swipeTimeoutRef.current);
+      swipeTimeoutRef.current = null;
+    }
+  };
+
+  // Obsługa dotyku: Początek
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (swipeTimeoutRef.current) {
+      clearTimeout(swipeTimeoutRef.current);
+      swipeTimeoutRef.current = null;
+    }
+    justSwiped.current = false;
+    touchStartX.current = e.touches[0]?.clientX ?? 0;
+    touchEndX.current = touchStartX.current;
+  };
+
+  // Obsługa dotyku: Ruch
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0]?.clientX ?? 0;
+  };
+
+  // Obsługa dotyku: Koniec
+  const handleTouchEnd = () => {
+    if (touchStartX.current === 0) return;
+
+    const dx = touchEndX.current - touchStartX.current;
+    const swipeThreshold = 50;
+
+    if (Math.abs(dx) > swipeThreshold) {
+      justSwiped.current = true;
+
+      if (dx < 0) {
+        handleNext();
+      } else {
+        handlePrevious();
+      }
+
+      swipeTimeoutRef.current = setTimeout(() => {
+        justSwiped.current = false;
+        swipeTimeoutRef.current = null;
+      }, 300);
+    } else {
+      justSwiped.current = false;
+    }
+
+    // Resetuj koordynaty dotyku na koniec
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
+
+  return (
+    <div
+      className="image-slider h-full relative select-none" // Dodano select-none
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{ touchAction: "pan-y" }}
+    >
+      {/* Kontener na slajdy */}
+      <div className="slider-container h-full relative overflow-hidden">
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={transition}
+            onAnimationComplete={handleAnimationComplete}
+            className="absolute inset-0 w-full h-full"
+          >
+            <img
+              src={images[currentIndex]?.src}
+              alt={images[currentIndex]?.alt ?? "Slajd galerii"}
+              className={`w-full h-full object-cover ${
+                isAnimating || justSwiped.current
+                  ? "cursor-default"
+                  : "cursor-pointer"
+              }`}
+              onClick={handleImageClick}
+              draggable="false"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Przyciski nawigacyjne (tylko jeśli więcej niż 1 obrazek) */}
+      {images.length > 1 && (
+        <>
+          <Button
+            aria-label={t("imageSlider.previousSlide", "Poprzedni slajd")}
+            onClick={handlePrevious}
+            className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 z-20"
+            disabled={isAnimating}
+            variant="outline"
+            size="icon"
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            aria-label={t("imageSlider.nextSlide", "Następny slajd")}
+            onClick={handleNext}
+            className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 z-20"
+            disabled={isAnimating}
+            variant="outline"
+            size="icon"
+          >
+            <ChevronRight />
+          </Button>
+        </>
+      )}
+
+      {/* Kropki nawigacyjne (tylko jeśli więcej niż 1 obrazek) */}
+      {images.length > 1 && (
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+          {images.map((_, index) => (
+            <button
+              aria-label={t(
+                "imageSlider.goToSlide",
+                "Przejdź do slajdu {{index}}",
+                { index: index + 1 }
+              )}
+              aria-current={index === currentIndex ? "true" : undefined}
+              key={index}
+              onClick={() => handleDotClick(index)}
+              className={`p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black/50 focus:ring-white ${
+                isAnimating
+                  ? "cursor-wait"
+                  : "hover:bg-white/20 active:bg-white/30"
+              }`}
+              disabled={isAnimating}
+            >
+              <span
+                className={`block w-2 h-2 rounded-full transition-colors duration-300 ${
+                  currentIndex === index ? "bg-white" : "bg-white/50"
+                }`}
+              ></span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Opis obrazka */}
+      <div className="absolute bottom-4 left-4 right-4 md:right-auto md:max-w-sm z-10 pointer-events-none">
+        <div className="bg-white/60 backdrop-blur-sm p-3 md:p-4 rounded-lg shadow-lg text-gray-900 text-left pointer-events-auto">
+          {images.length > 0 && images[currentIndex] ? (
+            <>
+              <h3 className="font-semibold text-base md:text-lg mb-1">
+                {t(
+                  `photos.${images[currentIndex].id}.title`,
+                  images[currentIndex].alt
+                )}
+              </h3>
+              {images[currentIndex].location && (
+                <p className="text-xs md:text-sm mb-1 opacity-80">
+                  {t(
+                    `photos.${images[currentIndex].id}.location`,
+                    images[currentIndex].location
+                  )}
+                </p>
+              )}
+              {images[currentIndex].description && (
+                <p className="text-xs md:text-sm opacity-90">
+                  {t(
+                    `photos.${images[currentIndex].id}.description`,
+                    images[currentIndex].description
+                  )}
+                </p>
+              )}
+            </>
+          ) : (
+            images.length === 0 && (
+              <p className="text-sm opacity-80">
+                {t("common.no_photos_available", "Brak dostępnych zdjęć")}
+              </p>
+            )
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ImageSlider;
+
+
+---------------------------------
+
+
+const transition = {
+  x: { type: "spring", stiffness: 300, damping: 30 },
+  opacity: { duration: 0.2 },
+};
+
+
+-------------------------------------
+
+
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default: "bg-secondary text-secondary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+Button.displayName = "Button";
+
+export { Button, buttonVariants };
+
+

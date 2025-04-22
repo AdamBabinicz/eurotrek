@@ -366,7 +366,7 @@ export default {
     privacyPolicy: "Política de Privacidad",
     termsOfUse: "Términos de Uso",
     accessibility: "Accesibilidad",
-    copyright: "© {{year}} EuroTrek. Todos los derechos reservados.", // Placeholder de año añadido
+    copyright: "Todos los derechos reservados.", // Placeholder de año añadido
     tagline: "Hecho con ❤ por estudiantes, para estudiantes.",
     instagram: "Síguenos en Instagram",
     twitter: "Síguenos en Twitter",

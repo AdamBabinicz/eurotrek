@@ -360,7 +360,7 @@ export default {
     privacyPolicy: "Zásady ochrany osobních údajů",
     termsOfUse: "Podmínky použití",
     accessibility: "Přístupnost",
-    copyright: "© {{year}} EuroTrek. Všechna práva vyhrazena.", // Added year placeholder assuming it might be dynamic
+    copyright: "Všechna práva vyhrazena.", // Added year placeholder assuming it might be dynamic
     tagline: "Vytvořeno s ❤ studenty pro studenty.",
     instagram: "Sledujte nás na Instagramu",
     twitter: "Sledujte nás na Twitteru",
