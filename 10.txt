@@ -1,14 +1,316 @@
-import { Description } from "@radix-ui/react-toast";
+import React, { useRef, useEffect } from "react";
+import { Switch, Route, useLocation } from "wouter";
+import { Toaster } from "@/components/ui/toaster";
+import NotFound from "@/pages/not-found";
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { useTheme } from "@/context/ThemeContext";
+import DestinationPage from "@/pages/Destination";
+import FeaturedDestination from "@/components/FeaturedDestination";
 
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/destination/:id" component={DestinationPage} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
+function App() {
+  const parisSectionRef = useRef<HTMLElement>(null); // Utwórz ref dla sekcji Paris
+  const themeContext = useTheme();
+  console.log("themeContext in App:", themeContext);
+  const [location] = useLocation();
+
+  const scrollToParisFromFooter = () => {
+    parisSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar currentPath={location} />
+      <main className="flex-grow px-0 md:px-40">
+        <Router />
+        <FeaturedDestination ref={parisSectionRef} />
+        {/* Umieść FeaturedDestination i przekaż ref */}
+      </main>
+      <Footer onParisLinkClick={scrollToParisFromFooter} />
+      {/* Przekaż funkcję do Footer */}
+      <Toaster />
+    </div>
+  );
+}
+
+export default App;
+
+
+
+---------------------------------
+
+import { useTranslation } from "react-i18next";
+import ImageSlider from "@/components/ImageSlider";
+import DestinationTabs from "@/components/DestinationTabs";
+import AboutSection from "@/components/AboutSection";
+import FeaturedDestination from "@/components/FeaturedDestination";
+import ContactSection from "@/components/ContactSection";
+import { heroImages } from "@/data/photos";
+
+const Home = () => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      {/* Hero Section */}
+      <section
+        id="home"
+        className="relative h-[70vh] overflow-hidden"
+        aria-label={t("home.heroAriaLabel")}
+      >
+        <ImageSlider images={heroImages} />
+      </section>
+
+      {/* Destinations Section */}
+      <DestinationTabs />
+
+      {/* About Section */}
+      <AboutSection />
+
+      {/* Featured Destination */}
+      {/* <FeaturedDestination /> */}
+
+      {/* Contact Section */}
+      <ContactSection />
+    </>
+  );
+};
+
+export default Home;
+
+
+--------------------------------
+
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useLocation } from "wouter";
+import {
+  FaGlobe,
+  FaInstagram,
+  FaTwitter,
+  FaFacebook,
+  FaLinkedin,
+  FaFacebookMessenger,
+} from "react-icons/fa";
+
+interface FooterProps {
+  onParisLinkClick: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
+  const { t } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [, setLocation] = useLocation();
+
+  const goToHome = () => {
+    setLocation("/");
+    setIsMobileMenuOpen(false);
+    window.scrollTo(0, 0);
+  };
+  const scrollToParis = () => {
+    const element = document.getElementById("paris");
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Przewijaj po załadowaniu strony, jeżeli jest hash w URL
+    if (window.location.hash === "#paris") {
+      scrollToParis();
+    }
+  }, []);
+
+  return (
+    <footer className="bg-gray-800 text-white py-10">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-2xl">🌍</span>
+              <span className="font-heading font-bold text-xl">EuroTrek</span>
+            </div>
+            <p className="text-gray-300 mb-4 max-w-md">
+              {t("footer.description")}
+            </p>
+            <div className="flex gap-4">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.instagram")}
+              >
+                <FaInstagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.twitter")}
+              >
+                <FaTwitter className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=100011937734013"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.facebook")}
+              >
+                <FaFacebook className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.linkedin")}
+              >
+                <FaLinkedin className="h-5 w-5" />
+              </a>
+              <a
+                href="https://m.me/profile.php?id=100011937734013"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-primary transition-colors"
+                aria-label={t("footer.messenger")}
+              >
+                <FaFacebookMessenger className="h-5 w-5" />{" "}
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-heading font-bold text-lg mb-4">
+              {t("footer.quickLinks")}
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("navbar.home")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("navbar.about")}
+                </Link>
+              </li>
+              <li>
+                <button
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={onParisLinkClick}
+                >
+                  {t("footer.parisCollection")}
+                </button>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("navbar.contact")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-heading font-bold text-lg mb-4">
+              {t("footer.resources")}
+            </h3>
+            <ul className="space-y-2">
+              {/* <li>
+                <Link
+                  href="/contact"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={goToHome}
+                >
+                  {t("footer.submitPhotos")}
+                </Link>
+              </li> */}
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {t("footer.privacyPolicy")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {t("footer.termsOfUse")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {t("footer.accessibility")}
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+          <p>
+            &copy; 2021 - {new Date().getFullYear()} EuroTrek Gdańsk.&nbsp;
+            {t("footer.copyright")}
+          </p>
+          <p className="mt-2">{t("footer.tagline")}</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+
+
+------------------------------
+
+import { Description } from "@radix-ui/react-toast";
 export default {
   // Common
   common: {
     no_photos_data: "Brak danych zdjęć.",
-    // --- DODANE ---
-    lastUpdated: "Ostatnia aktualizacja",
-    placeholderContent:
-      "[PLACEHOLDER] Treść tej sekcji jest w przygotowaniu. Wkrótce zostanie uzupełniona.",
-    // --- KONIEC DODANYCH ---
   },
   // Navbar
   navbar: {
@@ -104,7 +406,6 @@ export default {
       title: "Droga nad Morzem Tyrreńskim",
       location: "Neapol, Włochy",
       alt: "Droga u podnóża góry",
-      description: "Malownicza trasa wzdłuż wybrzeża.",
     },
     "naples-mummy": {
       title: "Odlew ofiary Wezuwiusza",
@@ -222,8 +523,6 @@ export default {
       title: "Widok na Wełtawę w Pradze",
       location: "Praga, Czechy",
       alt: "Rzeka Wełtawa w Pradze",
-      description:
-        "Cała Praga przegląda się w Wełtawie i wdzięczy do niej, jak do magicznego lusterka.",
     },
     "prague-wit": {
       title: "Skarbiec Św. Wita",
@@ -395,120 +694,4 @@ export default {
   home: {
     heroAriaLabel: "Polecane destynacje",
   },
-
-  // --- DODANE SEKCJE DLA NOWYCH STRON INFORMACYJNYCH (Z WYPEŁNIONYMI OGÓLNYMI TREŚCIAMI) ---
-  privacyPolicy: {
-    title: "Polityka Prywatności",
-    metaDescription: "Przeczytaj politykę prywatności serwisu EuroTrek.",
-    introduction:
-      "Witamy w polityce prywatności EuroTrek. Twoja prywatność jest dla nas ważna i dokładamy wszelkich starań, aby chronić Twoje dane osobowe zgodnie z obowiązującymi przepisami, w tym RODO.",
-    section1Title: "1. Jakie informacje zbieramy?",
-    section1Content:
-      "Gromadzimy informacje, które nam bezpośrednio przekazujesz (np. przez formularz kontaktowy: imię, adres e-mail, treść wiadomości) oraz dane zbierane automatycznie podczas korzystania z serwisu (np. adres IP, typ przeglądarki, informacje o urządzeniu, dane o aktywności w serwisie za pomocą plików cookie – zobacz Politykę Cookies).",
-    section2Title: "2. Jak wykorzystujemy Twoje informacje?",
-    section2Content:
-      "Twoje dane wykorzystujemy w celu świadczenia i ulepszania naszych usług, komunikacji z Tobą (odpowiedzi na zapytania), analizy ruchu na stronie, zapewnienia bezpieczeństwa serwisu oraz wypełniania obowiązków prawnych.",
-
-    contactTitle: "Kontakt w sprawie prywatności",
-    contactContent:
-      "W sprawach dotyczących przetwarzania Twoich danych osobowych lub realizacji swoich praw, skontaktuj się z nami pod adresem: [puaro@vp.pl].",
-  },
-  termsOfUse: {
-    title: "Warunki Użytkowania",
-    metaDescription: "Przeczytaj warunki użytkowania serwisu EuroTrek.",
-    introduction:
-      "Niniejsze Warunki Użytkowania regulują zasady korzystania z serwisu internetowego EuroTrek. Korzystając z serwisu, akceptujesz poniższe postanowienia.",
-    section1Title: "1. Zasady ogólne i akceptacja warunków",
-    section1Content:
-      "Serwis EuroTrek jest platformą prezentującą fotografie podróżnicze. Użytkownicy zobowiązani są do korzystania z serwisu zgodnie z prawem i dobrymi obyczajami. Zabronione jest publikowanie treści niezgodnych z prawem, obraźliwych lub naruszających prawa osób trzecich.",
-
-    contactTitle: "Kontakt w sprawie Warunków Użytkowania",
-    contactContent:
-      "Pytania dotyczące niniejszych Warunków Użytkowania prosimy kierować na adres: [puaro@vp.pl].",
-  },
-  accessibility: {
-    title: "Oświadczenie o Dostępności",
-    metaDescription:
-      "Dowiedz się o naszym zaangażowaniu w dostępność cyfrową w EuroTrek.",
-    introduction:
-      "EuroTrek dąży do zapewnienia dostępności cyfrowej serwisu dla jak najszerszego grona użytkowników, w tym osób z niepełnosprawnościami. Stale pracujemy nad ulepszaniem interfejsu i stosowaniem odpowiednich standardów dostępności, takich jak WCAG (Web Content Accessibility Guidelines).",
-    section1Title: "1. Nasze działania na rzecz dostępności",
-    section1Content:
-      "Staramy się wdrażać rozwiązania takie jak: stosowanie semantycznego kodu HTML, zapewnienie nawigacji za pomocą klawiatury, odpowiedni kontrast kolorów, opisy alternatywne dla obrazów oraz testowanie serwisu z użyciem różnych technologii wspomagających.",
-    contactTitle: "Informacje zwrotne i dane kontaktowe",
-    contactContent:
-      "Jeśli napotkasz na bariery dostępności w naszym serwisie, prosimy o kontakt. Twoje uwagi są dla nas cenne. Skontaktuj się z nami pod adresem: [puaro@vp.pl].",
-  },
-  cookiePolicy: {
-    title: "Polityka Cookies",
-    metaDescription: "Dowiedz się, jak EuroTrek wykorzystuje pliki cookie.",
-    introduction:
-      "Nasz serwis wykorzystuje pliki cookie (ciasteczka), aby zapewnić prawidłowe działanie strony, ulepszyć Twoje doświadczenia oraz w celach analitycznych i marketingowych (za Twoją zgodą).",
-    section1Title: "1. Czym są pliki cookie?",
-    section1Content:
-      "Pliki cookie to małe pliki tekstowe zapisywane na Twoim urządzeniu (komputerze, smartfonie) podczas odwiedzania stron internetowych. Pozwalają stronie 'pamiętać' Twoje akcje i preferencje przez pewien czas.",
-    section2Title: "2. Jakich rodzajów plików cookie używamy?",
-    section2Content: "Używamy różnych typów plików cookie, w tym:",
-    type1:
-      "Niezbędne pliki cookie: Konieczne do podstawowego funkcjonowania serwisu (np. sesja użytkownika). Nie wymagają zgody.",
-    type2:
-      "Analityczne pliki cookie: Pomagają nam zrozumieć, jak użytkownicy korzystają ze strony (np. Google Analytics). Wymagają Twojej zgody.",
-    type3:
-      "Funkcjonalne pliki cookie: Umożliwiają zapamiętanie Twoich wyborów i preferencji (np. język). Mogą wymagać zgody.",
-    type4:
-      "Marketingowe pliki cookie: Służą do wyświetlania spersonalizowanych reklam (np. Facebook Pixel). Wymagają Twojej zgody.",
-
-    section3Title: "3. Zarządzanie plikami cookie",
-    section3Content:
-      "Możesz zarządzać swoimi zgodami na pliki cookie w dowolnym momencie za pomocą narzędzia do zarządzania zgodami dostępnego na naszej stronie (kliknij przycisk 'Ustawienia Cookies'). Możesz również zmienić ustawienia plików cookie w swojej przeglądarce internetowej.",
-    settingsError:
-      "Nie można otworzyć ustawień cookies. Skontaktuj się z pomocą techniczną lub spróbuj zarządzać ustawieniami w przeglądarce.",
-    settingsInfoPlaceholder:
-      "Kliknięcie przycisku otworzy panel zarządzania ustawieniami plików cookie.",
-    contactTitle: "Kontakt w sprawie Polityki Cookies",
-    contactContent:
-      "W razie pytań dotyczących naszej polityki cookies, skontaktuj się z nami: [puaro@vp.pl].",
-  },
-  faq: {
-    title: "Najczęściej Zadawane Pytania (FAQ)",
-    metaDescription:
-      "Znajdź odpowiedzi na najczęstsze pytania dotyczące EuroTrek.",
-    q1: "Pytanie 1: Jak mogę przesłać swoje zdjęcia?",
-    a1: "Obecnie zbieramy zdjęcia od zaprzyjaźnionych studentów. Jeśli jesteś zainteresowany współpracą, skontaktuj się z nami poprzez formularz kontaktowy, opisując krótko swoje podróże i portfolio.",
-    q2: "Pytanie 2: Czy korzystanie z serwisu jest płatne?",
-    a2: "Nie, przeglądanie zdjęć i treści w serwisie EuroTrek jest całkowicie darmowe dla wszystkich użytkowników.",
-    q3: "Pytanie 3: Kto jest właścicielem praw autorskich do zdjęć?",
-    a3: "Prawa autorskie do zdjęć należą do studentów-autorów. EuroTrek posiada licencję na ich publikację w serwisie. Szczegóły określa umowa z autorem oraz nasze Warunki Użytkowania.",
-
-    stillHaveQuestions: "Masz inne pytania?",
-    contactUs: "Skontaktuj się z nami",
-  },
-  sitemap: {
-    title: "Mapa Strony",
-    metaDescription: "Przeglądaj strukturę strony EuroTrek.",
-    introduction:
-      "Poniżej znajduje się lista głównych sekcji i stron dostępnych w serwisie EuroTrek, aby ułatwić Ci nawigację.",
-  },
-  support: {
-    title: "Pomoc i Wsparcie",
-    metaDescription:
-      "Potrzebujesz pomocy? Znajdź informacje kontaktowe i wsparcie dla EuroTrek.",
-    introduction:
-      "Jesteśmy tutaj, aby pomóc! Jeśli masz pytania dotyczące działania serwisu, napotkałeś problem techniczny lub masz inne wątpliwości, skorzystaj z dostępnych opcji wsparcia.",
-    faqTitle: "Sprawdź Najpierw FAQ",
-    faqDescription:
-      "Wiele odpowiedzi na powszechne pytania znajdziesz w naszej sekcji Najczęściej Zadawanych Pytań (FAQ).",
-    goToFaq: "Przejdź do FAQ",
-    contactFormTitle: "Formularz Kontaktowy",
-    contactFormDescription:
-      "Najlepszym sposobem na kontakt w większości spraw jest wysłanie wiadomości przez nasz formularz kontaktowy.",
-    goToContact: "Przejdź do Kontaktu",
-    phoneTitle: "Wsparcie Telefoniczne",
-    phoneDescription:
-      "W pilnych sprawach technicznych możesz skontaktować się telefonicznie w godzinach [np. 10:00 - 16:00] od poniedziałku do piątku.",
-    phoneNumber: "Zadzwoń: [000 000 000]",
-    responseInfo:
-      "Staramy się odpowiadać na zapytania wysłane przez formularz kontaktowy w ciągu 1-2 dni roboczych.",
-  },
-  // --- KONIEC ZMODYFIKOWANYCH SEKCJI ---
 };
