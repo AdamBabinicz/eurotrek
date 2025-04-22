@@ -7,7 +7,7 @@ export default {
     // --- DODANE ---
     lastUpdated: "Ostatnia aktualizacja",
     placeholderContent:
-      "[PLACEHOLDER] Treść tej sekcji jest w przygotowaniu. Wkrótce zostanie uzupełniona.",
+      "Treść tej sekcji jest w przygotowaniu. Wkrótce zostanie uzupełniona.",
     // --- KONIEC DODANYCH ---
   },
   // Navbar
@@ -363,6 +363,11 @@ export default {
     privacyPolicy: "Polityka Prywatności",
     termsOfUse: "Warunki Użytkowania",
     accessibility: "Dostępność",
+    cookiePolicy: "Polityka Cookies",
+    cookieSettings: "Ustawienia Cookies",
+    faq: "Najczęściej Zadawane Pytania (FAQ)",
+    sitemap: "Mapa Strony",
+    support: "Pomoc i Wsparcie",
     copyright: "Wszelkie prawa zastrzeżone.",
     tagline: "Stworzone z ❤ przez studentów, dla studentów.",
     instagram: "Śledź nas na Instagramie",
