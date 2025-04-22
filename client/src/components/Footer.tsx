@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "wouter";
 import {
-  FaGlobe,
   FaInstagram,
   FaTwitter,
   FaFacebook,
@@ -16,35 +15,45 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
   const { t } = useTranslation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [, setLocation] = useLocation();
+  const [, setLocation] = useLocation(); // Nadal potrzebne do navigateAndScrollTop
 
-  const goToHome = () => {
-    setLocation("/");
-    setIsMobileMenuOpen(false);
+  // Funkcja do przewijania na górę przy nawigacji Linkiem
+  const scrollTop = () => {
     window.scrollTo(0, 0);
   };
-  const scrollToParis = () => {
-    const element = document.getElementById("paris");
-    if (element) {
-      window.scrollTo({
-        top: element.offsetTop,
-        behavior: "smooth",
-      });
-    }
+
+  // Funkcja używana przez stare linki (Home, About, Contact)
+  const navigateAndScrollTop = (path: string) => {
+    setLocation(path);
+    scrollTop();
   };
 
+  // Logika dla #paris - bez zmian
   useEffect(() => {
-    // Przewijaj po załadowaniu strony, jeżeli jest hash w URL
     if (window.location.hash === "#paris") {
-      scrollToParis();
+      const element = document.getElementById("paris");
+      if (element) {
+        window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+      }
     }
   }, []);
+
+  // Obsługa przycisku Ustawień Cookies
+  const handleCookieSettings = () => {
+    // !!! WAŻNE: Dostosuj to do API Twojego dostawcy zgody na cookie (np. CookieScript) !!!
+    console.warn("Implement Cookie Settings trigger from CookieScript API");
+    alert(t("cookiePolicy.settingsInfoPlaceholder")); // Użyj klucza z tłumaczeń
+    // Przykładowy kod (sprawdź dokumentację CookieScript):
+    // if (window.CookieScript && typeof window.CookieScript.instance.show === 'function') {
+    //   window.CookieScript.instance.show();
+    // }
+  };
 
   return (
     <footer className="bg-gray-800 text-white py-10">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Sekcja Opis i Social Media (bez zmian) */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-2xl">🌍</span>
@@ -54,6 +63,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               {t("footer.description")}
             </p>
             <div className="flex gap-4">
+              {/* Ikony Social Media - bez zmian */}
               <a
                 href="https://instagram.com"
                 target="_blank"
@@ -97,11 +107,12 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 className="text-white hover:text-primary transition-colors"
                 aria-label={t("footer.messenger")}
               >
-                <FaFacebookMessenger className="h-5 w-5" />{" "}
+                <FaFacebookMessenger className="h-5 w-5" />
               </a>
             </div>
           </div>
 
+          {/* Sekcja Szybkie Linki (bez zmian w logice nawigacji) */}
           <div>
             <h3 className="font-heading font-bold text-lg mb-4">
               {t("footer.quickLinks")}
@@ -111,7 +122,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 <Link
                   href="/"
                   className="text-gray-300 hover:text-white transition-colors"
-                  onClick={goToHome}
+                  onClick={() => navigateAndScrollTop("/")}
                 >
                   {t("navbar.home")}
                 </Link>
@@ -120,14 +131,14 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 <Link
                   href="/about"
                   className="text-gray-300 hover:text-white transition-colors"
-                  onClick={goToHome}
+                  onClick={() => navigateAndScrollTop("/about")}
                 >
                   {t("navbar.about")}
                 </Link>
               </li>
               <li>
                 <button
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white transition-colors text-left"
                   onClick={onParisLinkClick}
                 >
                   {t("footer.parisCollection")}
@@ -137,7 +148,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 <Link
                   href="/contact"
                   className="text-gray-300 hover:text-white transition-colors"
-                  onClick={goToHome}
+                  onClick={() => navigateAndScrollTop("/contact")}
                 >
                   {t("navbar.contact")}
                 </Link>
@@ -145,51 +156,93 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
             </ul>
           </div>
 
+          {/* Sekcja Zasoby (ZAKTUALIZOWANA o nowe linki) */}
           <div>
             <h3 className="font-heading font-bold text-lg mb-4">
               {t("footer.resources")}
             </h3>
             <ul className="space-y-2">
+              {/* Istniejące linki - dodano onClick={scrollTop} */}
               <li>
                 <Link
-                  href="/contact"
+                  href="/privacy-policy"
                   className="text-gray-300 hover:text-white transition-colors"
-                  onClick={goToHome}
-                >
-                  {t("footer.submitPhotos")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
                 >
                   {t("footer.privacyPolicy")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/terms-of-use"
                   className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
                 >
                   {t("footer.termsOfUse")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/accessibility"
                   className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
                 >
                   {t("footer.accessibility")}
+                </Link>
+              </li>
+              {/* --- NOWE LINKI --- */}
+              <li>
+                <Link
+                  href="/cookie-policy"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
+                >
+                  {t("footer.cookiePolicy")}
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={handleCookieSettings}
+                  className="text-gray-300 hover:text-white transition-colors text-left w-full"
+                >
+                  {t("footer.cookieSettings")}
+                </button>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
+                >
+                  {t("footer.faq")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/sitemap"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
+                >
+                  {t("footer.sitemap")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/support"
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
+                >
+                  {t("footer.support")}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
+        {/* Copyright (bez zmian) */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
           <p>
-            &copy; 2021 - {new Date().getFullYear()} EuroTrek Gdańsk.&nbsp;
+            © 2021 - {new Date().getFullYear()} EuroTrek Gdańsk.{" "}
             {t("footer.copyright")}
           </p>
           <p className="mt-2">{t("footer.tagline")}</p>
