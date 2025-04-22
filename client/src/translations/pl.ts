@@ -254,7 +254,7 @@ export default {
 
     contactTitle: "Kontakt w sprawie prywatności",
     contactContent:
-      "W sprawach dotyczących przetwarzania Twoich danych osobowych lub realizacji swoich praw, skontaktuj się z nami pod adresem: [WSTAW ADRES E-MAIL DO SPRAW PRYWATNOŚCI].",
+      "W sprawach dotyczących przetwarzania Twoich danych osobowych lub realizacji swoich praw, skontaktuj się z nami pod adresem: [puaro@vp.pl].",
   },
   termsOfUse: {
     title: "Warunki Użytkowania",
@@ -267,7 +267,7 @@ export default {
 
     contactTitle: "Kontakt w sprawie Warunków Użytkowania",
     contactContent:
-      "Pytania dotyczące niniejszych Warunków Użytkowania prosimy kierować na adres: [WSTAW ADRES E-MAIL KONTAKTOWY].",
+      "Pytania dotyczące niniejszych Warunków Użytkowania prosimy kierować na adres: [puaro@vp.pl].",
   },
   accessibility: {
     title: "Oświadczenie o Dostępności",
@@ -280,7 +280,7 @@ export default {
       "Staramy się wdrażać rozwiązania takie jak: stosowanie semantycznego kodu HTML, zapewnienie nawigacji za pomocą klawiatury, odpowiedni kontrast kolorów, opisy alternatywne dla obrazów oraz testowanie serwisu z użyciem różnych technologii wspomagających.",
     contactTitle: "Informacje zwrotne i dane kontaktowe",
     contactContent:
-      "Jeśli napotkasz na bariery dostępności w naszym serwisie, prosimy o kontakt. Twoje uwagi są dla nas cenne. Skontaktuj się z nami pod adresem: [WSTAW ADRES E-MAIL DO SPRAW DOSTĘPNOŚCI].",
+      "Jeśli napotkasz na bariery dostępności w naszym serwisie, prosimy o kontakt. Twoje uwagi są dla nas cenne. Skontaktuj się z nami pod adresem: [puaro@vp.pl].",
   },
   cookiePolicy: {
     title: "Polityka Cookies",
@@ -310,7 +310,7 @@ export default {
       "Kliknięcie przycisku otworzy panel zarządzania ustawieniami plików cookie.",
     contactTitle: "Kontakt w sprawie Polityki Cookies",
     contactContent:
-      "W razie pytań dotyczących naszej polityki cookies, skontaktuj się z nami: [WSTAW ADRES E-MAIL KONTAKTOWY].",
+      "W razie pytań dotyczących naszej polityki cookies, skontaktuj się z nami: [puaro@vp.pl].",
   },
   faq: {
     title: "Najczęściej Zadawane Pytania (FAQ)",
@@ -349,7 +349,7 @@ export default {
     phoneTitle: "Wsparcie Telefoniczne",
     phoneDescription:
       "W pilnych sprawach technicznych możesz skontaktować się telefonicznie w godzinach [np. 10:00 - 16:00] od poniedziałku do piątku.",
-    phoneNumber: "Zadzwoń: [WSTAW NUMER TELEFONU]",
+    phoneNumber: "Zadzwoń: [000 000 000]",
     responseInfo:
       "Staramy się odpowiadać na zapytania wysłane przez formularz kontaktowy w ciągu 1-2 dni roboczych.",
   },
