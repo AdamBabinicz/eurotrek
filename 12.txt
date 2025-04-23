@@ -1,0 +1,2010 @@
+import { Description } from "@radix-ui/react-toast";
+export default {
+  // Common
+  common: {
+    no_photos_data: "Keine Fotodaten vorhanden.",
+  },
+  // Navbar
+  navbar: {
+    home: "Startseite",
+    destinations: "Reiseziele",
+    about: "Über uns",
+    contact: "Kontakt",
+  },
+  // Destinations
+  destinations: {
+    exploreTitle: "Entdecke Reiseziele",
+    exploreDescription:
+      "Durchstöbere unsere Sammlung studentischer Reisefotos aus den schönsten Städten Europas.",
+    allDestinations: "Alle Reiseziele",
+    lisbon: "Lissabon",
+    paris: "Paris",
+    berlin: "Berlin",
+    capri: "Capri",
+    naples: "Neapel",
+    prague: "Prag",
+    loadMore: "Mehr laden",
+    ariaLabel: "Reiseziel-Kategorien",
+  },
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "Paris, Frankreich",
+      description:
+        "Die Stadt der Lichter aus Studentensicht – den Zauber der Pariser Architektur und Kultur einfangen.",
+    },
+    "rome-hero": {
+      // Key refers to Naples based on PL/CS content
+      location: "Neapel, Italien",
+      description:
+        "Neapel ist ein Ort, an dem das Leben im Rhythmus von Espresso, Gesprächen auf der Straße und dem Duft frisch gebackener Pizza in der warmen, mediterranen Luft pulsiert.",
+    },
+    "lisbon-hero": {
+      location: "Lissabon, Portugal",
+      description:
+        "Lissabon ist eine Stadt voller Licht, wo sich gepflasterte Gassen zwischen bunten Häusern schlängeln und das Leben ruhig im Rhythmus von Fado und dem Duft frischer 'pasteis de nata' fließt.",
+    },
+    "frankfurt-hero": {
+      // Using the description from photos["frankfurt-hero"] as it seems more appropriate
+      location: "Frankfurt am Main, Deutschland",
+      description:
+        "Über einem malerischen Platz mit einem eleganten Brunnen erhebt sich die Oper mit ihrer Fassade im Renaissancestil.",
+    },
+  },
+  // Photos
+  photos: {
+    view: "Foto {{title}} ansehen",
+    noPhotos: "Für dieses Reiseziel sind noch keine Fotos verfügbar.",
+    "paris-sunset": {
+      title: "Sonnenuntergang in Paris",
+      location: "Paris, Frankreich",
+      alt: "Eiffelturm bei Sonnenuntergang in Paris",
+    },
+    "lisbon-tram": {
+      title: "Blick auf das Nationaltheater D. Maria II",
+      location: "Lissabon, Portugal",
+      description:
+        "Das historische Theatergebäude ist einer der renommiertesten Säle Portugals und befindet sich am Rossio-Platz im Stadtzentrum.",
+    },
+    "lisbon-belem": {
+      // Key likely refers to Alfama based on description
+      title: "Dächer der Altstadt",
+      location: "Lissabon, Portugal",
+      description:
+        "Der älteste Stadtteil Lissabons ist Alfama, erbaut am Hang über dem Tejo zur Zeit der Maurenherrschaft. Hier spürt man das Flair des mittelalterlichen Lissabons.",
+    },
+    "lisbon-bele": {
+      // Key likely refers to Belém Tower
+      title: "Turm von Belém",
+      location: "Lissabon, Portugal",
+      description:
+        "Mittelalterliche Festung mit Blick auf die Mündung des Tejo",
+    },
+    "boca do inferno": {
+      title: "Höllenschlund (Boca do Inferno)",
+      location: "Cascais, Portugal",
+      description:
+        "Eine Schlucht in den Küstenklippen nahe der portugiesischen Stadt Cascais.",
+    },
+    "capri-marina": {
+      // Key likely refers to Faraglioni based on description
+      title: "Strand Luigia bei den Faraglioni",
+      location: "Capri, Italien",
+      description:
+        "Im Tyrrhenischen Meer gelegen, belegt er den 19. Platz unter den 118 Stränden der Region Neapel.",
+    },
+    "paris-hero": {
+      // Key likely refers to Versailles based on description
+      title: "Versailles – Perle des Barock",
+      location: "Paris, Frankreich", // Technically near Paris
+      alt: "Schloss Versailles bei Paris",
+      description:
+        "Versailles ist ein Symbol der französischen absoluten Monarchie und eines der prächtigsten Beispiele barocker Architektur weltweit.",
+    },
+    "naples-view": {
+      title: "Straße am Tyrrhenischen Meer",
+      location: "Neapel, Italien",
+      alt: "Straße am Fuße eines Berges",
+    },
+    "naples-mummy": {
+      title: "Gipsabdruck eines Vesuv-Opfers",
+      location: "Pompeji, Italien",
+      alt: "Opfer des Vulkanausbruchs",
+      description:
+        "Die Gipsabdrücke der Körper wurden 1863 vom Archäologen Giuseppe Fiorelli entdeckt. „Sie wurden bisher aus ethischen Gründen und aus Rücksicht auf die Gefühle, mit denen menschliche Überreste stets behandelt wurden, nicht inventarisiert.“",
+    },
+    "naples-stadion": {
+      title: "Amphitheater in Pompeji",
+      location: "Pompeji, Italien",
+      alt: "Teil des Stadions in der antiken Stadt Pompeji",
+      description:
+        "Das Amphitheater von Pompeji – ein antikes römisches Amphitheater in Pompeji. Es ist das älteste erhaltene Bauwerk dieser Art.",
+    },
+    "naples-museum": {
+      title: "Kleiner Pergamonaltar (Gallier-Anathema)",
+      location: "Neapel, Italien",
+      alt: "Archäologisches Nationalmuseum Neapel",
+      description:
+        "Kopie aus dem 2. Jahrhundert n. Chr. nach einem griechischen Original aus dem 2. Jahrhundert v. Chr.",
+    },
+    "capri-taras": {
+      title: "Capri in der Nähe von Marina Piccola",
+      location: "Capri, Italien",
+      alt: "Terrassen auf Capri",
+      description:
+        "Eine charmante Dachterrasse mit Kakteen. Die meisten Dächer auf Capri sind flach. Und wie oben zu sehen ist, sind auf einigen dieser Gebäude Terrassen angelegt.",
+    },
+    "capri-street": {
+      title: "Einkaufsstraße auf Capri",
+      location: "Capri, Italien",
+      alt: "Geschäfte auf Capri",
+      description:
+        "Capri zeichnet sich durch charmante Einkaufsstraßen aus, die von der Piazzetta ausgehen und durch die Via Camerelle und die Via Le Botteghe führen.",
+    },
+    "capri-port": {
+      title: "Hafen in Marina Grande",
+      location: "Capri, Italien",
+      alt: "Angelegte Yachten",
+      description:
+        "Gepäckträger der Haupthotels warten darauf, Ihr Gepäck auf einem Karren mitzunehmen, und Sie können mit der Standseilbahn fahren oder ein Cabrio nehmen, da auf Capri kein Autoverkehr herrscht.",
+    },
+    "lisbon-hero": {
+      // Key likely refers to Jerónimos Monastery based on description
+      title: "Hieronymuskloster (Mosteiro dos Jerónimos)",
+      location: "Lissabon, Portugal",
+      alt: "Hieronymuskloster in Belém",
+      description:
+        "Erbaut in der ersten Hälfte des 16. Jahrhunderts, gilt es als Perle und Quintessenz des manuelinischen Stils, einer spezifisch portugiesischen Verbindung von Gotik und Renaissance.",
+    },
+    "paris-eiffel": {
+      title: "Eiffelturm",
+      location: "Paris, Frankreich",
+      alt: "Abendliche Beleuchtung des Eiffelturms in Paris",
+      description:
+        "Das bekannteste architektonische Wahrzeichen von Paris, gilt als Symbol der Stadt und manchmal ganz Frankreichs.",
+    },
+    "paris-louvre": {
+      title: "Louvre",
+      location: "Paris, Frankreich",
+      alt: "Ehemaliger Königspalast in Paris",
+      description:
+        "Eines der größten Museen der Welt und die meistbesuchte Einrichtung dieser Art weltweit.",
+    },
+    "paris-panteon": {
+      title: "Blick auf das Panthéon vom Place du Panthéon",
+      location: "Paris, Frankreich",
+      alt: "Panthéon vom Place du Panthéon",
+      description:
+        "Das Panthéon – ein Gebäude im Quartier Latin in Paris, erbaut Ende des 18. Jahrhunderts als Kirche, die der Heiligen Genoveva geweiht ist.",
+    },
+    "paris-snails": {
+      title: "Berühmte französische Schnecken",
+      location: "Paris, Frankreich",
+      alt: "Schneckengericht",
+      description:
+        "Es ist schwer, sich die Küche an der Seine, und besonders an der Rhône, ohne eine köstliche Schnecke auf dem Teller vorzustellen.",
+    },
+    "frankfurt-hero": {
+      // Key refers to Alte Oper based on description
+      title: "Alte Oper, Frankfurt",
+      location: "Frankfurt am Main, Deutschland",
+      alt: "Alte Oper, Frankfurt",
+      description:
+        "Über einem malerischen Platz mit einem eleganten Brunnen erhebt sich die Oper mit ihrer Fassade im Renaissancestil.",
+    },
+    "berlin-gate": {
+      title: "Brandenburger Tor",
+      location: "Berlin, Deutschland",
+      alt: "Brandenburger Tor",
+      description:
+        "Das Brandenburger Tor als Symbol für Frieden und Freiheit seit dem 3. Oktober 1990, dem Jahrestag der deutschen Wiedervereinigung.",
+    },
+    "berlin-museum": {
+      title: "Altes Museum",
+      location: "Berlin, Deutschland",
+      alt: "Altes Museum",
+      description:
+        "Das Museum wurde auf Anordnung des preußischen Königs Friedrich Wilhelm III. gebaut, um die Sammlungen antiker Kunst der breiten Öffentlichkeit zugänglich zu machen.",
+    },
+    "berlin-victory-column": {
+      title: "Siegessäule",
+      location: "Berlin, Deutschland",
+      alt: "Siegessäule",
+      description:
+        "Die Säule im Großen Tiergarten in Berlin erinnert an den Sieg Preußens über Dänemark im Deutsch-Dänischen Krieg von 1864.",
+    },
+    "berlin-music": {
+      title: "Beethoven-Haydn-Mozart-Denkmal",
+      location: "Berlin, Deutschland",
+      alt: "Denkmal der drei Musikgenies",
+      description:
+        "Ein Freiluftdenkmal für die klassischen Komponisten Ludwig van Beethoven, Joseph Haydn und Wolfgang Amadeus Mozart aus dem Jahr 1904.",
+    },
+    "prague-bridge": {
+      title: "Blick auf die Moldau in Prag",
+      location: "Prag, Tschechien",
+      alt: "Die Moldau in Prag",
+    },
+    "prague-wit": {
+      title: "Domschatz von St. Veit",
+      location: "Prag, Tschechien",
+      alt: "Schatzkammer in Prag",
+      description:
+        "Artefakte im Domschatz des Veitsdoms auf der Prager Burg in Prag.",
+    },
+    "prague-dance": {
+      title: "Tanzendes Haus",
+      location: "Prag, Tschechien",
+      alt: "Ginger und Fred",
+      description:
+        "Ein avantgardistisches Gebäude, entworfen von dem Architektenpaar Vlado Milunić und Frank Gehry im dekonstruktivistischen Stil.",
+    },
+    "prague-kafka": {
+      title: "Drehbarer Kopf von Franz Kafka",
+      location: "Prag, Tschechien",
+      alt: "Kopf von Franz Kafka",
+      description:
+        "David Černý entwarf dieses umstrittene Kunstwerk für das Geschäfts- und Bürogebäude 'Quadrio' an der Národní třída.",
+    },
+  },
+  // About Section
+  about: {
+    title: "Über EuroTrek",
+    description1:
+      "EuroTrek ist ein kollektives Fototagebuch, erstellt von Universitätsstudenten, die in Polen studieren. Unsere Mission ist es, die Schönheit, Kultur und Erfahrungen studentischer Reisen durch authentische Fotografie zu präsentieren.",
+    description2:
+      "Diese Plattform dient sowohl als Inspiration für zukünftige studentische Reisende als auch als Erinnerungsbuch für diejenigen, die ihre europäischen Abenteuer bereits begonnen haben. Alle Fotos werden von Studenten gemacht und zeigen Europa aus einer frischen, jugendlichen Perspektive.",
+    pageTitle: "Über unsere Reise",
+    pageDescription1:
+      "EuroTrek entstand aus der Leidenschaft für Reisefotografie und dem Wunsch, die einzigartigen Erlebnisse von Studenten auf Entdeckungsreise in den lebendigsten Städten Europas festzuhalten.",
+    pageDescription2:
+      "Was als kleine Gruppe begann, die Fotos unter Kommilitonen in Polen austauschte, entwickelte sich zu einer Plattform, die studentische Fotografen aus verschiedenen Ländern, mit unterschiedlichem Hintergrund und aus verschiedenen Studienrichtungen verbindet, die die gemeinsame Liebe zum Entdecken und zum visuellen Geschichtenerzählen teilen.",
+    pageDescription3:
+      "Unsere Beitragenden sind Studenten wie Sie, die ihr Studium mit Abenteuern auf dem ganzen Kontinent verbinden und dabei authentische Momente festhalten.",
+    mission: {
+      title: "Unsere Mission",
+      description:
+        "Studentisches Reisen durch authentisches visuelles Storytelling zu inspirieren und eine unterstützende Gemeinschaft für junge Fotografen zu schaffen, die Europa entdecken.",
+    },
+    team: {
+      title: "Das Studentenkollektiv",
+      description:
+        "Unser Team besteht ausschließlich aus studentischen Fotografen, Autoren und Webentwicklern von Universitäten aus aller Welt. Jeder Mitwirkende bringt seine einzigartige Perspektive und Erfahrung in die Plattform ein.",
+    },
+    feature1: {
+      title: "Studentische Fotografen",
+      description: "Fotos von internationalen Studenten aus aller Welt",
+    },
+    feature2: {
+      title: "Authentische Erlebnisse",
+      description:
+        "Echte Reisemomente jenseits der typischen Touristenattraktionen",
+    },
+    feature3: {
+      title: "Vielfältige Reisen",
+      description:
+        "Eine wachsende Sammlung von Fotos vom gesamten europäischen Kontinent",
+    },
+    image1: {
+      title: "Lissabon",
+      description: "Hieronymuskloster.",
+    },
+    image2: {
+      title: "Deutschland und Frankreich",
+      description:
+        "Eine unvergessliche Reise durch Deutschland und Frankreich.",
+    },
+    image3: {
+      title: "Neapel",
+      description: "Die außergewöhnlichen Landschaften Neapels.",
+    },
+  },
+  // Featured Section
+  featured: {
+    title: "Im Fokus: Frühling in Paris",
+    description1:
+      "Paris im Frühling ist ein Traum für studentische Fotografen. Die Stadt erwacht mit blühenden Kirschbäumen, Straßencafés und perfektem Licht zum Einfangen ikonischer Wahrzeichen.",
+    description2:
+      "Unsere vorgestellte Sammlung zeigt den Charme von Paris durch die Augen polnischer Studenten, die ihre Ferien im Ausland in der Stadt der Lichter verbracht haben.",
+    exploreLink: "Entdecke die Paris-Sammlung",
+    image1Alt: "Eiffelturm im Frühling",
+    image2Alt: "Die Seine in Paris",
+    image3Alt: "Pariser Straßencafé",
+    image4Alt: "Louvre-Museum",
+  },
+  // Contact Section
+  contact: {
+    title: "Kontakt",
+    description:
+      "Haben Sie Fragen oder möchten Sie Ihre eigenen studentischen Reisefotos einreichen? Wir freuen uns darauf, von Ihnen zu hören!",
+    pageTitle: "Kontakt aufnehmen",
+    getInTouch: "Wie können wir Ihnen helfen?",
+    getInTouchDescription:
+      "Ob Sie Ihre Reisefotos einreichen möchten, Fragen zu unserer Plattform haben oder einfach nur Hallo sagen wollen, wir sind hier, um zu helfen.",
+    email: {
+      title: "Schreiben Sie uns",
+      description: "Für allgemeine Anfragen und Foto-Einreichungen",
+    },
+    location: {
+      title: "Unser Standort",
+      description: "Besuchen Sie unser Büro des Studentenkollektivs",
+      address: "University Creative Hub, European Campus, Amsterdam", // Keeping address in English as it's likely a proper name/location.
+    },
+    phone: {
+      title: "Rufen Sie uns an",
+      description: "Erreichbar an Werktagen von 10:00 bis 18:00 Uhr MEZ",
+    },
+    form: {
+      name: "Ihr Name",
+      namePlaceholder: "Geben Sie Ihren Namen ein",
+      nameError: "Name ist erforderlich",
+      email: "Ihre E-Mail",
+      emailPlaceholder: "Geben Sie Ihre E-Mail-Adresse ein",
+      emailError: "Gültige E-Mail-Adresse erforderlich",
+      subject: "Betreff",
+      subjectPlaceholder: "Worüber möchten Sie sprechen?",
+      subjectError: "Betreff ist erforderlich",
+      message: "Nachricht",
+      messagePlaceholder: "Geben Sie hier Ihre Nachricht ein...",
+      messageError: "Nachricht muss mindestens 10 Zeichen lang sein",
+      send: "Nachricht senden",
+      sending: "Senden...",
+      successTitle: "Nachricht gesendet!",
+      successMessage:
+        "Vielen Dank für Ihre Kontaktaufnahme. Wir werden uns bald bei Ihnen melden.",
+    },
+  },
+  // Footer
+  footer: {
+    description:
+      "Eine visuelle Reise durch Europa, festgehalten durch die Linse von Studenten, die die schönsten Ecken des Kontinents entdecken.",
+    quickLinks: "Schnelllinks",
+    resources: "Ressourcen",
+    parisCollection: "Paris-Sammlung",
+    submitPhotos: "Fotos einreichen",
+    privacyPolicy: "Datenschutzrichtlinie",
+    termsOfUse: "Nutzungsbedingungen",
+    accessibility: "Barrierefreiheit",
+    copyright: "Alle Rechte vorbehalten.", // Added year placeholder
+    tagline: "Mit ❤ von Studenten, für Studenten erstellt.",
+    instagram: "Folge uns auf Instagram",
+    twitter: "Folge uns auf Twitter",
+    facebook: "Folge uns auf Facebook",
+    pinterest: "Folge uns auf Pinterest",
+  },
+  // Slider Controls
+  slider: {
+    previous: "Vorherige Folie",
+    next: "Nächste Folie",
+    goToSlide: "Gehe zu Folie {{index}}",
+  },
+  // Lightbox
+  lightbox: {
+    close: "Schließen",
+    previous: "Vorheriges Foto",
+    next: "Nächstes Foto",
+  },
+  // Theme Toggle
+  theme: {
+    toggleLight: "Zum hellen Modus wechseln",
+    toggleDark: "Zum dunklen Modus wechseln",
+  },
+  // Language
+  language: {
+    changeLanguage: "Sprache ändern",
+  },
+  // Home
+  home: {
+    heroAriaLabel: "Empfohlene Reiseziele",
+  },
+};
+
+
+------------------------------
+
+import { Description } from "@radix-ui/react-toast";
+export default {
+  // Common
+  common: {
+    no_photos_data: "Žádná data fotografií.",
+  },
+  // Navbar
+  navbar: {
+    home: "Domů",
+    destinations: "Destinace",
+    about: "O nás",
+    contact: "Kontakt",
+  },
+  // Destinations
+  destinations: {
+    exploreTitle: "Objevujte Destinace",
+    exploreDescription:
+      "Prohlédněte si naši sbírku studentských fotografií z cest po nejkrásnějších městech Evropy.",
+    allDestinations: "Všechny Destinace",
+    lisbon: "Lisabon",
+    paris: "Paříž",
+    berlin: "Berlín",
+    capri: "Capri",
+    naples: "Neapol",
+    prague: "Praha",
+    loadMore: "Načíst další",
+    ariaLabel: "Kategorie destinací",
+  },
+  // Hero Slides
+  heroSlides: {
+    "paris-hero": {
+      location: "Paříž, Francie",
+      description:
+        "Město světel očima studenta - zachycení kouzla pařížské architektury a kultury.",
+    },
+    "rome-hero": {
+      // Assuming 'rome-hero' key refers to Naples based on PL content
+      location: "Neapol, Itálie",
+      description:
+        "Neapol je místo, kde život pulzuje v rytmu espressa, rozhovorů na ulici a vůně čerstvě upečené pizzy v teplém středomořském vzduchu.",
+    },
+    "lisbon-hero": {
+      location: "Lisabon, Portugalsko",
+      description:
+        "Lisabon je město plné světla, kde se dlážděné uličky vinou mezi barevnými domy a život plyne klidně v rytmu fada a vůně čerstvých 'pasteis de nata'.",
+    },
+    "frankfurt-hero": {
+      // Note: Polish description seems to be a copy-paste from Lisbon. Translating as is.
+      location: "Frankfurt nad Mohanem, Německo",
+      description:
+        "Lisabon je město plné světla, kde se dlážděné uličky vinou mezi barevnými domy a život plyne klidně v rytmu fada a vůně čerstvých 'pasteis de nata'.",
+    },
+  },
+  // Photos
+  photos: {
+    view: "Zobrazit fotografii {{title}}",
+    noPhotos: "Pro tuto destinaci zatím nejsou k dispozici žádné fotografie.",
+    "paris-sunset": {
+      title: "Západ slunce v Paříži",
+      location: "Paříž, Francie",
+      alt: "Eiffelova věž při západu slunce v Paříži",
+    },
+    "lisbon-tram": {
+      title: "Pohled na Národní divadlo D. Maria II",
+      location: "Lisabon, Portugalsko",
+      description:
+        "Historická budova divadla je jedním z nejprestižnějších sálů Portugalska a nachází se na náměstí Rossio v centru města.",
+    },
+    "lisbon-belem": {
+      // Key likely refers to Alfama based on description
+      title: "Střechy Starého Města",
+      location: "Lisabon, Portugalsko",
+      description:
+        "Nejstarší čtvrtí Lisabonu je Alfama, postavená na svahu nad řekou Tejo v době maurské nadvlády. Právě zde můžete pocítit atmosféru středověkého Lisabonu.",
+    },
+    "lisbon-bele": {
+      // Key likely refers to Belém Tower
+      title: "Belémská věž",
+      location: "Lisabon, Portugalsko",
+      description: "Středověká pevnost s výhledem na ústí řeky Tejo",
+    },
+    "boca do inferno": {
+      title: "Ústa Pekla",
+      location: "Cascais, Portugalsko",
+      description:
+        "Propast nacházející se v pobřežních útesech poblíž portugalského města Cascais",
+    },
+    "capri-marina": {
+      // Key likely refers to Faraglioni based on description
+      title: "Pláž Luigia u Faraglioni",
+      location: "Capri, Itálie",
+      description:
+        "Nachází se v Tyrhénském moři, zaujímá 19. místo mezi 118 plážemi neapolského regionu.",
+    },
+    "paris-hero": {
+      // Key likely refers to Versailles based on description
+      title: "Versailles – Perla Baroka",
+      location: "Paříž, Francie", // Technically near Paris
+      alt: "Zámek Versailles u Paříže",
+      description:
+        "Versailles je symbolem francouzské absolutní monarchie a jedním z nejvelkolepějších příkladů barokní architektury na světě.",
+    },
+    "naples-view": {
+      title: "Cesta nad Tyrhénským mořem",
+      location: "Neapol, Itálie",
+      alt: "Cesta na úpatí hory",
+    },
+    "naples-mummy": {
+      title: "Odlitek oběti Vesuvu",
+      location: "Pompeje, Itálie",
+      alt: "Oběti výbuchu sopky",
+      description:
+        "Odlitky těl byly objeveny v roce 1863 archeologem Giuseppem Fiorellim. „Dosud nebyly inventarizovány z etických důvodů a citů, s nimiž se vždy zacházelo s lidskými ostatky.“",
+    },
+    "naples-stadion": {
+      title: "Amfiteátr v Pompejích",
+      location: "Pompeje, Itálie",
+      alt: "Část stadionu ve starověkém městě Pompeje",
+      description:
+        "Amfiteátr v Pompejích – starověký římský amfiteátr nacházející se v Pompejích. Je nejstarší dochovanou stavbou tohoto typu.",
+    },
+    "naples-museum": {
+      title: "Malý pergamonský dar",
+      location: "Neapol, Itálie",
+      alt: "Národní archeologické muzeum v Neapoli",
+      description:
+        "Kopie z 2. století n. l. podle řeckého originálu z 2. století př. n. l.",
+    },
+    "capri-taras": {
+      title: "Capri poblíž Marina Piccola",
+      location: "Capri, Itálie",
+      alt: "Terasy na Capri",
+      description:
+        "Okouzlující střešní terasa s kaktusy. Většina střech budov na Capri je plochá. A jak je vidět výše, na některých z těchto budov jsou založeny terasy.",
+    },
+    "capri-street": {
+      title: "Obchodní ulice na Capri",
+      location: "Capri, Itálie",
+      alt: "Obchody na Capri",
+      description:
+        "Capri se vyznačuje půvabnými obchodními uličkami, které začínají na Piazzettě a vedou přes Via Camerelle a Via Le Botteghe.",
+    },
+    "capri-port": {
+      title: "Přístav v Marina Grande",
+      location: "Capri, Itálie",
+      alt: "Zakotvené jachty",
+      description:
+        "Nosiči zavazadel z hlavních hotelů čekají, aby vzali vaše zavazadlo na vozík, a vy můžete vyjet lanovkou nebo jet kabrioletem, protože na Capri není automobilová doprava.",
+    },
+    "lisbon-hero": {
+      // Key likely refers to Jerónimos Monastery based on description
+      title: "Klášter jeronymitů",
+      location: "Lisabon, Portugalsko",
+      alt: "Klášter jeronymitů v Belému",
+      description:
+        "Postaven v 1. polovině 16. století, je považován za perlu a kvintesenci manuelského stylu, který je pro Portugalsko specifickým spojením gotiky a renesance.",
+    },
+    "paris-eiffel": {
+      title: "Eiffelova věž",
+      location: "Paříž, Francie",
+      alt: "Večerní osvětlení Eiffelovy věže v Paříži",
+      description:
+        "Nejznámější architektonický objekt Paříže, považovaný za symbol tohoto města a někdy celé Francie.",
+    },
+    "paris-louvre": {
+      title: "Louvre",
+      location: "Paříž, Francie",
+      alt: "Bývalý královský palác v Paříži",
+      description:
+        "Jedno z největších muzeí na světě, je také nejnavštěvovanější institucí tohoto typu na světě.",
+    },
+    "paris-panteon": {
+      title: "Pohled na Pantheon z Place du Panthéon",
+      location: "Paříž, Francie",
+      alt: "Pantheon z Place du Panthéon",
+      description:
+        "Pantheon – budova v Latinské čtvrti v Paříži, postavená na konci 18. století jako kostel zasvěcený svaté Jenovéfě.",
+    },
+    "paris-snails": {
+      title: "Slavní francouzští šneci",
+      location: "Paříž, Francie",
+      alt: "Pokrm ze šneků",
+      description:
+        "Těžko si představit kuchyni nad Seinou, a zvláště nad Rhônou, bez lahodného šneka na talíři.",
+    },
+    "frankfurt-hero": {
+      // Key likely refers to Alte Oper based on description
+      title: "Stará opera (Alte Oper), Frankfurt",
+      location: "Frankfurt nad Mohanem, Německo",
+      alt: "Stará opera (Alte Oper), Frankfurt",
+      description:
+        "Tyčící se nad malebným náměstím zdobeným elegantní fontánou se nachází Opera, která má fasádu v renesančním stylu.",
+    },
+    "berlin-gate": {
+      title: "Braniborská brána",
+      location: "Berlín, Německo",
+      alt: "Braniborská brána",
+      description:
+        "Braniborská brána jako symbol Míru a Svobody od 3. října 1990, v den výročí sjednocení Německa.",
+    },
+    "berlin-museum": {
+      title: "Staré muzeum (Altes Museum)",
+      location: "Berlín, Německo",
+      alt: "Staré muzeum",
+      description:
+        "Muzeum bylo postaveno za účelem zpřístupnění sbírek antického umění široké veřejnosti na příkaz pruského krále Fridricha Viléma III.",
+    },
+    "berlin-victory-column": {
+      title: "Vítězný sloup (Siegessäule)",
+      location: "Berlín, Německo",
+      alt: "Vítězný sloup",
+      description:
+        "Sloup nacházející se v parku Großer Tiergarten v Berlíně připomínající vítězství Pruska nad Dánskem v dánské válce roku 1864.",
+    },
+    "berlin-music": {
+      title: "Pomník Beethovena, Haydna a Mozarta",
+      location: "Berlín, Německo",
+      alt: "Pomník tří hudebních géniů",
+      description:
+        "Venkovní pomník klasických skladatelů: Ludwiga van Beethovena, Josepha Haydna a Wolfganga Amadea Mozarta z roku 1904.",
+    },
+    "prague-bridge": {
+      title: "Pohled na Vltavu v Praze",
+      location: "Praha, Česko",
+      alt: "Řeka Vltava v Praze",
+    },
+    "prague-wit": {
+      title: "Svatovítský poklad",
+      location: "Praha, Česko",
+      alt: "Pokladnice v Praze",
+      description:
+        "Artefakty v pokladnici Katedrály svatého Víta na Pražském hradě v Praze.",
+    },
+    "prague-dance": {
+      title: "Tančící dům",
+      location: "Praha, Česko",
+      alt: "Ginger a Fred",
+      description:
+        "Avantgardní budova navržená dvojicí architektů: Vlado Milunićem a Frankem Gehrym ve stylu dekonstruktivismu.",
+    },
+    "prague-kafka": {
+      title: "Otočná hlava Franze Kafky",
+      location: "Praha, Česko",
+      alt: "Hlava Franze Kafky",
+      description:
+        "David Černý navrhl toto kontroverzní umělecké dílo pro obchodní a kancelářskou budovu 'Quadrio' na Národní třídě.",
+    },
+  },
+  // About Section
+  about: {
+    title: "O EuroTrek",
+    description1:
+      "EuroTrek je kolektivní fotografický deník vytvořený vysokoškolskými studenty studujícími v Polsku. Naším posláním je prezentovat krásu, kulturu a zážitky ze studentských cest prostřednictvím autentické fotografie.",
+    description2:
+      "Tato platforma slouží jako inspirace pro budoucí studenty-cestovatele i jako kniha vzpomínek pro ty, kteří již zahájili svá evropská dobrodružství. Všechny fotografie jsou pořízeny studenty a ukazují Evropu ze svěží, mladistvé perspektivy.",
+    pageTitle: "O naší cestě",
+    pageDescription1:
+      "EuroTrek se zrodil z vášně pro cestovatelskou fotografii a touhy zachytit jedinečné zážitky studentů-objevitelů v nejživějších městech Evropy.",
+    pageDescription2:
+      "To, co začalo jako malá skupina sdílející fotografie mezi spolužáky studujícími v Polsku, se rozrostlo v platformu spojující studenty-fotografy z různých zemí, prostředí a akademických oborů, kteří sdílejí společnou lásku k objevování a vizuálnímu vyprávění.",
+    pageDescription3:
+      "Naši přispěvatelé jsou studenti jako vy, kteří vyvažují své studium s dobrodružstvími po celém kontinentu a zachycují autentické okamžiky na cestě.",
+    mission: {
+      title: "Naše poslání",
+      description:
+        "Inspirovat ke studentským cestám prostřednictvím autentického vizuálního vyprávění a vytvářet podpůrnou komunitu pro mladé fotografy objevující Evropu.",
+    },
+    team: {
+      title: "Studentský kolektiv",
+      description:
+        "Náš tým se skládá výhradně ze studentů-fotografů, spisovatelů a webových vývojářů z univerzit po celém světě. Každý přispěvatel přináší na platformu svou jedinečnou perspektivu a zkušenost.",
+    },
+    feature1: {
+      title: "Studenti-fotografové",
+      description: "Fotografie pořízené zahraničními studenty z celého světa",
+    },
+    feature2: {
+      title: "Autentické zážitky",
+      description: "Skutečné momenty z cest mimo typické turistické atrakce",
+    },
+    feature3: {
+      title: "Mnoho cest",
+      description: "Rostoucí sbírka fotografií z celého evropského kontinentu",
+    },
+    image1: {
+      title: "Lisabon",
+      description: "Klášter jeronymitů.",
+    },
+    image2: {
+      title: "Německo a Francie",
+      description: "Nezapomenutelná cesta přes Německo a Francii.",
+    },
+    image3: {
+      title: "Neapol",
+      description: "Neobyčejné krajiny Neapole.",
+    },
+  },
+  // Featured Section
+  featured: {
+    title: "Doporučeno: Jaro v Paříži",
+    description1:
+      "Paříž na jaře je snem pro studenty-fotografy. Město ožívá kvetoucími třešněmi, kavárenskými zahrádkami a ideálním světlem pro zachycení ikonických památek.",
+    description2:
+      "Naše doporučená kolekce ukazuje kouzlo Paříže očima polských studentů, kteří strávili své prázdniny v zahraničí ve Městě světla.",
+    exploreLink: "Objevte pařížskou kolekci",
+    image1Alt: "Eiffelova věž na jaře",
+    image2Alt: "Řeka Seina v Paříži",
+    image3Alt: "Pařížská kavárna",
+    image4Alt: "Muzeum Louvre",
+  },
+  // Contact Section
+  contact: {
+    title: "Kontakt",
+    description:
+      "Máte dotazy nebo chcete zaslat vlastní studentské fotografie z cest? Rádi se s vámi spojíme!",
+    pageTitle: "Kontaktujte nás",
+    getInTouch: "Jak vám můžeme pomoci?",
+    getInTouchDescription:
+      "Ať už chcete odeslat své cestovatelské fotografie, máte dotazy ohledně naší platformy, nebo se jen chcete pozdravit, jsme tu, abychom vám pomohli.",
+    email: {
+      title: "Napište nám",
+      description: "Pro obecné dotazy a zasílání fotografií",
+    },
+    location: {
+      title: "Naše poloha",
+      description: "Navštivte naši kancelář studentského kolektivu",
+      address: "University Creative Hub, European Campus, Amsterdam", // Note: Address kept in English as it's likely a proper name/location.
+    },
+    phone: {
+      title: "Zavolejte nám",
+      description: "Dostupní v pracovní dny od 10:00 do 18:00 SEČ",
+    },
+    form: {
+      name: "Vaše jméno",
+      namePlaceholder: "Zadejte své jméno",
+      nameError: "Jméno je povinné",
+      email: "Váš email",
+      emailPlaceholder: "Zadejte svůj email",
+      emailError: "Vyžadován platný email",
+      subject: "Předmět",
+      subjectPlaceholder: "O čem chcete mluvit?",
+      subjectError: "Předmět je povinný",
+      message: "Zpráva",
+      messagePlaceholder: "Sem napište svou zprávu...",
+      messageError: "Zpráva musí mít alespoň 10 znaků",
+      send: "Odeslat zprávu",
+      sending: "Odesílání...",
+      successTitle: "Zpráva odeslána!",
+      successMessage: "Děkujeme za kontaktování. Brzy se vám ozveme.",
+    },
+  },
+  // Footer
+  footer: {
+    description:
+      "Vizuální cesta Evropou zachycená objektivem studentů, kteří objevují nejkrásnější zákoutí kontinentu.",
+    quickLinks: "Rychlé odkazy",
+    resources: "Zdroje",
+    parisCollection: "Pařížská kolekce",
+    submitPhotos: "Odeslat fotografie",
+    privacyPolicy: "Zásady ochrany osobních údajů",
+    termsOfUse: "Podmínky použití",
+    accessibility: "Přístupnost",
+    copyright: "Všechna práva vyhrazena.", // Added year placeholder assuming it might be dynamic
+    tagline: "Vytvořeno s ❤ studenty pro studenty.",
+    instagram: "Sledujte nás na Instagramu",
+    twitter: "Sledujte nás na Twitteru",
+    facebook: "Sledujte nás na Facebooku",
+    pinterest: "Sledujte nás na Pinterestu",
+  },
+  // Slider Controls
+  slider: {
+    previous: "Předchozí snímek",
+    next: "Další snímek",
+    goToSlide: "Přejít na snímek {{index}}",
+  },
+  // Lightbox
+  lightbox: {
+    close: "Zavřít",
+    previous: "Předchozí fotografie",
+    next: "Další fotografie",
+  },
+  // Theme Toggle
+  theme: {
+    toggleLight: "Přepnout na světlý režim",
+    toggleDark: "Přepnout na tmavý režim",
+  },
+  // Language
+  language: {
+    changeLanguage: "Změnit jazyk",
+  },
+  // Home
+  home: {
+    heroAriaLabel: "Doporučené destinace",
+  },
+};
+
+
+-------------------------------------
+
+import { Description } from "@radix-ui/react-toast"; // Manteniendo la importación original
+
+export default {
+  // Common / Común
+  common: {
+    no_photos_data: "No hay datos de fotos disponibles.",
+  },
+  // Navbar / Barra de navegación
+  navbar: {
+    home: "Inicio",
+    destinations: "Destinos",
+    about: "Sobre nosotros",
+    contact: "Contacto",
+  },
+  // Destinations / Destinos
+  destinations: {
+    exploreTitle: "Explora Destinos",
+    exploreDescription:
+      "Explora nuestra colección de fotos de viajes de estudiantes por las ciudades más bellas de Europa.",
+    allDestinations: "Todos los Destinos",
+    lisbon: "Lisboa",
+    paris: "París",
+    berlin: "Berlín",
+    capri: "Capri",
+    naples: "Nápoles",
+    prague: "Praga",
+    loadMore: "Cargar más",
+    ariaLabel: "Categorías de destinos",
+  },
+  // Hero Slides / Diapositivas principales
+  heroSlides: {
+    "paris-hero": {
+      location: "París, Francia",
+      description:
+        "La Ciudad de la Luz a través de los ojos de un estudiante: capturando el encanto de la arquitectura y la cultura parisina.",
+    },
+    "rome-hero": {
+      // La clave apunta a Nápoles según el contenido original polaco
+      location: "Nápoles, Italia",
+      description:
+        "Nápoles es un lugar donde la vida late al ritmo del espresso, las conversaciones en la calle y el aroma de la pizza recién horneada flotando en el cálido aire mediterráneo.",
+    },
+    "lisbon-hero": {
+      location: "Lisboa, Portugal",
+      description:
+        "Lisboa es una ciudad llena de luz, donde las calles adoquinadas serpentean entre casas de colores y la vida fluye tranquilamente al ritmo del fado y el aroma de los 'pastéis de nata' frescos.",
+    },
+    "frankfurt-hero": {
+      // Usando la descripción más precisa de photos["frankfurt-hero"]
+      location: "Fráncfort del Meno, Alemania",
+      description:
+        "Elevándose sobre una pintoresca plaza adornada con una elegante fuente se encuentra la Antigua Ópera (Alte Oper), con una fachada de estilo renacentista.",
+    },
+  },
+  // Photos / Fotos
+  photos: {
+    view: "Ver foto {{title}}",
+    noPhotos: "Aún no hay fotos disponibles para este destino.",
+    "paris-sunset": {
+      title: "Atardecer en París",
+      location: "París, Francia",
+      alt: "Torre Eiffel al atardecer en París",
+    },
+    "lisbon-tram": {
+      title: "Vista del Teatro Nacional D. Maria II",
+      location: "Lisboa, Portugal",
+      description:
+        "El histórico edificio del teatro es una de las salas más prestigiosas de Portugal y se encuentra en la Plaza Rossio, en el centro de la ciudad.",
+    },
+    "lisbon-belem": {
+      // La clave probablemente se refiere a Alfama según la descripción
+      title: "Tejados del Casco Antiguo",
+      location: "Lisboa, Portugal",
+      description:
+        "El barrio más antiguo de Lisboa es Alfama, construido en la ladera sobre el Tajo durante la dominación árabe. Es aquí donde se puede sentir la atmósfera de la Lisboa medieval.",
+    },
+    "lisbon-bele": {
+      // La clave probablemente se refiere a la Torre de Belém
+      title: "Torre de Belém",
+      location: "Lisboa, Portugal",
+      description:
+        "Fortaleza medieval con vistas a la desembocadura del río Tajo.",
+    },
+    "boca do inferno": {
+      title: "Boca do Inferno",
+      location: "Cascais, Portugal",
+      description:
+        "Una sima situada en los acantilados costeros cerca de la ciudad portuguesa de Cascais.",
+    },
+    "capri-marina": {
+      // La clave probablemente se refiere a Faraglioni según la descripción
+      title: "Playa Luigia ai Faraglioni",
+      location: "Capri, Italia",
+      description:
+        "Situada en el Mar Tirreno, ocupa el puesto 19 entre las 118 playas de la región napolitana.",
+    },
+    "paris-hero": {
+      // La clave probablemente se refiere a Versalles según la descripción
+      title: "Versalles – Perla del Barroco",
+      location: "Versalles, Francia", // Ubicación corregida
+      alt: "Palacio de Versalles cerca de París",
+      description:
+        "Versalles es un símbolo de la monarquía absoluta francesa y uno de los ejemplos más magníficos de la arquitectura barroca en el mundo.",
+    },
+    "naples-view": {
+      title: "Carretera junto al Mar Tirreno",
+      location: "Nápoles, Italia",
+      alt: "Carretera al pie de una montaña",
+    },
+    "naples-mummy": {
+      title: "Molde de una víctima del Vesubio",
+      location: "Pompeya, Italia",
+      alt: "Víctimas de la erupción del volcán",
+      description:
+        "Los moldes de los cuerpos fueron descubiertos en 1863 por el arqueólogo Giuseppe Fiorelli. 'Hasta la fecha, no han sido inventariados por razones éticas y por los sentimientos con los que siempre se han tratado los restos humanos'.",
+    },
+    "naples-stadion": {
+      title: "Anfiteatro de Pompeya",
+      location: "Pompeya, Italia",
+      alt: "Parte del estadio en la antigua ciudad de Pompeya",
+      description:
+        "El Anfiteatro de Pompeya – un antiguo anfiteatro romano situado en Pompeya. Es la estructura conservada más antigua de su tipo.",
+    },
+    "naples-museum": {
+      title: "Pequeño Donario de Pérgamo (Gálatas)",
+      location: "Nápoles, Italia",
+      alt: "Museo Arqueológico Nacional de Nápoles",
+      description:
+        "Copia del siglo II d.C. de un original griego del siglo II a.C.",
+    },
+    "capri-taras": {
+      title: "Capri cerca de Marina Piccola",
+      location: "Capri, Italia",
+      alt: "Terrazas en Capri",
+      description:
+        "Una encantadora terraza en la azotea con cactus. La mayoría de los tejados de los edificios en Capri son planos. Y como se ve arriba, se establecen terrazas en algunos de estos edificios.",
+    },
+    "capri-street": {
+      title: "Calle comercial en Capri",
+      location: "Capri, Italia",
+      alt: "Tiendas en Capri",
+      description:
+        "Capri se caracteriza por sus encantadoras calles comerciales que parten de la Piazzetta y recorren Via Camerelle y Via Le Botteghe.",
+    },
+    "capri-port": {
+      title: "Puerto en Marina Grande",
+      location: "Capri, Italia",
+      alt: "Yates amarrados",
+      description:
+        "Los porteadores de los principales hoteles esperan para llevar tu equipaje en un carrito, y puedes tomar el funicular o ir en un taxi descapotable, ya que no hay tráfico de coches en Capri.",
+    },
+    "lisbon-hero": {
+      // La clave probablemente se refiere al Monasterio de los Jerónimos según la descripción
+      title: "Monasterio de los Jerónimos",
+      location: "Lisboa, Portugal",
+      alt: "Monasterio de los Jerónimos en Belém",
+      description:
+        "Construido en la primera mitad del siglo XVI, es considerado la perla y quintaesencia del estilo manuelino, una mezcla singularmente portuguesa de gótico y renacimiento.",
+    },
+    "paris-eiffel": {
+      title: "Torre Eiffel",
+      location: "París, Francia",
+      alt: "Iluminación nocturna de la Torre Eiffel en París",
+      description:
+        "El monumento arquitectónico más famoso de París, considerado un símbolo de la ciudad y, a veces, de toda Francia.",
+    },
+    "paris-louvre": {
+      title: "Museo del Louvre",
+      location: "París, Francia",
+      alt: "Antiguo palacio real en París",
+      description:
+        "Uno de los museos más grandes del mundo, es también el museo más visitado de su tipo a nivel mundial.",
+    },
+    "paris-panteon": {
+      title: "Vista del Panteón desde la Place du Panthéon",
+      location: "París, Francia",
+      alt: "El Panteón desde la Place du Panthéon",
+      description:
+        "El Panteón – un edificio en el Barrio Latino de París, erigido a finales del siglo XVIII como iglesia dedicada a Santa Genoveva.",
+    },
+    "paris-snails": {
+      title: "Famosos Caracoles Franceses (Escargots)",
+      location: "París, Francia",
+      alt: "Plato de caracoles",
+      description:
+        "Es difícil imaginar la cocina francesa, especialmente a lo largo del Ródano, sin un delicioso caracol en el plato.",
+    },
+    "frankfurt-hero": {
+      // La clave se refiere a la Alte Oper según la descripción
+      title: "Antigua Ópera (Alte Oper), Fráncfort",
+      location: "Fráncfort del Meno, Alemania",
+      alt: "Antigua Ópera (Alte Oper), Fráncfort",
+      description:
+        "Elevándose sobre una pintoresca plaza adornada con una elegante fuente se encuentra la Antigua Ópera, con una fachada de estilo renacentista.",
+    },
+    "berlin-gate": {
+      title: "Puerta de Brandeburgo",
+      location: "Berlín, Alemania",
+      alt: "Puerta de Brandeburgo",
+      description:
+        "La Puerta de Brandeburgo como símbolo de Paz y Libertad desde el 3 de octubre de 1990, aniversario de la reunificación alemana.",
+    },
+    "berlin-museum": {
+      title: "Altes Museum (Museo Antiguo)",
+      location: "Berlín, Alemania",
+      alt: "Altes Museum (Museo Antiguo)",
+      description:
+        "El museo fue construido por orden del rey prusiano Federico Guillermo III para hacer accesibles al público general las colecciones de arte antiguo.",
+    },
+    "berlin-victory-column": {
+      title: "Columna de la Victoria (Siegessäule)",
+      location: "Berlín, Alemania",
+      alt: "Columna de la Victoria",
+      description:
+        "La columna situada en el parque Großer Tiergarten de Berlín conmemora la victoria de Prusia sobre Dinamarca en la Guerra de los Ducados de 1864.",
+    },
+    "berlin-music": {
+      title: "Monumento a Beethoven-Haydn-Mozart",
+      location: "Berlín, Alemania",
+      alt: "Monumento a los tres genios musicales",
+      description:
+        "Un monumento al aire libre a los compositores clásicos Ludwig van Beethoven, Joseph Haydn y Wolfgang Amadeus Mozart, inaugurado en 1904.",
+    },
+    "prague-bridge": {
+      title: "Vista del río Moldava en Praga",
+      location: "Praga, República Checa",
+      alt: "Río Moldava en Praga",
+    },
+    "prague-wit": {
+      title: "Tesoro de San Vito",
+      location: "Praga, República Checa",
+      alt: "Tesoro en Praga",
+      description:
+        "Artefactos en el Tesoro de la Catedral de San Vito en el Castillo de Praga.",
+    },
+    "prague-dance": {
+      title: "Casa Danzante",
+      location: "Praga, República Checa",
+      alt: "Ginger y Fred",
+      description:
+        "Un edificio vanguardista diseñado por la pareja de arquitectos Vlado Milunić y Frank Gehry en estilo deconstructivista.",
+    },
+    "prague-kafka": {
+      title: "Cabeza giratoria de Franz Kafka",
+      location: "Praga, República Checa",
+      alt: "Cabeza de Franz Kafka",
+      description:
+        "David Černý diseñó esta controvertida obra de arte para el edificio comercial y de oficinas 'Quadrio' en la calle Národní třída.",
+    },
+  },
+  // About Section / Sección Sobre nosotros
+  about: {
+    title: "Sobre EuroTrek",
+    description1:
+      "EuroTrek es un diario fotográfico colectivo creado por estudiantes universitarios que estudian en Europa (originalmente centrado en Polonia). Nuestra misión es mostrar la belleza, la cultura y las experiencias de los viajes estudiantiles a través de la fotografía auténtica.", // Contexto ligeramente ajustado
+    description2:
+      "Esta plataforma sirve tanto de inspiración para futuros estudiantes viajeros como de libro de recuerdos para aquellos que ya han emprendido sus aventuras europeas. Todas las fotos son capturadas por estudiantes, mostrando Europa a través de una lente fresca y juvenil.",
+    pageTitle: "Sobre Nuestro Viaje",
+    pageDescription1:
+      "EuroTrek nació de la pasión por la fotografía de viajes y el deseo de capturar las experiencias únicas de los estudiantes exploradores en las ciudades más vibrantes de Europa.",
+    pageDescription2:
+      "Lo que comenzó como un pequeño grupo compartiendo fotos entre compañeros de clase que estudiaban en Polonia ha crecido hasta convertirse en una plataforma que conecta a estudiantes fotógrafos de diversos países, orígenes y disciplinas académicas, todos compartiendo un amor común por el descubrimiento y la narración visual.",
+    pageDescription3:
+      "Nuestros colaboradores son estudiantes como tú, que equilibran sus estudios con aventuras por todo el continente, capturando momentos auténticos en el camino.",
+    mission: {
+      title: "Nuestra Misión",
+      description:
+        "Inspirar los viajes estudiantiles a través de la narración visual auténtica y fomentar una comunidad de apoyo para jóvenes fotógrafos que exploran Europa.",
+    },
+    team: {
+      title: "El Colectivo Estudiantil",
+      description:
+        "Nuestro equipo está compuesto en su totalidad por estudiantes fotógrafos, escritores y desarrolladores web de universidades de todo el mundo. Cada colaborador aporta su perspectiva y experiencia únicas a la plataforma.",
+    },
+    feature1: {
+      title: "Fotógrafos Estudiantes",
+      description:
+        "Fotos capturadas por estudiantes de intercambio de todo el mundo.",
+    },
+    feature2: {
+      title: "Experiencias Auténticas",
+      description:
+        "Momentos reales de viaje más allá de los lugares turísticos típicos.",
+    },
+    feature3: {
+      title: "Múltiples Destinos",
+      description:
+        "Una colección creciente de fotos de todo el continente europeo.",
+    },
+    image1: {
+      title: "Lisboa",
+      description: "Monasterio de los Jerónimos.",
+    },
+    image2: {
+      title: "Alemania y Francia",
+      description: "Un viaje inolvidable por Alemania y Francia.",
+    },
+    image3: {
+      title: "Nápoles",
+      description: "Los extraordinarios paisajes de Nápoles.",
+    },
+  },
+  // Featured Section / Sección Destacada
+  featured: {
+    title: "Destacado: Primavera en París",
+    description1:
+      "París en primavera es un sueño para los estudiantes fotógrafos. La ciudad cobra vida con cerezos en flor, cafés con terraza y una luz perfecta para capturar monumentos icónicos.",
+    description2:
+      "Nuestra colección destacada muestra la magia de París a través de los ojos de estudiantes que pasaron su semestre de intercambio en la Ciudad de la Luz.", // Contexto ligeramente ajustado
+    exploreLink: "Explora la Colección de París",
+    image1Alt: "Torre Eiffel en primavera",
+    image2Alt: "Río Sena en París",
+    image3Alt: "Café con terraza parisino",
+    image4Alt: "Museo del Louvre",
+  },
+  // Contact Section / Sección de Contacto
+  contact: {
+    title: "Contacto",
+    description:
+      "¿Tienes preguntas o quieres enviar tus propias fotos de viajes de estudiantes? ¡Nos encantaría saber de ti!",
+    pageTitle: "Ponte en Contacto",
+    getInTouch: "¿Cómo Podemos Ayudarte?",
+    getInTouchDescription:
+      "Ya sea que quieras enviar tus fotos de viaje, tengas preguntas sobre nuestra plataforma o simplemente quieras saludar, estamos aquí para ayudar.",
+    email: {
+      title: "Envíanos un Correo Electrónico",
+      description: "Para consultas generales y envío de fotos",
+    },
+    location: {
+      title: "Nuestra Ubicación",
+      description: "Visita el centro de nuestro colectivo estudiantil",
+      address: "University Creative Hub, European Campus, Amsterdam", // Mantenido como está, asumiendo que es un nombre de lugar específico
+    },
+    phone: {
+      title: "Llámanos",
+      description: "Disponible de lunes a viernes de 10 AM a 6 PM HEC", // CET -> HEC (Hora de Europa Central)
+    },
+    form: {
+      name: "Tu Nombre",
+      namePlaceholder: "Introduce tu nombre",
+      nameError: "El nombre es obligatorio",
+      email: "Tu Correo Electrónico",
+      emailPlaceholder: "Introduce tu dirección de correo electrónico",
+      emailError: "Se requiere un correo electrónico válido",
+      subject: "Asunto",
+      subjectPlaceholder: "¿De qué te gustaría hablar?",
+      subjectError: "El asunto es obligatorio",
+      message: "Mensaje",
+      messagePlaceholder: "Escribe tu mensaje aquí...",
+      messageError: "El mensaje debe tener al menos 10 caracteres",
+      send: "Enviar Mensaje",
+      sending: "Enviando...",
+      successTitle: "¡Mensaje Enviado!",
+      successMessage:
+        "Gracias por contactarnos. Nos pondremos en contacto pronto.",
+    },
+  },
+  // Footer / Pie de página
+  footer: {
+    description:
+      "Un viaje visual por Europa capturado por la lente de estudiantes que exploran los mejores rincones del continente.",
+    quickLinks: "Enlaces Rápidos",
+    resources: "Recursos",
+    parisCollection: "Colección de París",
+    submitPhotos: "Enviar Fotos",
+    privacyPolicy: "Política de Privacidad",
+    termsOfUse: "Términos de Uso",
+    accessibility: "Accesibilidad",
+    copyright: "Todos los derechos reservados.", // Placeholder de año añadido
+    tagline: "Hecho con ❤ por estudiantes, para estudiantes.",
+    instagram: "Síguenos en Instagram",
+    twitter: "Síguenos en Twitter",
+    facebook: "Síguenos en Facebook",
+    pinterest: "Síguenos en Pinterest",
+  },
+  // Slider Controls / Controles del deslizador
+  slider: {
+    previous: "Diapositiva anterior",
+    next: "Siguiente diapositiva",
+    goToSlide: "Ir a la diapositiva {{index}}",
+  },
+  // Lightbox / Visor de imágenes
+  lightbox: {
+    close: "Cerrar",
+    previous: "Foto anterior",
+    next: "Siguiente foto",
+  },
+  // Theme Toggle / Selector de tema
+  theme: {
+    toggleLight: "Cambiar a modo claro",
+    toggleDark: "Cambiar a modo oscuro",
+  },
+  // Language / Idioma
+  language: {
+    changeLanguage: "Cambiar idioma",
+  },
+  // Home / Inicio
+  home: {
+    heroAriaLabel: "Destinos destacados",
+  },
+};
+
+
+-------------------------
+
+import { Description } from "@radix-ui/react-toast"; // Conservant l'importation d'origine
+
+export default {
+  // Common / Commun
+  common: {
+    no_photos_data: "Aucune donnée photo disponible.",
+  },
+  // Navbar / Barre de navigation
+  navbar: {
+    home: "Accueil",
+    destinations: "Destinations",
+    about: "À propos",
+    contact: "Contact",
+  },
+  // Destinations
+  destinations: {
+    exploreTitle: "Explorer les Destinations",
+    exploreDescription:
+      "Parcourez notre collection de photos de voyages d'étudiants des plus belles villes d'Europe.",
+    allDestinations: "Toutes les Destinations",
+    lisbon: "Lisbonne",
+    paris: "Paris",
+    berlin: "Berlin",
+    capri: "Capri",
+    naples: "Naples",
+    prague: "Prague",
+    loadMore: "Charger plus",
+    ariaLabel: "Catégories de destinations",
+  },
+  // Hero Slides / Diapositives principales
+  heroSlides: {
+    "paris-hero": {
+      location: "Paris, France",
+      description:
+        "La Ville Lumière à travers les yeux d'un étudiant - capturer le charme de l'architecture et de la culture parisiennes.",
+    },
+    "rome-hero": {
+      // Clé faisant référence à Naples d'après le contenu original polonais
+      location: "Naples, Italie",
+      description:
+        "Naples est un lieu où la vie palpite au rythme de l'espresso, des conversations de rue et de l'odeur de la pizza fraîchement cuite flottant dans l'air chaud méditerranéen.",
+    },
+    "lisbon-hero": {
+      location: "Lisbonne, Portugal",
+      description:
+        "Lisbonne est une ville pleine de lumière, où les rues pavées serpentent entre des maisons colorées, et la vie s'écoule calmement au rythme du fado et de l'arôme des 'pasteis de nata' frais.",
+    },
+    "frankfurt-hero": {
+      // Utilisation de la description plus précise de photos["frankfurt-hero"]
+      location: "Francfort-sur-le-Main, Allemagne",
+      description:
+        "S'élevant au-dessus d'une place pittoresque ornée d'une élégante fontaine se trouve l'Ancien Opéra (Alte Oper), arborant une façade de style Renaissance.",
+    },
+  },
+  // Photos
+  photos: {
+    view: "Voir la photo {{title}}",
+    noPhotos: "Aucune photo n'est encore disponible pour cette destination.",
+    "paris-sunset": {
+      title: "Coucher de soleil à Paris",
+      location: "Paris, France",
+      alt: "Tour Eiffel au coucher du soleil à Paris",
+    },
+    "lisbon-tram": {
+      title: "Vue sur le Théâtre National D. Maria II",
+      location: "Lisbonne, Portugal",
+      description:
+        "Le bâtiment historique du théâtre est l'une des salles les plus prestigieuses du Portugal et se situe sur la place Rossio, au centre-ville.",
+    },
+    "lisbon-belem": {
+      // Clé faisant probablement référence à Alfama d'après la description
+      title: "Toits de la Vieille Ville",
+      location: "Lisbonne, Portugal",
+      description:
+        "Le plus vieux quartier de Lisbonne est Alfama, construit à flanc de colline au-dessus du Tage à l'époque de la domination maure. C'est ici que l'on peut ressentir l'atmosphère de la Lisbonne médiévale.",
+    },
+    "lisbon-bele": {
+      // Clé faisant probablement référence à la Tour de Belém
+      title: "Tour de Belém",
+      location: "Lisbonne, Portugal",
+      description: "Forteresse médiévale surplombant l'embouchure du Tage.",
+    },
+    "boca do inferno": {
+      title: "Boca do Inferno (Bouche de l'Enfer)",
+      location: "Cascais, Portugal",
+      description:
+        "Un gouffre situé dans les falaises côtières près de la ville portugaise de Cascais.",
+    },
+    "capri-marina": {
+      // Clé faisant probablement référence aux Faraglioni d'après la description
+      title: "Plage Luigia ai Faraglioni",
+      location: "Capri, Italie",
+      description:
+        "Située dans la mer Tyrrhénienne, elle occupe la 19ème place parmi les 118 plages de la région napolitaine.",
+    },
+    "paris-hero": {
+      // Clé faisant probablement référence à Versailles d'après la description
+      title: "Versailles – Perle du Baroque",
+      location: "Versailles, France", // Emplacement corrigé
+      alt: "Château de Versailles près de Paris",
+      description:
+        "Versailles est un symbole de la monarchie absolue française et l'un des plus magnifiques exemples d'architecture baroque au monde.",
+    },
+    "naples-view": {
+      title: "Route au bord de la mer Tyrrhénienne",
+      location: "Naples, Italie",
+      alt: "Route au pied d'une montagne",
+    },
+    "naples-mummy": {
+      title: "Moulage d'une victime du Vésuve",
+      location: "Pompéi, Italie",
+      alt: "Victimes de l'éruption du volcan",
+      description:
+        "Les moulages des corps ont été découverts en 1863 par l'archéologue Giuseppe Fiorelli. 'À ce jour, ils n'ont pas été inventoriés pour des raisons éthiques et en raison des sentiments avec lesquels les restes humains ont toujours été traités.'",
+    },
+    "naples-stadion": {
+      title: "Amphithéâtre de Pompéi",
+      location: "Pompéi, Italie",
+      alt: "Partie du stade dans l'ancienne ville de Pompéi",
+      description:
+        "L'Amphithéâtre de Pompéi – un ancien amphithéâtre romain situé à Pompéi. C'est la plus ancienne structure de ce type encore existante.",
+    },
+    "naples-museum": {
+      title: "Petite Dédicace Attalide (Gaulois)",
+      location: "Naples, Italie",
+      alt: "Musée Archéologique National de Naples",
+      description:
+        "Copie du IIe siècle ap. J.-C. d'un original grec du IIe siècle av. J.-C.",
+    },
+    "capri-taras": {
+      title: "Capri près de Marina Piccola",
+      location: "Capri, Italie",
+      alt: "Terrasses à Capri",
+      description:
+        "Une charmante terrasse sur le toit avec des cactus. La plupart des toits des bâtiments à Capri sont plats. Et comme on le voit ci-dessus, des terrasses sont aménagées sur certains de ces bâtiments.",
+    },
+    "capri-street": {
+      title: "Rue commerçante à Capri",
+      location: "Capri, Italie",
+      alt: "Boutiques à Capri",
+      description:
+        "Capri se caractérise par de charmantes rues commerçantes qui partent de la Piazzetta et mènent à travers la Via Camerelle et la Via Le Botteghe.",
+    },
+    "capri-port": {
+      title: "Port de Marina Grande",
+      location: "Capri, Italie",
+      alt: "Yachts amarrés",
+      description:
+        "Les porteurs des principaux hôtels attendent pour prendre vos bagages sur un chariot, et vous pouvez prendre le funiculaire ou un taxi décapotable, car il n'y a pas de circulation automobile à Capri.",
+    },
+    "lisbon-hero": {
+      // Clé faisant probablement référence au Monastère des Hiéronymites d'après la description
+      title: "Monastère des Hiéronymites",
+      location: "Lisbonne, Portugal",
+      alt: "Monastère des Hiéronymites à Belém",
+      description:
+        "Construit dans la première moitié du XVIe siècle, il est considéré comme la perle et la quintessence du style manuélin, un mélange typiquement portugais de gothique et de Renaissance.",
+    },
+    "paris-eiffel": {
+      title: "Tour Eiffel",
+      location: "Paris, France",
+      alt: "Illumination nocturne de la Tour Eiffel à Paris",
+      description:
+        "Le monument architectural le plus célèbre de Paris, considéré comme un symbole de la ville et parfois de toute la France.",
+    },
+    "paris-louvre": {
+      title: "Musée du Louvre",
+      location: "Paris, France",
+      alt: "Ancien palais royal à Paris",
+      description:
+        "L'un des plus grands musées du monde, c'est aussi le musée le plus visité de son genre au niveau mondial.",
+    },
+    "paris-panteon": {
+      title: "Vue du Panthéon depuis la Place du Panthéon",
+      location: "Paris, France",
+      alt: "Le Panthéon depuis la Place du Panthéon",
+      description:
+        "Le Panthéon – un bâtiment dans le Quartier Latin de Paris, érigé à la fin du XVIIIe siècle comme église dédiée à Sainte Geneviève.",
+    },
+    "paris-snails": {
+      title: "Célèbres Escargots Français",
+      location: "Paris, France",
+      alt: "Plat d'escargots",
+      description:
+        "Il est difficile d'imaginer la cuisine française, en particulier le long du Rhône, sans un délicieux escargot dans l'assiette.",
+    },
+    "frankfurt-hero": {
+      // Clé faisant référence à l'Alte Oper d'après la description
+      title: "Ancien Opéra (Alte Oper), Francfort",
+      location: "Francfort-sur-le-Main, Allemagne",
+      alt: "Ancien Opéra (Alte Oper), Francfort",
+      description:
+        "S'élevant au-dessus d'une place pittoresque ornée d'une élégante fontaine se trouve l'Ancien Opéra, arborant une façade de style Renaissance.",
+    },
+    "berlin-gate": {
+      title: "Porte de Brandebourg",
+      location: "Berlin, Allemagne",
+      alt: "Porte de Brandebourg",
+      description:
+        "La Porte de Brandebourg comme symbole de Paix et de Liberté depuis le 3 octobre 1990, anniversaire de la réunification allemande.",
+    },
+    "berlin-museum": {
+      title: "Altes Museum (Ancien Musée)",
+      location: "Berlin, Allemagne",
+      alt: "Altes Museum (Ancien Musée)",
+      description:
+        "Le musée a été construit sur ordre du roi de Prusse Frédéric-Guillaume III pour rendre les collections d'art antique accessibles au grand public.",
+    },
+    "berlin-victory-column": {
+      title: "Colonne de la Victoire (Siegessäule)",
+      location: "Berlin, Allemagne",
+      alt: "Colonne de la Victoire",
+      description:
+        "La colonne située dans le parc Großer Tiergarten à Berlin commémore la victoire de la Prusse sur le Danemark lors de la guerre des Duchés de 1864.",
+    },
+    "berlin-music": {
+      title: "Mémorial Beethoven-Haydn-Mozart",
+      location: "Berlin, Allemagne",
+      alt: "Mémorial aux trois génies musicaux",
+      description:
+        "Un mémorial en plein air aux compositeurs classiques Ludwig van Beethoven, Joseph Haydn et Wolfgang Amadeus Mozart, inauguré en 1904.",
+    },
+    "prague-bridge": {
+      title: "Vue sur la Vltava à Prague",
+      location: "Prague, République Tchèque",
+      alt: "La Vltava à Prague",
+    },
+    "prague-wit": {
+      title: "Trésor de Saint-Guy",
+      location: "Prague, République Tchèque",
+      alt: "Trésor à Prague",
+      description:
+        "Artefacts dans le Trésor de la Cathédrale Saint-Guy au Château de Prague.",
+    },
+    "prague-dance": {
+      title: "Maison Dansante",
+      location: "Prague, République Tchèque",
+      alt: "Ginger et Fred",
+      description:
+        "Un bâtiment avant-gardiste conçu par le couple d'architectes Vlado Milunić et Frank Gehry dans le style déconstructiviste.",
+    },
+    "prague-kafka": {
+      title: "Tête rotative de Franz Kafka",
+      location: "Prague, République Tchèque",
+      alt: "Tête de Franz Kafka",
+      description:
+        "David Černý a conçu cette œuvre d'art controversée pour le bâtiment commercial et de bureaux 'Quadrio' dans la rue Národní třída.",
+    },
+  },
+  // About Section / Section À propos
+  about: {
+    title: "À propos d'EuroTrek",
+    description1:
+      "EuroTrek est un journal photo collectif créé par des étudiants universitaires étudiant à travers l'Europe (initialement axé sur la Pologne). Notre mission est de mettre en valeur la beauté, la culture et les expériences des voyages étudiants à travers une photographie authentique.", // Contexte légèrement ajusté
+    description2:
+      "Cette plateforme sert à la fois d'inspiration pour les futurs étudiants voyageurs et de carnet de souvenirs pour ceux qui ont déjà entrepris leurs aventures européennes. Toutes les photos sont prises par des étudiants, montrant l'Europe à travers un objectif frais et jeune.",
+    pageTitle: "À propos de Notre Voyage",
+    pageDescription1:
+      "EuroTrek est né d'une passion pour la photographie de voyage et d'un désir de capturer les expériences uniques des étudiants explorateurs dans les villes les plus vibrantes d'Europe.",
+    pageDescription2:
+      "Ce qui a commencé comme un petit groupe partageant des photos entre camarades de classe étudiant en Pologne est devenu une plateforme connectant des étudiants photographes de divers pays, origines et disciplines académiques, partageant tous un amour commun pour la découverte et la narration visuelle.",
+    pageDescription3:
+      "Nos contributeurs sont des étudiants comme vous, équilibrant leurs études avec des aventures à travers le continent, capturant des moments authentiques en cours de route.",
+    mission: {
+      title: "Notre Mission",
+      description:
+        "Inspirer les voyages étudiants par le biais d'une narration visuelle authentique et favoriser une communauté de soutien pour les jeunes photographes explorant l'Europe.",
+    },
+    team: {
+      title: "Le Collectif Étudiant",
+      description:
+        "Notre équipe est entièrement composée d'étudiants photographes, rédacteurs et développeurs web d'universités du monde entier. Chaque contributeur apporte sa perspective et son expérience uniques à la plateforme.",
+    },
+    feature1: {
+      title: "Photographes Étudiants",
+      description:
+        "Photos prises par des étudiants en échange du monde entier.",
+    },
+    feature2: {
+      title: "Expériences Authentiques",
+      description:
+        "Moments de voyage réels au-delà des sites touristiques typiques.",
+    },
+    feature3: {
+      title: "Destinations Multiples",
+      description:
+        "Une collection croissante de photos de tout le continent européen.",
+    },
+    image1: {
+      title: "Lisbonne",
+      description: "Monastère des Hiéronymites.",
+    },
+    image2: {
+      title: "Allemagne & France",
+      description: "Un voyage inoubliable à travers l'Allemagne et la France.",
+    },
+    image3: {
+      title: "Naples",
+      description: "Les paysages extraordinaires de Naples.",
+    },
+  },
+  // Featured Section / Section En vedette
+  featured: {
+    title: "En vedette : Le Printemps à Paris",
+    description1:
+      "Paris au printemps est un rêve pour les étudiants photographes. La ville s'anime avec les cerisiers en fleurs, les terrasses de café et une lumière parfaite pour capturer les monuments emblématiques.",
+    description2:
+      "Notre collection en vedette met en valeur la magie de Paris à travers les yeux d'étudiants qui ont passé leur semestre d'échange dans la Ville Lumière.", // Contexte légèrement ajusté
+    exploreLink: "Explorer la Collection Paris",
+    image1Alt: "Tour Eiffel au printemps",
+    image2Alt: "La Seine à Paris",
+    image3Alt: "Terrasse de café parisienne",
+    image4Alt: "Musée du Louvre",
+  },
+  // Contact Section / Section Contact
+  contact: {
+    title: "Contact",
+    description:
+      "Vous avez des questions ou souhaitez soumettre vos propres photos de voyages étudiants ? Nous serions ravis d'avoir de vos nouvelles !",
+    pageTitle: "Nous Contacter",
+    getInTouch: "Comment Pouvons-Nous Vous Aider ?",
+    getInTouchDescription:
+      "Que vous souhaitiez soumettre vos photos de voyage, que vous ayez des questions sur notre plateforme ou que vous vouliez simplement dire bonjour, nous sommes là pour vous aider.",
+    email: {
+      title: "Envoyez-nous un E-mail",
+      description: "Pour les demandes générales et la soumission de photos",
+    },
+    location: {
+      title: "Notre Emplacement",
+      description: "Visitez le siège de notre collectif étudiant",
+      address: "University Creative Hub, European Campus, Amsterdam", // Conservé tel quel, supposant qu'il s'agit d'un nom de lieu spécifique
+    },
+    phone: {
+      title: "Appelez-nous",
+      description: "Disponible en semaine de 10h à 18h HEC", // CET -> HEC (Heure d'Europe Centrale)
+    },
+    form: {
+      name: "Votre Nom",
+      namePlaceholder: "Entrez votre nom",
+      nameError: "Le nom est requis",
+      email: "Votre E-mail",
+      emailPlaceholder: "Entrez votre adresse e-mail",
+      emailError: "Une adresse e-mail valide est requise",
+      subject: "Sujet",
+      subjectPlaceholder: "De quoi souhaitez-vous parler ?",
+      subjectError: "Le sujet est requis",
+      message: "Message",
+      messagePlaceholder: "Écrivez votre message ici...",
+      messageError: "Le message doit contenir au moins 10 caractères",
+      send: "Envoyer le Message",
+      sending: "Envoi...",
+      successTitle: "Message Envoyé !",
+      successMessage:
+        "Merci de nous avoir contactés. Nous vous répondrons bientôt.",
+    },
+  },
+  // Footer / Pied de page
+  footer: {
+    description:
+      "Un voyage visuel à travers l'Europe capturé par l'objectif d'étudiants explorant les plus beaux coins du continent.",
+    quickLinks: "Liens Rapides",
+    resources: "Ressources",
+    parisCollection: "Collection Paris",
+    submitPhotos: "Soumettre des Photos",
+    privacyPolicy: "Politique de Confidentialité",
+    termsOfUse: "Conditions d'Utilisation",
+    accessibility: "Accessibilité",
+    copyright: "Tous droits réservés.",
+    tagline: "Créé avec ❤ par des étudiants, pour des étudiants.",
+    instagram: "Suivez-nous sur Instagram",
+    twitter: "Suivez-nous sur Twitter",
+    facebook: "Suivez-nous sur Facebook",
+    pinterest: "Suivez-nous sur Pinterest",
+  },
+  // Slider Controls / Contrôles du carrousel
+  slider: {
+    previous: "Diapositive précédente",
+    next: "Diapositive suivante",
+    goToSlide: "Aller à la diapositive {{index}}",
+  },
+  // Lightbox / Visionneuse d'images
+  lightbox: {
+    close: "Fermer",
+    previous: "Photo précédente",
+    next: "Photo suivante",
+  },
+  // Theme Toggle / Sélecteur de thème
+  theme: {
+    toggleLight: "Passer en mode clair",
+    toggleDark: "Passer en mode sombre",
+  },
+  // Language / Langue
+  language: {
+    changeLanguage: "Changer de langue",
+  },
+  // Home / Accueil
+  home: {
+    heroAriaLabel: "Destinations en vedette",
+  },
+};
+
+
+-----------------------------------
+
+import { Description } from "@radix-ui/react-toast"; // Mantenendo l'importazione originale
+
+export default {
+  // Common / Comune
+  common: {
+    no_photos_data: "Nessun dato fotografico disponibile.",
+  },
+  // Navbar / Barra di navigazione
+  navbar: {
+    home: "Home",
+    destinations: "Destinazioni",
+    about: "Chi siamo",
+    contact: "Contatti",
+  },
+  // Destinations / Destinazioni
+  destinations: {
+    exploreTitle: "Esplora le Destinazioni",
+    exploreDescription:
+      "Sfoglia la nostra collezione di foto di viaggi studenteschi dalle città più belle d'Europa.",
+    allDestinations: "Tutte le Destinazioni",
+    lisbon: "Lisbona",
+    paris: "Parigi",
+    berlin: "Berlino",
+    capri: "Capri",
+    naples: "Napoli",
+    prague: "Praga",
+    loadMore: "Carica altro",
+    ariaLabel: "Categorie delle destinazioni",
+  },
+  // Hero Slides / Diapositive principali
+  heroSlides: {
+    "paris-hero": {
+      location: "Parigi, Francia",
+      description:
+        "La Città delle Luci attraverso gli occhi di uno studente - catturando il fascino dell'architettura e della cultura parigina.",
+    },
+    "rome-hero": {
+      // La chiave si riferisce a Napoli in base al contenuto originale polacco
+      location: "Napoli, Italia",
+      description:
+        "Napoli è un luogo dove la vita pulsa al ritmo dell'espresso, delle conversazioni per strada e del profumo della pizza appena sfornata che aleggia nella calda aria mediterranea.",
+    },
+    "lisbon-hero": {
+      location: "Lisbona, Portogallo",
+      description:
+        "Lisbona è una città piena di luce, dove le stradine acciottolate si snodano tra case colorate e la vita scorre tranquilla al ritmo del fado e dell'aroma dei 'pasteis de nata' freschi.",
+    },
+    "frankfurt-hero": {
+      // Utilizzando la descrizione più precisa da photos["frankfurt-hero"]
+      location: "Francoforte sul Meno, Germania",
+      description:
+        "Sopra una piazza pittoresca adornata da un'elegante fontana si erge la Vecchia Opera (Alte Oper), che vanta una facciata in stile rinascimentale.",
+    },
+  },
+  // Photos / Foto
+  photos: {
+    view: "Visualizza foto {{title}}",
+    noPhotos: "Non ci sono ancora foto disponibili per questa destinazione.",
+    "paris-sunset": {
+      title: "Tramonto a Parigi",
+      location: "Parigi, Francia",
+      alt: "Torre Eiffel al tramonto a Parigi",
+    },
+    "lisbon-tram": {
+      title: "Vista sul Teatro Nazionale D. Maria II",
+      location: "Lisbona, Portogallo",
+      description:
+        "L'edificio storico del teatro è una delle sale più prestigiose del Portogallo e si trova in Piazza Rossio, nel centro della città.",
+    },
+    "lisbon-belem": {
+      // La chiave probabilmente si riferisce ad Alfama in base alla descrizione
+      title: "Tetti della Città Vecchia",
+      location: "Lisbona, Portogallo",
+      description:
+        "Il quartiere più antico di Lisbona è Alfama, costruito sulla collina sopra il fiume Tago durante la dominazione moresca. È qui che si può sentire l'atmosfera della Lisbona medievale.",
+    },
+    "lisbon-bele": {
+      // La chiave probabilmente si riferisce alla Torre di Belém
+      title: "Torre di Belém",
+      location: "Lisbona, Portogallo",
+      description: "Fortezza medievale affacciata sulla foce del fiume Tago.",
+    },
+    "boca do inferno": {
+      title: "Boca do Inferno",
+      location: "Cascais, Portogallo",
+      description:
+        "Una voragine situata nelle scogliere sul mare vicino alla città portoghese di Cascais.",
+    },
+    "capri-marina": {
+      // La chiave probabilmente si riferisce ai Faraglioni in base alla descrizione
+      title: "Spiaggia Da Luigi ai Faraglioni",
+      location: "Capri, Italia",
+      description:
+        "Situata nel Mar Tirreno, occupa il 19° posto tra le 118 spiagge della regione napoletana.",
+    },
+    "paris-hero": {
+      // La chiave probabilmente si riferisce a Versailles in base alla descrizione
+      title: "Versailles – Perla del Barocco",
+      location: "Versailles, Francia", // Località corretta
+      alt: "Reggia di Versailles vicino a Parigi",
+      description:
+        "Versailles è un simbolo della monarchia assoluta francese e uno degli esempi più magnifici di architettura barocca al mondo.",
+    },
+    "naples-view": {
+      title: "Strada sul Mar Tirreno",
+      location: "Napoli, Italia",
+      alt: "Strada ai piedi di una montagna",
+    },
+    "naples-mummy": {
+      title: "Calco di una vittima del Vesuvio",
+      location: "Pompei, Italia",
+      alt: "Vittime dell'eruzione del vulcano",
+      description:
+        "I calchi dei corpi furono scoperti nel 1863 dall'archeologo Giuseppe Fiorelli. 'Ad oggi, non sono stati inventariati per motivi etici e per i sentimenti con cui sono sempre stati trattati i resti umani.'",
+    },
+    "naples-stadion": {
+      title: "Anfiteatro di Pompei",
+      location: "Pompei, Italia",
+      alt: "Parte dello stadio nell'antica città di Pompei",
+      description:
+        "L'Anfiteatro di Pompei – un antico anfiteatro romano situato a Pompei. È la più antica struttura superstite del suo genere.",
+    },
+    "naples-museum": {
+      title: "Piccolo Donario Pergameno (Galli)",
+      location: "Napoli, Italia",
+      alt: "Museo Archeologico Nazionale di Napoli",
+      description:
+        "Copia del II secolo d.C. da un originale greco del II secolo a.C.",
+    },
+    "capri-taras": {
+      title: "Capri vicino a Marina Piccola",
+      location: "Capri, Italia",
+      alt: "Terrazze a Capri",
+      description:
+        "Un'affascinante terrazza sul tetto con cactus. La maggior parte dei tetti degli edifici a Capri sono piani. E come si vede sopra, su alcuni di questi edifici sono state create delle terrazze.",
+    },
+    "capri-street": {
+      title: "Via dello shopping a Capri",
+      location: "Capri, Italia",
+      alt: "Negozi a Capri",
+      description:
+        "Capri è caratterizzata da affascinanti vie dello shopping che partono dalla Piazzetta e attraversano Via Camerelle e Via Le Botteghe.",
+    },
+    "capri-port": {
+      title: "Porto di Marina Grande",
+      location: "Capri, Italia",
+      alt: "Yacht ormeggiati",
+      description:
+        "I facchini degli hotel principali aspettano per portare i tuoi bagagli su un carrello, e puoi prendere la funicolare o un taxi decappottabile, dato che non c'è traffico automobilistico a Capri.",
+    },
+    "lisbon-hero": {
+      // La chiave probabilmente si riferisce al Monastero dos Jerónimos in base alla descrizione
+      title: "Monastero dos Jerónimos",
+      location: "Lisbona, Portogallo",
+      alt: "Monastero dos Jerónimos a Belém",
+      description:
+        "Costruito nella prima metà del XVI secolo, è considerato la perla e la quintessenza dello stile manuelino, una miscela unicamente portoghese di gotico e rinascimento.",
+    },
+    "paris-eiffel": {
+      title: "Torre Eiffel",
+      location: "Parigi, Francia",
+      alt: "Illuminazione serale della Torre Eiffel a Parigi",
+      description:
+        "Il monumento architettonico più famoso di Parigi, considerato un simbolo della città e talvolta di tutta la Francia.",
+    },
+    "paris-louvre": {
+      title: "Museo del Louvre",
+      location: "Parigi, Francia",
+      alt: "Ex palazzo reale a Parigi",
+      description:
+        "Uno dei musei più grandi del mondo, è anche il museo più visitato del suo genere a livello globale.",
+    },
+    "paris-panteon": {
+      title: "Vista del Panthéon da Place du Panthéon",
+      location: "Parigi, Francia",
+      alt: "Il Panthéon da Place du Panthéon",
+      description:
+        "Il Panthéon – un edificio nel Quartiere Latino di Parigi, eretto alla fine del XVIII secolo come chiesa dedicata a Santa Genoveffa.",
+    },
+    "paris-snails": {
+      title: "Famose Lumache Francesi (Escargots)",
+      location: "Parigi, Francia",
+      alt: "Piatto di lumache",
+      description:
+        "È difficile immaginare la cucina francese, specialmente lungo il Rodano, senza una deliziosa lumaca nel piatto.",
+    },
+    "frankfurt-hero": {
+      // La chiave si riferisce all'Alte Oper in base alla descrizione
+      title: "Vecchia Opera (Alte Oper), Francoforte",
+      location: "Francoforte sul Meno, Germania",
+      alt: "Vecchia Opera (Alte Oper), Francoforte",
+      description:
+        "Sopra una piazza pittoresca adornata da un'elegante fontana si erge la Vecchia Opera, che vanta una facciata in stile rinascimentale.",
+    },
+    "berlin-gate": {
+      title: "Porta di Brandeburgo",
+      location: "Berlino, Germania",
+      alt: "Porta di Brandeburgo",
+      description:
+        "La Porta di Brandeburgo come simbolo di Pace e Libertà dal 3 ottobre 1990, anniversario della riunificazione tedesca.",
+    },
+    "berlin-museum": {
+      title: "Altes Museum (Museo Vecchio)",
+      location: "Berlino, Germania",
+      alt: "Altes Museum (Museo Vecchio)",
+      description:
+        "Il museo fu costruito per ordine del re prussiano Federico Guglielmo III per rendere accessibili al pubblico le collezioni di arte antica.",
+    },
+    "berlin-victory-column": {
+      title: "Colonna della Vittoria (Siegessäule)",
+      location: "Berlino, Germania",
+      alt: "Colonna della Vittoria",
+      description:
+        "La colonna situata nel parco Großer Tiergarten a Berlino commemora la vittoria della Prussia sulla Danimarca nella guerra danese del 1864.",
+    },
+    "berlin-music": {
+      title: "Monumento a Beethoven-Haydn-Mozart",
+      location: "Berlino, Germania",
+      alt: "Monumento ai tre geni della musica",
+      description:
+        "Un monumento all'aperto ai compositori classici Ludwig van Beethoven, Joseph Haydn e Wolfgang Amadeus Mozart, inaugurato nel 1904.",
+    },
+    "prague-bridge": {
+      title: "Vista sul fiume Moldava a Praga",
+      location: "Praga, Repubblica Ceca",
+      alt: "Fiume Moldava a Praga",
+    },
+    "prague-wit": {
+      title: "Tesoro di San Vito",
+      location: "Praga, Repubblica Ceca",
+      alt: "Tesoro a Praga",
+      description:
+        "Manufatti nel Tesoro della Cattedrale di San Vito al Castello di Praga.",
+    },
+    "prague-dance": {
+      title: "Casa Danzante",
+      location: "Praga, Repubblica Ceca",
+      alt: "Ginger e Fred",
+      description:
+        "Un edificio all'avanguardia progettato dalla coppia di architetti Vlado Milunić e Frank Gehry in stile decostruttivista.",
+    },
+    "prague-kafka": {
+      title: "Testa rotante di Franz Kafka",
+      location: "Praga, Repubblica Ceca",
+      alt: "Testa di Franz Kafka",
+      description:
+        "David Černý ha progettato questa controversa opera d'arte per l'edificio commerciale e per uffici 'Quadrio' in via Národní třída.",
+    },
+  },
+  // About Section / Sezione Chi siamo
+  about: {
+    title: "Informazioni su EuroTrek",
+    description1:
+      "EuroTrek è un diario fotografico collettivo creato da studenti universitari che studiano in Europa (originariamente focalizzato sulla Polonia). La nostra missione è mostrare la bellezza, la cultura e le esperienze dei viaggi studenteschi attraverso la fotografia autentica.", // Contesto leggermente modificato
+    description2:
+      "Questa piattaforma funge sia da ispirazione per i futuri studenti viaggiatori che da libro dei ricordi per coloro che hanno già intrapreso le loro avventure europee. Tutte le foto sono scattate da studenti, mostrando l'Europa attraverso un obiettivo fresco e giovanile.",
+    pageTitle: "Riguardo al Nostro Viaggio",
+    pageDescription1:
+      "EuroTrek è nato dalla passione per la fotografia di viaggio e dal desiderio di catturare le esperienze uniche degli studenti esploratori nelle città più vivaci d'Europa.",
+    pageDescription2:
+      "Quello che era iniziato come un piccolo gruppo che condivideva foto tra compagni di classe che studiavano in Polonia è cresciuto fino a diventare una piattaforma che collega studenti fotografi provenienti da diversi paesi, background e discipline accademiche, tutti accomunati dall'amore per la scoperta e la narrazione visiva.",
+    pageDescription3:
+      "I nostri collaboratori sono studenti come te, che bilanciano i loro studi con avventure in tutto il continente, catturando momenti autentici lungo il percorso.",
+    mission: {
+      title: "La Nostra Missione",
+      description:
+        "Ispirare i viaggi studenteschi attraverso un'autentica narrazione visiva e promuovere una comunità di supporto per giovani fotografi che esplorano l'Europa.",
+    },
+    team: {
+      title: "Il Collettivo Studentesco",
+      description:
+        "Il nostro team è composto interamente da studenti fotografi, scrittori e sviluppatori web provenienti da università di tutto il mondo. Ogni collaboratore porta la propria prospettiva ed esperienza uniche alla piattaforma.",
+    },
+    feature1: {
+      title: "Fotografi Studenti",
+      description: "Foto scattate da studenti in scambio da tutto il mondo.",
+    },
+    feature2: {
+      title: "Esperienze Autentiche",
+      description:
+        "Momenti di viaggio reali al di là delle tipiche attrazioni turistiche.",
+    },
+    feature3: {
+      title: "Molteplici Destinazioni",
+      description:
+        "Una collezione crescente di foto da tutto il continente europeo.",
+    },
+    image1: {
+      title: "Lisbona",
+      description: "Monastero dos Jerónimos.",
+    },
+    image2: {
+      title: "Germania & Francia",
+      description: "Un viaggio indimenticabile attraverso Germania e Francia.",
+    },
+    image3: {
+      title: "Napoli",
+      description: "Gli straordinari paesaggi di Napoli.",
+    },
+  },
+  // Featured Section / Sezione In primo piano
+  featured: {
+    title: "In primo piano: Primavera a Parigi",
+    description1:
+      "Parigi in primavera è un sogno per gli studenti fotografi. La città si anima con ciliegi in fiore, caffè all'aperto e una luce perfetta per catturare monumenti iconici.",
+    description2:
+      "La nostra collezione in primo piano mostra la magia di Parigi attraverso gli occhi degli studenti che hanno trascorso il loro semestre di studio all'estero nella Città delle Luci.", // Contesto leggermente modificato
+    exploreLink: "Esplora la Collezione di Parigi",
+    image1Alt: "Torre Eiffel in primavera",
+    image2Alt: "Fiume Senna a Parigi",
+    image3Alt: "Caffè parigino all'aperto",
+    image4Alt: "Museo del Louvre",
+  },
+  // Contact Section / Sezione Contatti
+  contact: {
+    title: "Contatti",
+    description:
+      "Hai domande o vuoi inviare le tue foto di viaggi studenteschi? Ci farebbe piacere sentirti!",
+    pageTitle: "Mettiti in Contatto",
+    getInTouch: "Come Possiamo Aiutarti?",
+    getInTouchDescription:
+      "Sia che tu voglia inviare le tue foto di viaggio, avere domande sulla nostra piattaforma o semplicemente salutare, siamo qui per aiutarti.",
+    email: {
+      title: "Inviaci un'Email",
+      description: "Per richieste generali e invio di foto",
+    },
+    location: {
+      title: "La Nostra Sede",
+      description: "Visita l'hub del nostro collettivo studentesco",
+      address: "University Creative Hub, European Campus, Amsterdam", // Mantenuto com'è, presumendo sia un nome di luogo specifico
+    },
+    phone: {
+      title: "Chiamaci",
+      description: "Disponibile nei giorni feriali dalle 10:00 alle 18:00 CET",
+    },
+    form: {
+      name: "Il Tuo Nome",
+      namePlaceholder: "Inserisci il tuo nome",
+      nameError: "Il nome è obbligatorio",
+      email: "La Tua Email",
+      emailPlaceholder: "Inserisci il tuo indirizzo email",
+      emailError: "È richiesta un'email valida",
+      subject: "Oggetto",
+      subjectPlaceholder: "Di cosa vorresti parlare?",
+      subjectError: "L'oggetto è obbligatorio",
+      message: "Messaggio",
+      messagePlaceholder: "Scrivi qui il tuo messaggio...",
+      messageError: "Il messaggio deve contenere almeno 10 caratteri",
+      send: "Invia Messaggio",
+      sending: "Invio...",
+      successTitle: "Messaggio Inviato!",
+      successMessage: "Grazie per averci contattato. Ti risponderemo presto.",
+    },
+  },
+  // Footer / Piè di pagina
+  footer: {
+    description:
+      "Un viaggio visivo attraverso l'Europa catturato dall'obiettivo di studenti che esplorano gli angoli più belli del continente.",
+    quickLinks: "Link Rapidi",
+    resources: "Risorse",
+    parisCollection: "Collezione di Parigi",
+    submitPhotos: "Invia Foto",
+    privacyPolicy: "Informativa sulla Privacy",
+    termsOfUse: "Termini di Utilizzo",
+    accessibility: "Accessibilità",
+    copyright: "Tutti i diritti riservati.",
+    tagline: "Realizzato con ❤ da studenti, per studenti.",
+    instagram: "Seguici su Instagram",
+    twitter: "Seguici su Twitter",
+    facebook: "Seguici su Facebook",
+    pinterest: "Seguici su Pinterest",
+  },
+  // Slider Controls / Controlli dello slider
+  slider: {
+    previous: "Diapositiva precedente",
+    next: "Diapositiva successiva",
+    goToSlide: "Vai alla diapositiva {{index}}",
+  },
+  // Lightbox / Visualizzatore immagini
+  lightbox: {
+    close: "Chiudi",
+    previous: "Foto precedente",
+    next: "Foto successiva",
+  },
+  // Theme Toggle / Selettore tema
+  theme: {
+    toggleLight: "Passa alla modalità chiara",
+    toggleDark: "Passa alla modalità scura",
+  },
+  // Language / Lingua
+  language: {
+    changeLanguage: "Cambia lingua",
+  },
+  // Home / Pagina iniziale
+  home: {
+    heroAriaLabel: "Destinazioni in primo piano",
+  },
+};
