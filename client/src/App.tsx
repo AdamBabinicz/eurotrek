@@ -131,24 +131,21 @@ function App() {
           </Route>
 
           <Switch>
-            {/* --- TRASY DLA DOMYŚLNEGO JĘZYKA (bez prefiksu) --- */}
             <Route path="/">
               <Home ref={parisSectionRef} />
             </Route>
-            {/* Używamy :lang? jako opcjonalnego parametru */}
-            {/* Ale dla `wouter` lepiej zdefiniować osobne trasy */}
+
             <Route path={`/${localizedSlug("about")}`}>
               <About />
             </Route>
             <Route path={`/${localizedSlug("contact")}`}>
               <Contact />
             </Route>
-            {/* Trasa dla listy podróży w domyślnym języku */}
+
             <Route path={`/${localizedSlug("destinations")}`}>
-              {/* Komponent listy np. DestinationsListPage */}
               <div>Lista Podróży (PL) - (dodaj komponent)</div>
             </Route>
-            <Route path={`/${localizedSlug("destinationDetail")}/:id`}>
+            <Route path={`/${localizedSlug("destinationDetail")}/:slug`}>
               <DestinationPage />
             </Route>
             <Route path={`/${localizedSlug("privacy")}`}>
@@ -173,7 +170,6 @@ function App() {
               <SupportPage />
             </Route>
 
-            {/* --- TRASY Z PREFIKSEM JĘZYKA (:lang) --- */}
             <Route path="/:lang/">
               <Home ref={parisSectionRef} />
             </Route>
@@ -183,12 +179,11 @@ function App() {
             <Route path={`/:lang/${localizedSlug("contact")}`}>
               <Contact />
             </Route>
-            {/* Trasa dla listy podróży w danym języku */}
+
             <Route path={`/:lang/${localizedSlug("destinations")}`}>
-              {/* Komponent listy np. DestinationsListPage */}
               <div>Lista Podróży (:lang) - (dodaj komponent)</div>
             </Route>
-            <Route path={`/:lang/${localizedSlug("destinationDetail")}/:id`}>
+            <Route path={`/:lang/${localizedSlug("destinationDetail")}/:slug`}>
               <DestinationPage />
             </Route>
             <Route path={`/:lang/${localizedSlug("privacy")}`}>
@@ -213,19 +208,17 @@ function App() {
               <SupportPage />
             </Route>
 
-            {/* --- 404 Fallback --- */}
-            {/* Ten Route powinien pasować do wszystkiego innego */}
             <Route>
               <div className="container mx-auto px-4 py-16 text-center min-h-[60vh] flex flex-col justify-center items-center">
                 <h2 className="text-6xl font-bold text-primary mb-4">404</h2>
-                {/* Używamy t() dla tekstu 404 */}
+
                 <p className="text-2xl mb-8">
                   {t(
                     "common.pageNotFound",
                     "Oops! Strona nie została znaleziona."
                   )}
                 </p>
-                {/* Link do strony głównej w aktualnym języku */}
+
                 <Link
                   href={currentLang === defaultLang ? "/" : `/${currentLang}`}
                   className="px-6 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
@@ -237,7 +230,6 @@ function App() {
           </Switch>
         </main>
 
-        {/* Footer teraz może potrzebować dostępu do i18n lub gotowych ścieżek */}
         <Footer onParisLinkClick={scrollToParisFromFooter} />
         <Toaster />
       </div>
