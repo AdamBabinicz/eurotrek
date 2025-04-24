@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useTranslation } from "react-i18next";
-import { Menu, Globe, ChevronDown } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,21 +18,43 @@ import {
 } from "@/components/ui/accordion";
 import ThemeToggle from "./ThemeToggle";
 import LanguageSelector from "./LanguageSelector";
-import { destinations } from "@/data/destinations";
+import { destinations, getSlugForDestination } from "@/data/destinations";
 
 interface NavbarProps {
   currentPath: string;
 }
 
 const Navbar = ({ currentPath }: NavbarProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
+  const defaultLang = "pl";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [, setLocation] = useLocation();
 
+  const createLocalizedPath = (routeKey: string, params = ""): string => {
+    const prefix = currentLang === defaultLang ? "" : `/${currentLang}`;
+    const slug =
+      t(routeKey, { ns: "translation", keyPrefix: "routes" }) || routeKey;
+    if (routeKey === "home") {
+      // Dla języka domyślnego zwróć '/', dla innych sam prefix (np. '/en')
+      return prefix || "/";
+    }
+    const finalSlug = slug ? `/${slug}` : "";
+    return `${prefix}${finalSlug}${params}`;
+  };
+
   const goToHome = () => {
-    setLocation("/");
+    setLocation(createLocalizedPath("home"));
     setIsMobileMenuOpen(false);
     window.scrollTo(0, 0);
+  };
+
+  const isActive = (routeKey: string, params = ""): boolean => {
+    const pathToCheck = createLocalizedPath(routeKey, params);
+
+    if (!params && params !== "/") return currentPath === pathToCheck;
+
+    return currentPath.startsWith(pathToCheck);
   };
 
   return (
@@ -43,7 +65,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
       >
         {/* Logo */}
         <Link
-          href="/"
+          href={createLocalizedPath("home")}
           className="flex items-center gap-2 text-foreground dark:text-primary"
           onClick={goToHome}
         >
@@ -67,16 +89,18 @@ const Navbar = ({ currentPath }: NavbarProps) => {
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
             <div className="mt-8 flex flex-col gap-4">
+              {/* Mobile Home Link */}
               <Link
-                href="/"
+                href={createLocalizedPath("home")}
                 className={`px-2 py-1 rounded-md ${
-                  currentPath === "/" ? "bg-primary/10 text-primary" : ""
+                  isActive("home") ? "bg-primary/10 text-primary" : ""
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t("navbar.home")}
               </Link>
 
+              {/* Mobile Destinations Accordion */}
               <Accordion type="single" collapsible>
                 <AccordionItem value="destinations">
                   <AccordionTrigger>
@@ -84,41 +108,65 @@ const Navbar = ({ currentPath }: NavbarProps) => {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-col space-y-2 pl-4">
-                      {destinations.map((destination) => (
-                        <Link
-                          key={destination.id}
-                          href={`/destination/${destination.id}`}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="px-2 py-1 rounded-md hover:bg-primary/10 hover:text-primary"
-                        >
-                          {t(`destinations.${destination.id}`)}
-                        </Link>
-                      ))}
+                      {destinations.map((destination) => {
+                        const localizedDestinationSlug = getSlugForDestination(
+                          destination.id,
+                          currentLang
+                        );
+
+                        const destinationPath = createLocalizedPath(
+                          "destinationDetail",
+                          `/${localizedDestinationSlug}`
+                        );
+
+                        const destinationName = t(
+                          destination.nameKey ||
+                            `destinations.${destination.id}`
+                        );
+
+                        return (
+                          <Link
+                            key={destination.id}
+                            href={destinationPath}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={`px-2 py-1 rounded-md hover:bg-primary/10 hover:text-primary ${
+                              currentPath.startsWith(destinationPath)
+                                ? "bg-primary/10 text-primary"
+                                : ""
+                            }`}
+                          >
+                            {destinationName}{" "}
+                          </Link>
+                        );
+                      })}
                     </div>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
 
+              {/* Mobile About Link */}
               <Link
-                href="/about"
+                href={createLocalizedPath("about")}
                 className={`px-2 py-1 rounded-md ${
-                  currentPath === "/about" ? "bg-primary/10 text-primary" : ""
+                  isActive("about") ? "bg-primary/10 text-primary" : ""
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t("navbar.about")}
               </Link>
 
+              {/* Mobile Contact Link */}
               <Link
-                href="/contact"
+                href={createLocalizedPath("contact")}
                 className={`px-2 py-1 rounded-md ${
-                  currentPath === "/contact" ? "bg-primary/10 text-primary" : ""
+                  isActive("contact") ? "bg-primary/10 text-primary" : ""
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t("navbar.contact")}
               </Link>
 
+              {/* Mobile Controls */}
               <div className="flex items-center justify-between mt-4">
                 <LanguageSelector />
                 <ThemeToggle />
@@ -130,54 +178,72 @@ const Navbar = ({ currentPath }: NavbarProps) => {
         {/* Desktop menu */}
         <div className="hidden md:flex items-center gap-6">
           <div className="flex gap-6">
+            {/* Desktop Home Link */}
             <Link
-              href="/"
+              href={createLocalizedPath("home")}
               className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
-                currentPath === "/" ? "!text-primary" : ""
+                isActive("home") ? "!text-primary" : ""
               }`}
               onClick={goToHome}
             >
               {t("navbar.home")}
             </Link>
 
+            {/* Desktop Destinations Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors focus:outline-none">
                 {t("navbar.destinations")} <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="center">
-                {destinations.map((destination) => (
-                  <DropdownMenuItem key={destination.id} asChild>
-                    <Link
-                      href={`/destination/${destination.id}`}
-                      className="focus:outline-none focus:bg-accent"
-                    >
-                      {t(`destinations.${destination.id}`)}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
+                {destinations.map((destination) => {
+                  const localizedDestinationSlug = getSlugForDestination(
+                    destination.id,
+                    currentLang
+                  );
+                  const destinationPath = createLocalizedPath(
+                    "destinationDetail",
+                    `/${localizedDestinationSlug}`
+                  );
+                  const destinationName = t(
+                    destination.nameKey || `destinations.${destination.id}`
+                  );
+
+                  return (
+                    <DropdownMenuItem key={destination.id} asChild>
+                      <Link
+                        href={destinationPath}
+                        className="focus:outline-none focus:bg-accent w-full text-left"
+                      >
+                        {destinationName}
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Desktop About Link */}
             <Link
-              href="/about"
+              href={createLocalizedPath("about")}
               className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
-                currentPath === "/about" ? "text-primary" : ""
+                isActive("about") ? "text-primary" : ""
               }`}
             >
               {t("navbar.about")}
             </Link>
 
+            {/* Desktop Contact Link */}
             <Link
-              href="/contact"
+              href={createLocalizedPath("contact")}
               className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
-                currentPath === "/contact" ? "text-primary" : ""
+                isActive("contact") ? "text-primary" : ""
               }`}
             >
               {t("navbar.contact")}
             </Link>
           </div>
 
-          {/* Controls */}
+          {/* Desktop Controls */}
           <div className="flex items-center gap-3">
             <LanguageSelector />
             <ThemeToggle />

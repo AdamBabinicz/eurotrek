@@ -1,32 +1,159 @@
-export const destinations = [
+export interface Destination {
+  id: string;
+  nameKey: string;
+  countryKey: string;
+  slugs: {
+    pl: string;
+    en: string;
+    de: string;
+    es: string;
+    fr: string;
+    it: string;
+    cs: string;
+  };
+}
+
+// Tablica z danymi destynacji
+export const destinations: Destination[] = [
   {
     id: "lisbon",
-    name: "Lisbon",
-    country: "Portugal",
+    nameKey: "destinationsData.lisbon.name",
+    countryKey: "destinationsData.lisbon.country",
+    slugs: {
+      pl: "lizbona",
+      en: "lisbon",
+      de: "lissabon",
+      es: "lisboa",
+      fr: "lisbonne",
+      it: "lisbona",
+      cs: "lisabon",
+    },
   },
   {
     id: "paris",
-    name: "Paris",
-    country: "France",
+    nameKey: "destinationsData.paris.name",
+    countryKey: "destinationsData.paris.country",
+    slugs: {
+      pl: "paryz",
+      en: "paris",
+      de: "paris",
+      es: "paris",
+      fr: "paris",
+      it: "parigi",
+      cs: "pariz",
+    },
   },
   {
     id: "berlin",
-    name: "Berlin",
-    country: "Germany",
+    nameKey: "destinationsData.berlin.name",
+    countryKey: "destinationsData.berlin.country",
+    slugs: {
+      pl: "berlin",
+      en: "berlin",
+      de: "berlin",
+      es: "berlin",
+      fr: "berlin",
+      it: "berlino",
+      cs: "berlin",
+    },
   },
   {
     id: "capri",
-    name: "Capri",
-    country: "Italy",
+    nameKey: "destinationsData.capri.name",
+    countryKey: "destinationsData.capri.country",
+    slugs: {
+      pl: "capri",
+      en: "capri",
+      de: "capri",
+      es: "capri",
+      fr: "capri",
+      it: "capri",
+      cs: "capri",
+    },
   },
   {
     id: "naples",
-    name: "Naples",
-    country: "Italy",
+    nameKey: "destinationsData.naples.name",
+    countryKey: "destinationsData.naples.country",
+    slugs: {
+      pl: "neapol",
+      en: "naples",
+      de: "neapel",
+      es: "napoles",
+      fr: "naples",
+      it: "napoli",
+      cs: "neapol",
+    },
   },
   {
     id: "prague",
-    name: "Prague",
-    country: "Czech Republic",
+    nameKey: "destinationsData.prague.name",
+    countryKey: "destinationsData.prague.country",
+    slugs: {
+      pl: "praga",
+      en: "prague",
+      de: "prag",
+      es: "praga",
+      fr: "prague",
+      it: "praga",
+      cs: "praha",
+    },
   },
 ];
+
+/**
+ * Znajduje destynację na podstawie jej zlokalizowanego slugu i kodu języka.
+ * @param slug - Zlokalizowany slug (np. "lizbona", "paris").
+ * @param lang - Kod języka (np. "pl", "en").
+ * @returns Obiekt Destination lub undefined, jeśli nie znaleziono.
+ */
+
+export const findDestinationBySlug = (
+  slug: string,
+  lang: string
+): Destination | undefined => {
+  const isValidLang = lang in destinations[0].slugs;
+  if (!isValidLang) {
+    console.warn(`Język "${lang}" nie jest obsługiwany w slugach destynacji.`);
+    return undefined;
+  }
+  return destinations.find(
+    (dest) => dest.slugs[lang as keyof Destination["slugs"]] === slug
+  );
+};
+
+/**
+ * Znajduje destynację na podstawie jej unikalnego ID.
+ * @param id - Wewnętrzny identyfikator destynacji (np. "lisbon").
+ * @returns Obiekt Destination lub undefined, jeśli nie znaleziono.
+ */
+
+export const findDestinationById = (id: string): Destination | undefined => {
+  return destinations.find((dest) => dest.id === id);
+};
+
+/**
+ * Pobiera zlokalizowany slug dla danej destynacji i języka.
+ * @param destinationId - Wewnętrzny ID destynacji.
+ * @param lang - Kod języka.
+ * @returns Zlokalizowany slug lub pusty string, jeśli nie znaleziono.
+ */
+
+export const getSlugForDestination = (
+  destinationId: string,
+  lang: string
+): string => {
+  const destination = findDestinationById(destinationId);
+  if (!destination) return "";
+
+  const isValidLang = lang in destination.slugs;
+  if (!isValidLang) {
+    console.warn(
+      `Język "${lang}" nie jest obsługiwany w slugach dla destynacji ID: ${destinationId}. Zwracam domyślny slug 'en'.`
+    );
+
+    return destination.slugs.en || "";
+  }
+
+  return destination.slugs[lang as keyof Destination["slugs"]] || "";
+};

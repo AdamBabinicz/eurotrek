@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react"; // Usunięto nieużywany useState
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "wouter";
+import { Link, useLocation } from "wouter"; // Nadal potrzebujemy useLocation do przekazywania, jeśli jest używane wyżej
 import {
   FaInstagram,
   FaTwitter,
@@ -14,36 +14,48 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
-  const { t } = useTranslation();
-  const [, setLocation] = useLocation(); // Nadal potrzebne do navigateAndScrollTop
+  // Dodano i18n
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
+  const defaultLang = "pl"; // <<<--- ZDEFINIUJ SWÓJ DOMYŚLNY JĘZYK
 
-  // Funkcja do przewijania na górę przy nawigacji Linkiem
+  // --- NOWA FUNKCJA POMOCNICZA DO TWORZENIA URL (taka sama jak w Navbar) ---
+  const createLocalizedPath = (routeKey: string, params = ""): string => {
+    const prefix = currentLang === defaultLang ? "" : `/${currentLang}`;
+    const slug =
+      t(routeKey, { ns: "translation", keyPrefix: "routes" }) || routeKey;
+    if (routeKey === "home") {
+      return prefix || "/";
+    }
+    const finalSlug = slug ? `/${slug}` : "";
+    return `${prefix}${finalSlug}${params}`;
+  };
+
+  // Funkcja do przewijania na górę
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
 
-  // Funkcja używana przez stare linki (Home, About, Contact)
-  const navigateAndScrollTop = (path: string) => {
-    setLocation(path);
-    scrollTop();
-  };
+  // Usunięto navigateAndScrollTop - Link sam nawiguje
 
   // Logika dla #paris - bez zmian
   useEffect(() => {
     if (window.location.hash === "#paris") {
       const element = document.getElementById("paris");
       if (element) {
-        window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+        // Dajemy chwilę na ewentualne renderowanie
+        const timer = setTimeout(() => {
+          window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+        }, 100);
+        return () => clearTimeout(timer);
       }
     }
-  }, []);
+  }, []); // Uruchamiamy tylko raz przy montowaniu komponentu
 
-  // Obsługa przycisku Ustawień Cookies
+  // Obsługa przycisku Ustawień Cookies - bez zmian w logice, użyto t()
   const handleCookieSettings = () => {
-    // !!! WAŻNE: Dostosuj to do API Twojego dostawcy zgody na cookie (np. CookieScript) !!!
     console.warn("Implement Cookie Settings trigger from CookieScript API");
-    alert(t("cookiePolicy.settingsInfoPlaceholder")); // Użyj klucza z tłumaczeń
-    // Przykładowy kod (sprawdź dokumentację CookieScript):
+    alert(t("cookiePolicy.settingsInfoPlaceholder"));
     // if (window.CookieScript && typeof window.CookieScript.instance.show === 'function') {
     //   window.CookieScript.instance.show();
     // }
@@ -63,7 +75,6 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               {t("footer.description")}
             </p>
             <div className="flex gap-4">
-              {/* Ikony Social Media - bez zmian */}
               <a
                 href="https://instagram.com"
                 target="_blank"
@@ -96,7 +107,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-primary transition-colors"
-                aria-label={t("footer.linkedin")}
+                aria-label={t("footer.linkedin")} // Dodano aria-label
               >
                 <FaLinkedin className="h-5 w-5" />
               </a>
@@ -105,38 +116,40 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-primary transition-colors"
-                aria-label={t("footer.messenger")}
+                aria-label={t("footer.messenger")} // Dodano aria-label
               >
                 <FaFacebookMessenger className="h-5 w-5" />
               </a>
             </div>
           </div>
 
-          {/* Sekcja Szybkie Linki (bez zmian w logice nawigacji) */}
+          {/* Sekcja Szybkie Linki (ZAKTUALIZOWANA) */}
           <div>
             <h3 className="font-heading font-bold text-lg mb-4">
               {t("footer.quickLinks")}
             </h3>
             <ul className="space-y-2">
               <li>
+                {/* Używamy createLocalizedPath i scrollTop */}
                 <Link
-                  href="/"
+                  href={createLocalizedPath("home")}
                   className="text-gray-300 hover:text-white transition-colors"
-                  onClick={() => navigateAndScrollTop("/")}
+                  onClick={scrollTop}
                 >
                   {t("navbar.home")}
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/about"
+                  href={createLocalizedPath("about")}
                   className="text-gray-300 hover:text-white transition-colors"
-                  onClick={() => navigateAndScrollTop("/about")}
+                  onClick={scrollTop}
                 >
                   {t("navbar.about")}
                 </Link>
               </li>
               <li>
+                {/* Przycisk do Paryża bez zmian */}
                 <button
                   className="text-gray-300 hover:text-white transition-colors text-left"
                   onClick={onParisLinkClick}
@@ -146,26 +159,35 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href={createLocalizedPath("contact")}
                   className="text-gray-300 hover:text-white transition-colors"
-                  onClick={() => navigateAndScrollTop("/contact")}
+                  onClick={scrollTop}
                 >
                   {t("navbar.contact")}
+                </Link>
+              </li>
+              {/* Dodano link do ogólnej strony podróży */}
+              <li>
+                <Link
+                  href={createLocalizedPath("destinations")}
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={scrollTop}
+                >
+                  {t("navbar.destinations")} {/* Używamy tekstu z navbara */}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Sekcja Zasoby (ZAKTUALIZOWANA o nowe linki) */}
+          {/* Sekcja Zasoby (ZAKTUALIZOWANA) */}
           <div>
             <h3 className="font-heading font-bold text-lg mb-4">
               {t("footer.resources")}
             </h3>
             <ul className="space-y-2">
-              {/* Istniejące linki - dodano onClick={scrollTop} */}
               <li>
                 <Link
-                  href="/privacy-policy"
+                  href={createLocalizedPath("privacy")}
                   className="text-gray-300 hover:text-white transition-colors"
                   onClick={scrollTop}
                 >
@@ -174,7 +196,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               </li>
               <li>
                 <Link
-                  href="/terms-of-use"
+                  href={createLocalizedPath("terms")}
                   className="text-gray-300 hover:text-white transition-colors"
                   onClick={scrollTop}
                 >
@@ -183,17 +205,16 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               </li>
               <li>
                 <Link
-                  href="/accessibility"
+                  href={createLocalizedPath("accessibility")}
                   className="text-gray-300 hover:text-white transition-colors"
                   onClick={scrollTop}
                 >
                   {t("footer.accessibility")}
                 </Link>
               </li>
-              {/* --- NOWE LINKI --- */}
               <li>
                 <Link
-                  href="/cookie-policy"
+                  href={createLocalizedPath("cookiePolicy")}
                   className="text-gray-300 hover:text-white transition-colors"
                   onClick={scrollTop}
                 >
@@ -201,6 +222,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
                 </Link>
               </li>
               <li>
+                {/* Przycisk ustawień cookies bez zmian w logice */}
                 <button
                   onClick={handleCookieSettings}
                   className="text-gray-300 hover:text-white transition-colors text-left w-full"
@@ -210,7 +232,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               </li>
               <li>
                 <Link
-                  href="/faq"
+                  href={createLocalizedPath("faq")}
                   className="text-gray-300 hover:text-white transition-colors"
                   onClick={scrollTop}
                 >
@@ -219,7 +241,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               </li>
               <li>
                 <Link
-                  href="/sitemap"
+                  href={createLocalizedPath("sitemap")}
                   className="text-gray-300 hover:text-white transition-colors"
                   onClick={scrollTop}
                 >
@@ -228,7 +250,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               </li>
               <li>
                 <Link
-                  href="/support"
+                  href={createLocalizedPath("support")}
                   className="text-gray-300 hover:text-white transition-colors"
                   onClick={scrollTop}
                 >

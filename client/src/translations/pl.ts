@@ -10,6 +10,27 @@ export default {
       "Treść tej sekcji jest w przygotowaniu. Wkrótce zostanie uzupełniona.",
     // --- KONIEC DODANYCH ---
   },
+
+  routes: {
+    // --- Główne strony (zgodne z navbar i sitemap) ---
+    home: "",
+    destinations: "podroze",
+    about: "o-nas",
+    contact: "kontakt",
+
+    destinationDetail: "podroz",
+
+    // --- Strony z stopki i nowe sekcje ---
+    faq: "faq",
+    privacy: "polityka-prywatnosci",
+    terms: "regulamin",
+    sitemap: "mapa-strony",
+    accessibility: "dostepnosc",
+    cookiePolicy: "polityka-cookies",
+    support: "pomoc",
+  },
+  // --- KONIEC NOWEJ SEKCJI routes ---
+
   // Navbar
   navbar: {
     home: "Strona główna",
@@ -31,6 +52,14 @@ export default {
     prague: "Praga",
     loadMore: "Załaduj więcej",
     ariaLabel: "Kategorie podróży",
+  },
+  destinationsData: {
+    lisbon: { name: "Lizbona", country: "Portugalia" },
+    paris: { name: "Paryż", country: "Francja" },
+    berlin: { name: "Berlin", country: "Niemcy" },
+    capri: { name: "Capri", country: "Włochy" },
+    naples: { name: "Neapol", country: "Włochy" },
+    prague: { name: "Praga", country: "Czechy" },
   },
   // Hero Slides
   heroSlides: {
@@ -401,7 +430,7 @@ export default {
     heroAriaLabel: "Polecane destynacje",
   },
 
-  // --- DODANE SEKCJE DLA NOWYCH STRON INFORMACYJNYCH (Z WYPEŁNIONYMI OGÓLNYMI TREŚCIAMI) ---
+  // --- DODANE SEKCJE DLA NOWYCH STRON INFORMACYJNYCH
   privacyPolicy: {
     title: "Polityka Prywatności",
     metaDescription: "Przeczytaj politykę prywatności serwisu EuroTrek.",
