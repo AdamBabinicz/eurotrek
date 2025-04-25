@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-// Usunięto import Label, bo używamy FormLabel z react-hook-form
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -38,8 +37,6 @@ const ContactForm = () => {
     email: z.string().email({ message: t("contact.form.emailError") }),
     subject: z.string().min(2, { message: t("contact.form.subjectError") }),
     message: z.string().min(10, { message: t("contact.form.messageError") }),
-    // Możesz dodać pole 'bot-field' do schemy jeśli chcesz je walidować,
-    // ale zwykle dla honeypota nie jest to konieczne.
   });
 
   type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -62,44 +59,38 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Wysłanie danych do Netlify Forms
       const response = await fetch("/", {
-        // Wysyłamy POST na ten sam adres URL strony
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        // Zakoduj dane, dodając nazwę formularza zgodną z atrybutem 'name' i ukrytym polem
+
         body: encode({
-          "form-name": "contact", // Musi zgadzać się z <form name="contact"> i ukrytym polem
-          ...data, // Rozprowadź resztę zwalidowanych danych formularza
+          "form-name": "contact",
+          ...data,
         }),
       });
 
       if (!response.ok) {
-        // Jeśli Netlify zwróci błąd (np. 4xx, 5xx)
         throw new Error(
           `Netlify form submission failed: ${response.status} ${response.statusText}`
         );
       }
 
-      // Sukces - Netlify przyjęło dane
       toast({
         title: t("contact.form.successTitle"),
         description: t("contact.form.successMessage"),
       });
-      form.reset(); // Wyczyszczenie formularza po pomyślnym wysłaniu
+      form.reset();
     } catch (error) {
-      // Obsługa błędów (np. problem z siecią lub błąd zwrócony przez Netlify)
       console.error("Form submission error:", error);
       toast({
-        variant: "destructive", // Użyj wariantu błędu (jeśli zdefiniowany w Twoim systemie toastów)
-        title: t("contact.form.errorTitle", "Submission Error"), // Dodaj tłumaczenie
+        variant: "destructive",
+        title: t("contact.form.errorTitle", "Submission Error"),
         description: t(
           "contact.form.errorMessage",
           "There was a problem submitting your form. Please try again later."
-        ), // Dodaj tłumaczenie
+        ),
       });
     } finally {
-      // Niezależnie od sukcesu czy błędu, zakończ stan ładowania
       setIsSubmitting(false);
     }
   };
@@ -116,32 +107,25 @@ const ContactForm = () => {
             {t("contact.description")}
           </p>
 
-          {/* Komponent Form z react-hook-form zarządza stanem i walidacją */}
           <Form {...form}>
-            {/* Natywny tag form z atrybutami dla Netlify */}
             <form
-              name="contact" // Nazwa formularza dla Netlify (musi pasować do ukrytego pola i 'form-name' w encode)
-              method="POST" // Metoda wymagana przez Netlify Forms
-              data-netlify="true" // Włącza obsługę formularza przez Netlify
-              data-netlify-honeypot="bot-field" // Opcjonalne: Nazwa pola-pułapki na boty
-              onSubmit={form.handleSubmit(onSubmit)} // Użyj handlera z react-hook-form, który wywoła naszą funkcję onSubmit
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-4"
-              noValidate // Wyłącz domyślną walidację przeglądarki, bo używamy react-hook-form/zod
+              noValidate
             >
-              {/* --- Pola wymagane przez Netlify --- */}
-              {/* 1. Ukryte pole informujące Netlify o nazwie formularza */}
               <input type="hidden" name="form-name" value="contact" />
-              {/* 2. Opcjonalne: Pole honeypot (pułapka na boty). Powinno być ukryte dla użytkowników. */}
-              {/*    Stylizacja 'hidden' z Tailwind ukrywa je wizualnie i przed czytnikami ekranu */}
+
               <p className="hidden">
                 <label>
-                  Don’t fill this out if you’re human:{" "}
+                  Don’t fill this out if you’re human:
                   <input name="bot-field" />
                 </label>
               </p>
-              {/* --- Koniec pól Netlify --- */}
 
-              {/* --- Pola formularza widoczne dla użytkownika (renderowane przez react-hook-form) --- */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -150,13 +134,12 @@ const ContactForm = () => {
                     <FormItem>
                       <FormLabel>{t("contact.form.name")}</FormLabel>
                       <FormControl>
-                        {/* Atrybut 'name' w Input jest automatycznie dodawany przez {...field} */}
                         <Input
                           placeholder={t("contact.form.namePlaceholder")}
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage /> {/* Wyświetla błędy walidacji */}
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -214,7 +197,6 @@ const ContactForm = () => {
                   </FormItem>
                 )}
               />
-              {/* --- Koniec pól użytkownika --- */}
 
               <div className="flex justify-center pt-4">
                 <Button
