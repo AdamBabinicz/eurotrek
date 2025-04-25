@@ -27,7 +27,7 @@ const Contact = () => {
                 href="mailto:info@eurotrek.example"
                 className="text-primary mt-2 hover:underline"
               >
-                info@eurotrek.example
+                puaro@vp.pl
               </a>
             </div>
 
