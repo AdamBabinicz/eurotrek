@@ -28,7 +28,7 @@ export const heroImages: HeroImage[] = [
   {
     id: "paris-hero",
     src: "/assets/niemcy-francja/10.avif",
-    alt: "Eiffel Tower in Paris",
+    alt: "Versailles, the Pearl of the Baroque",
     location: "Paris, France",
     description:
       "The city of lights through a student's lens - capturing the magic of Parisian architecture and culture.",
