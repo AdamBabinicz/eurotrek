@@ -55,10 +55,10 @@ export const heroImages: HeroImage[] = [
 export interface Photo {
   id: string;
   src: string;
-  alt: string;
-  title: string;
-  location: string;
-  city: string;
+  alt?: string;
+  title?: string;
+  location?: string;
+  city?: string;
 }
 
 export const photos: Photo[] = [

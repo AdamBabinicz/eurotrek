@@ -212,6 +212,26 @@ export default {
       description:
         "Trudno sobie wyobrazić kuchnię nad Sekwaną, a szczególnie nad Rodanem, bez pysznego ślimaka na talerzu.",
     },
+    "paris-1": {
+      alt: "Widok na Narodową Bibliotekę wiosną",
+      title: "Narodowa Biblioteka Francji, oddział Richelieu, sala Owalna",
+      location: "Paryż, Francja",
+    },
+    "paris-2": {
+      alt: "Wersal, Świątynia miłości",
+      title: "Wersal, Świątynia miłości",
+      location: "Wersal, Francja",
+    },
+    "paris-3": {
+      alt: "Ogród francuski",
+      title: "Wspaniałe historyczne ogrody",
+      location: "Paryż, Francja",
+    },
+    "paris-4": {
+      alt: "Tańczący Faun",
+      title: "Rzymski mityczny bóg lasu i zaczarowanych kniei",
+      location: "Paryż, Francja",
+    },
     "frankfurt-hero": {
       title: "Stara Opera (Alte Oper), Frankfurt",
       location: "Frankfurt nad Menem, Niemcy",
