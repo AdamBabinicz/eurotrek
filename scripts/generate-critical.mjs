@@ -1,60 +1,69 @@
 import { generate } from "critical";
-import { glob } from "glob"; // Do znalezienia plików HTML
+import { glob } from "glob";
 import path from "path";
-import fs from "fs/promises"; // Do odczytu/zapisu plików
+import fs from "fs/promises";
 
 // --- Konfiguracja Ścieżek (DOSTOSUJ!) ---
-// Zakładamy, że budujesz do folderu 'dist' w głównym katalogu projektu
-// a plik vite.config.ts i package.json są też w głównym katalogu
+// Folder wyjściowy (zakładamy, że 'dist' jest w głównym katalogu)
 const buildOutputDir = path.resolve(process.cwd(), "dist");
-const baseHref = "/"; // Jeśli Twoja strona jest w podfolderze, zmień to
+// Ścieżka do folderu public wewnątrz dist
+const publicDirInDist = path.join(buildOutputDir, "public");
 // ------------------------------------
 
 async function runCritical() {
   console.log("Starting critical CSS generation...");
 
   try {
-    // Znajdź pliki HTML w folderze wyjściowym
+    // Znajdź pliki HTML w folderze 'dist/public' (dostosowane)
     const htmlFiles = await glob("**/*.html", {
-      cwd: buildOutputDir,
+      cwd: publicDirInDist,
       absolute: true,
     });
 
     if (htmlFiles.length === 0) {
       console.warn(
         "No HTML files found in build output directory:",
-        buildOutputDir
+        publicDirInDist
       );
       return;
     }
 
     console.log(`Found HTML files: ${htmlFiles.join(", ")}`);
 
-    // Przetwórz każdy znaleziony plik HTML
     for (const htmlFile of htmlFiles) {
-      const relativePath = path.relative(buildOutputDir, htmlFile);
-      console.log(`Processing: ${relativePath}`);
+      const relativePath = path.relative(buildOutputDir, htmlFile); // Ścieżka względna do 'dist'
+      console.log(`Processing: ${relativePath}`); // Powinno pokazać np. public/index.html
 
-      // Odczytaj oryginalny HTML
       const originalHtml = await fs.readFile(htmlFile, "utf-8");
 
-      // Opcje dla biblioteki 'critical'
+      // --- Poprawiony wzorzec CSS ---
+      // Wskazujemy na folder dist/public/assets
+      const cssPattern = path.join(publicDirInDist, "assets", "*.css");
+      // Można też podać obie ścieżki jawnie, jeśli wiesz które są istotne:
+      // const cssFiles = [
+      //   path.join(publicDirInDist, 'assets', 'index-C-bDfRjd.css'),
+      //   path.join(publicDirInDist, 'assets', 'index-DG8hUzto.css'),
+      // ];
+
+      console.log(`Using CSS pattern: ${cssPattern}`);
+
       const criticalConfig = {
-        base: buildOutputDir, // Katalog bazowy dla zasobów
-        html: originalHtml, // Oryginalna zawartość HTML
-        css: [`${buildOutputDir}/assets/*.css`], // Wzorzec do znalezienia CSS (dostosuj, jeśli Vite generuje inaczej)
-        width: 1300, // Przykładowa szerokość viewportu
-        height: 900, // Przykładowa wysokość viewportu
-        inline: true, // Wstrzyknij krytyczny CSS
-        extract: false, // Nie twórz osobnego pliku dla krytycznego CSS
-        // Możesz dodać więcej opcji 'critical' tutaj, np. ignore
-        // Zobacz: https://github.com/addyosmani/critical#options
+        base: publicDirInDist, // Katalog bazowy zmieniony na dist/public
+        html: originalHtml,
+        css: [cssPattern], // Używamy wzorca lub tablicy cssFiles
+        width: 1300,
+        height: 900,
+        inline: true,
+        extract: false,
+        // Opcja 'ignore': Możesz spróbować zignorować jeden z plików CSS,
+        // jeśli wiesz, że zawiera tylko niekrytyczne style (np. dla animacji, ikon)
+        // ignore: ['@font-face', /url\(/, path.join(publicDirInDist, 'assets', 'index-DG8hUzto.css')]
       };
 
       // Generuj krytyczny CSS
       const { html: criticalHtml } = await generate(criticalConfig);
 
-      // Zapisz zmodyfikowany HTML z wstrzykniętym CSS
+      // Zapisz zmodyfikowany HTML
       await fs.writeFile(htmlFile, criticalHtml, "utf-8");
       console.log(`Successfully generated critical CSS for: ${relativePath}`);
     }
@@ -62,7 +71,7 @@ async function runCritical() {
     console.log("Critical CSS generation finished successfully.");
   } catch (error) {
     console.error("Error during critical CSS generation:", error);
-    process.exit(1); // Zakończ z błędem
+    process.exit(1);
   }
 }
 
