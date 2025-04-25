@@ -220,6 +220,26 @@ export default {
       description:
         "It's hard to imagine cuisine on the Seine, and especially on the Rhône, without a delicious snail on the plate.",
     },
+    "paris-1": {
+      alt: "View of the National Library in spring",
+      title: "National Library of France, Richelieu site, Oval Room",
+      location: "Paris, France",
+    },
+    "paris-2": {
+      alt: "Versailles, Temple of Love",
+      title: "Versailles, Temple of Love",
+      location: "Versailles, France",
+    },
+    "paris-3": {
+      alt: "French garden",
+      title: "Magnificent historic gardens",
+      location: "Paris, France",
+    },
+    "paris-4": {
+      alt: "Dancing Faun",
+      title: "Roman mythical god of the forest and enchanted groves",
+      location: "Paris, France",
+    },
     "frankfurt-hero": {
       // Duplicate key as in original pl.ts
       title: "Old Opera House (Alte Oper), Frankfurt",

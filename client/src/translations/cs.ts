@@ -220,6 +220,27 @@ export default {
       description:
         "Je těžké si představit kuchyni na Seině, a zejména na Rhôně, bez lahodného šneka na talíři.",
     },
+    "paris-1": {
+      alt: "Pohled na Národní knihovnu na jaře",
+      title: "Národní knihovna Francie, pobočka Richelieu, Oválný sál",
+      location: "Paříž, Francie",
+    },
+    "paris-2": {
+      alt: "Versailles, Chrám lásky",
+      title: "Versailles, Chrám lásky",
+      location: "Versailles, Francie",
+    },
+    "paris-3": {
+      alt: "Francouzská zahrada",
+      title: "Nádherné historické zahrady",
+      location: "Paříž, Francie",
+    },
+    "paris-4": {
+      alt: "Tančící Faun",
+      title: "Římský mytický bůh lesa a začarovaných hvozdů",
+      location: "Paříž, Francie",
+    },
+
     "frankfurt-hero": {
       // Duplicitní klíč jako v původním pl.ts
       title: "Stará opera (Alte Oper), Frankfurt",

@@ -220,6 +220,26 @@ export default {
       description:
         "Difficile d'imaginer la cuisine de la Seine, et surtout celle du Rhône, sans un délicieux escargot dans l'assiette.",
     },
+    "paris-1": {
+      alt: "Vue sur la Bibliothèque Nationale au printemps",
+      title: "Bibliothèque Nationale de France, site Richelieu, Salle Ovale",
+      location: "Paris, France",
+    },
+    "paris-2": {
+      alt: "Versailles, Temple de l'Amour",
+      title: "Versailles, Temple de l'Amour",
+      location: "Versailles, France",
+    },
+    "paris-3": {
+      alt: "Jardin à la française",
+      title: "Magnifiques jardins historiques",
+      location: "Paris, France",
+    },
+    "paris-4": {
+      alt: "Faune dansant",
+      title: "Dieu mythique romain de la forêt et des bosquets enchantés",
+      location: "Paris, France",
+    },
     "frankfurt-hero": {
       // Clé dupliquée comme dans pl.ts original
       title: "Alte Oper (Ancien Opéra), Francfort",

@@ -179,6 +179,26 @@ export default {
       description:
         "È difficile immaginare la cucina della Senna, e specialmente quella del Rodano, senza una deliziosa lumaca nel piatto.",
     },
+    "paris-1": {
+      alt: "Veduta della Biblioteca Nazionale in primavera",
+      title: "Biblioteca Nazionale di Francia, sede Richelieu, Sala Ovale",
+      location: "Parigi, Francia",
+    },
+    "paris-2": {
+      alt: "Versailles, Tempio dell'Amore",
+      title: "Versailles, Tempio dell'Amore",
+      location: "Versailles, Francia",
+    },
+    "paris-3": {
+      alt: "Giardino alla francese",
+      title: "Magnifici giardini storici",
+      location: "Parigi, Francia",
+    },
+    "paris-4": {
+      alt: "Fauno danzante",
+      title: "Mitico dio romano della foresta e dei boschi incantati",
+      location: "Parigi, Francia",
+    },
     "frankfurt-hero": {
       // Chiave duplicata come nell'originale pl.ts
       title: "Alte Oper (Vecchia Opera), Francoforte",

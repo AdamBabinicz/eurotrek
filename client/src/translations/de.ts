@@ -221,6 +221,27 @@ export default {
       description:
         "Es ist schwer, sich die Küche an der Seine, und besonders an der Rhône, ohne eine köstliche Schnecke auf dem Teller vorzustellen.",
     },
+    "paris-1": {
+      alt: "Blick auf die Nationalbibliothek im Frühling",
+      title:
+        "Nationalbibliothek von Frankreich, Standort Richelieu, Ovaler Saal",
+      location: "Paris, Frankreich",
+    },
+    "paris-2": {
+      alt: "Versailles, Tempel der Liebe",
+      title: "Versailles, Tempel der Liebe",
+      location: "Versailles, Frankreich",
+    },
+    "paris-3": {
+      alt: "Französischer Garten",
+      title: "Prächtige historische Gärten",
+      location: "Paris, Frankreich",
+    },
+    "paris-4": {
+      alt: "Tanzender Faun",
+      title: "Römischer mythischer Gott des Waldes und der verwunschenen Haine",
+      location: "Paris, Frankreich",
+    },
     "frankfurt-hero": {
       // Duplizierter Schlüssel wie im Original pl.ts
       title: "Alte Oper, Frankfurt",

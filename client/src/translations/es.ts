@@ -221,6 +221,26 @@ export default {
       description:
         "Es difícil imaginar la cocina del Sena, y especialmente la del Ródano, sin un delicioso caracol en el plato.",
     },
+    "paris-1": {
+      alt: "Vista de la Biblioteca Nacional en primavera",
+      title: "Biblioteca Nacional de Francia, sede Richelieu, Sala Oval",
+      location: "París, Francia",
+    },
+    "paris-2": {
+      alt: "Versalles, Templo del Amor",
+      title: "Versalles, Templo del Amor",
+      location: "Versalles, Francia",
+    },
+    "paris-3": {
+      alt: "Jardín francés",
+      title: "Magníficos jardines históricos",
+      location: "París, Francia",
+    },
+    "paris-4": {
+      alt: "Fauno danzante",
+      title: "Dios mítico romano del bosque y de las arboledas encantadas",
+      location: "París, Francia",
+    },
     "frankfurt-hero": {
       // Clave duplicada como en pl.ts original
       title: "Alte Oper (Antigua Ópera), Fráncfort",
