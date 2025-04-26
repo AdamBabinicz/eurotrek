@@ -1,4 +1,4 @@
-import { Description } from "@radix-ui/react-toast";
+import { Description } from "@radix-ui/react-toast"; // Mantenuto come richiesto, sebbene non utilizzato
 
 export default {
   // Common - Comune
@@ -6,34 +6,32 @@ export default {
     no_photos_data: "Nessun dato fotografico disponibile.",
     lastUpdated: "Ultimo aggiornamento",
     placeholderContent:
-      "Il contenuto di questa sezione è attualmente in preparazione. Verrà aggiornato presto.",
+      "Il contenuto di questa sezione è in preparazione. Verrà aggiornato presto.",
   },
 
-  // Routes - Percorsi (Slug URL)
   routes: {
     home: "",
-    destinations: "viaggi",
-    about: "chi-siamo",
-    contact: "contatti",
-    destinationDetail: "viaggio",
-    faq: "faq",
-    privacy: "informativa-privacy",
-    terms: "termini-uso",
-    sitemap: "mappa-sito",
-    accessibility: "accessibilita",
-    cookiePolicy: "informativa-cookie",
-    support: "supporto",
+    destinations: "viaggi", // Percorso esempio
+    about: "chi-siamo", // Percorso esempio
+    contact: "contatti", // Percorso esempio
+    destinationDetail: "viaggio", // Percorso esempio
+    faq: "faq", // Percorso esempio
+    privacy: "informativa-privacy", // Percorso esempio
+    terms: "termini-uso", // Percorso esempio
+    sitemap: "mappa-sito", // Percorso esempio
+    accessibility: "accessibilita", // Percorso esempio
+    cookiePolicy: "informativa-cookie", // Percorso esempio
+    support: "supporto", // Percorso esempio
   },
 
-  // Navbar - Navigazione
+  // Navbar - Barra di navigazione
   navbar: {
     home: "Home",
     destinations: "Viaggi",
-    about: "Chi Siamo",
+    about: "Chi siamo",
     contact: "Contatti",
   },
-
-  // Destinations - Destinazioni (Testi UI)
+  // Destinations - Destinazioni
   destinations: {
     exploreTitle: "Scopri i Viaggi",
     exploreDescription:
@@ -47,11 +45,44 @@ export default {
     prague: "Praga",
     loadMore: "Carica altro",
     ariaLabel: "Categorie di viaggio",
+    noMorePhotos: "Non ci sono più foto da caricare per questa categoria.",
   },
-
+  destinationsData: {
+    lisbon: { name: "Lisbona", country: "Portogallo" },
+    paris: { name: "Parigi", country: "Francia" },
+    berlin: { name: "Berlino", country: "Germania" },
+    capri: { name: "Capri", country: "Italia" },
+    naples: { name: "Napoli", country: "Italia" },
+    prague: { name: "Praga", country: "Repubblica Ceca" },
+  },
+  // Hero Slides - Slide principali
+  heroSlides: {
+    "paris-hero": {
+      location: "Parigi, Francia",
+      description:
+        "La città delle luci attraverso l'obiettivo di uno studente - catturare il fascino dell'architettura e della cultura parigina.",
+    },
+    "rome-hero": {
+      // Nota: pl.ts ha Napoli qui, non Roma. Traducendo il contesto di Napoli.
+      location: "Napoli, Italia",
+      description:
+        "Napoli è un luogo dove la vita scorre al ritmo dell'espresso, delle conversazioni per strada e dell'odore della pizza appena sfornata che aleggia nella calda aria mediterranea.",
+    },
+    "lisbon-hero": {
+      location: "Lisbona, Portogallo",
+      description:
+        "Lisbona è una città piena di luce, dove i vicoli acciottolati si snodano tra case colorate e la vita scorre tranquilla al ritmo del fado e dell'aroma dei 'pasteis de nata' freschi.",
+    },
+    "frankfurt-hero": {
+      location: "Francoforte sul Meno, Germania",
+      description:
+        // Nota: pl.ts ha copiato qui la descrizione di Lisbona. Traducendo quel testo.
+        "Lisbona è una città piena di luce, dove i vicoli acciottolati si snodano tra case colorate e la vita scorre tranquilla al ritmo del fado e dell'aroma dei 'pasteis de nata' freschi.",
+    },
+  },
   // Photos - Foto
   photos: {
-    view: "Visualizza foto {{title}}",
+    view: "Guarda la foto {{title}}",
     noPhotos: "Non ci sono ancora foto disponibili per questo viaggio.",
     "paris-sunset": {
       title: "Tramonto a Parigi",
@@ -68,55 +99,55 @@ export default {
       title: "Tetti della Città Vecchia",
       location: "Lisbona, Portogallo",
       description:
-        "Il quartiere più antico di Lisbona è Alfama, costruito sulla collina sopra il Tago durante il dominio moresco. È qui che si può sentire l'atmosfera della Lisbona medievale.",
+        "Il quartiere più antico di Lisbona è Alfama, costruito sul pendio sopra il Tago durante la dominazione moresca. È qui che si può sentire l'atmosfera della Lisbona medievale.",
     },
     "lisbon-bele": {
       title: "Torre di Belém",
       location: "Lisbona, Portogallo",
-      description: "Fortezza medievale con vista sulla foce del fiume Tago",
+      description: "Fortezza medievale con vista sulla foce del fiume Tago.",
     },
     "boca do inferno": {
       title: "Bocca dell'Inferno",
       location: "Cascais, Portogallo",
       description:
-        "Una voragine situata nelle scogliere costiere vicino alla città portoghese di Cascais",
+        "Una voragine situata nelle scogliere costiere vicino alla città portoghese di Cascais.",
     },
     "capri-marina": {
-      title: "Spiaggia Luigia ai Faraglioni",
+      title: "Spiaggia da Luigi ai Faraglioni", // Assumendo nome comune
       location: "Capri, Italia",
       description:
         "Situata nel Mar Tirreno, occupa il 19° posto tra le 118 spiagge della regione napoletana.",
     },
     "paris-hero": {
-      // Chiave duplicata come nell'originale pl.ts
+      // Nota: Potenziale conflitto di ID con heroSlides
       title: "Versailles – Perla del Barocco",
-      location: "Parigi, Francia",
-      alt: "Palazzo di Versailles vicino a Parigi",
+      location: "Parigi, Francia", // Dovrebbe essere Versailles?
+      alt: "Reggia di Versailles vicino a Parigi",
       description:
-        "Versailles è un simbolo della monarchia assoluta francese e uno degli esempi più magnifici dell'architettura barocca al mondo.",
+        "Versailles è un simbolo della monarchia assoluta francese e uno dei più magnifici esempi di architettura barocca al mondo.",
     },
     "naples-view": {
       title: "Strada sul Mar Tirreno",
       location: "Napoli, Italia",
       alt: "Strada ai piedi della montagna",
-      description: "Un percorso pittoresco lungo la costa.",
+      description: "Percorso pittoresco lungo la costa.",
     },
     "naples-mummy": {
       title: "Calco di una vittima del Vesuvio",
       location: "Pompei, Italia",
-      alt: "Vittime dell'eruzione vulcanica",
+      alt: "Vittime dell'eruzione del vulcano",
       description:
-        "I calchi dei corpi furono recuperati nel 1863 dall'archeologo Giuseppe Fiorelli. 'Fino ad oggi non sono stati inventariati per motivi etici e per la sensibilità sempre riservata ai resti umani.'",
+        "I calchi dei corpi furono recuperati nel 1863 dall'archeologo Giuseppe Fiorelli. 'Fino ad oggi non sono stati inventariati per motivi etici e per i sentimenti con cui sono sempre stati trattati i resti umani.'",
     },
     "naples-stadion": {
       title: "Anfiteatro di Pompei",
       location: "Pompei, Italia",
       alt: "Parte dello stadio nell'antica città di Pompei",
       description:
-        "L'Anfiteatro di Pompei – un antico anfiteatro romano, situato a Pompei. È la più antica struttura del suo genere conservata.",
+        "L'Anfiteatro di Pompei – un antico anfiteatro romano, situato a Pompei. È la struttura più antica conservata di questo tipo.",
     },
     "naples-museum": {
-      title: "Piccolo Donario Pergameno",
+      title: "Piccolo donario pergameno", // Termine comune per il gruppo statuario
       location: "Napoli, Italia",
       alt: "Museo Archeologico Nazionale di Napoli",
       description:
@@ -127,36 +158,36 @@ export default {
       location: "Capri, Italia",
       alt: "Terrazze a Capri",
       description:
-        "Un'incantevole terrazza sul tetto con cactus. La maggior parte dei tetti degli edifici a Capri è piatta. E come si vede sopra, su alcuni di questi edifici sono state allestite terrazze.",
+        "Un'incantevole terrazza sul tetto con cactus. La maggior parte dei tetti degli edifici a Capri è piatta. E come si vede sopra, su alcuni di questi edifici sono state create delle terrazze.",
     },
     "capri-street": {
       title: "Via dello shopping a Capri",
       location: "Capri, Italia",
       alt: "Negozi a Capri",
       description:
-        "Capri è caratterizzata da affascinanti vie dello shopping che partono dalla Piazzetta e si snodano attraverso Via Camerelle e Via Le Botteghe.",
+        "Capri è caratterizzata da affascinanti vie dello shopping che partono dalla Piazzetta e conducono attraverso Via Camerelle e Via Le Botteghe.",
     },
     "capri-port": {
-      title: "Porto di Marina Grande",
+      title: "Porto a Marina Grande",
       location: "Capri, Italia",
       alt: "Yacht ormeggiati",
       description:
-        "I portabagagli degli hotel principali aspettano per portare i tuoi bagagli su un carrello, e puoi prendere la funicolare o un taxi cabriolet, poiché a Capri non c'è traffico automobilistico.",
+        "I portabagagli degli hotel principali aspettano per prendere i bagagli su un carrello, e tu puoi prendere la funicolare o un taxi decappottabile, poiché a Capri non c'è traffico automobilistico.",
     },
     "lisbon-hero": {
-      // Chiave duplicata come in pl.ts originale
+      // Nota: Potenziale conflitto di ID con heroSlides
       title: "Monastero dos Jerónimos",
       location: "Lisbona, Portogallo",
       alt: "Monastero dos Jerónimos a Belém",
       description:
-        "Costruito nella prima metà del XVI secolo, è considerato una perla e la quintessenza dello stile manuelino, una specifica miscela portoghese di gotico e rinascimento.",
+        "Costruito nella prima metà del XVI secolo, è considerato la perla e la quintessenza dello stile manuelino, una specifica combinazione portoghese di gotico e rinascimento.",
     },
     "paris-eiffel": {
       title: "Torre Eiffel",
       location: "Parigi, Francia",
       alt: "Illuminazione serale della Torre Eiffel a Parigi",
       description:
-        "Il monumento architettonico più famoso di Parigi, considerato un simbolo della città e talvolta dell'intera Francia.",
+        "Il monumento architettonico più famoso di Parigi, riconosciuto come simbolo di questa città e talvolta di tutta la Francia.",
     },
     "paris-louvre": {
       title: "Museo del Louvre",
@@ -177,16 +208,16 @@ export default {
       location: "Parigi, Francia",
       alt: "Piatto di lumache",
       description:
-        "È difficile immaginare la cucina della Senna, e specialmente quella del Rodano, senza una deliziosa lumaca nel piatto.",
+        "È difficile immaginare la cucina sulla Senna, e soprattutto sul Rodano, senza una deliziosa lumaca nel piatto.",
     },
     "paris-1": {
-      alt: "Veduta della Biblioteca Nazionale in primavera",
-      title: "Biblioteca Nazionale di Francia, sede Richelieu, Sala Ovale",
+      alt: "Vista sulla Biblioteca Nazionale in primavera",
+      title: "Biblioteca Nazionale di Francia, sito Richelieu, Sala Ovale",
       location: "Parigi, Francia",
     },
     "paris-2": {
-      alt: "Versailles, Tempio dell'Amore",
-      title: "Versailles, Tempio dell'Amore",
+      alt: "Versailles, Tempio dell'amore",
+      title: "Versailles, Tempio dell'amore",
       location: "Versailles, Francia",
     },
     "paris-3": {
@@ -196,16 +227,16 @@ export default {
     },
     "paris-4": {
       alt: "Fauno danzante",
-      title: "Mitico dio romano della foresta e dei boschi incantati",
+      title: "Dio mitico romano della foresta e dei boschi incantati",
       location: "Parigi, Francia",
     },
     "frankfurt-hero": {
-      // Chiave duplicata come nell'originale pl.ts
+      // Nota: Potenziale conflitto di ID con heroSlides
       title: "Alte Oper (Vecchia Opera), Francoforte",
       location: "Francoforte sul Meno, Germania",
       alt: "Alte Oper (Vecchia Opera), Francoforte",
       description:
-        "Sopra una pittoresca piazza adornata da un'elegante fontana si erge l'Opera, che presenta una facciata in stile rinascimentale.",
+        "Sopra una pittoresca piazza adornata da un'elegante fontana si erge l'Opera, con una facciata in stile rinascimentale.",
     },
     "berlin-gate": {
       title: "Porta di Brandeburgo",
@@ -217,30 +248,30 @@ export default {
     "berlin-museum": {
       title: "Altes Museum (Museo Vecchio)",
       location: "Berlino, Germania",
-      alt: "Altes Museum (Museo Vecchio)",
+      alt: "Altes Museum",
       description:
-        "Il museo fu costruito per rendere accessibili al grande pubblico le collezioni di arte antica, su commissione del re prussiano Federico Guglielmo III.",
+        "Il museo fu costruito con l'obiettivo di rendere accessibili al grande pubblico le collezioni di arte antica, su ordine del re prussiano Federico Guglielmo III.",
     },
     "berlin-victory-column": {
-      title: "Colonna della Vittoria",
+      title: "Colonna della Vittoria (Siegessäule)",
       location: "Berlino, Germania",
       alt: "Colonna della Vittoria",
       description:
-        "Una colonna situata nel parco Großer Tiergarten a Berlino che commemora la vittoria della Prussia sulla Danimarca nella guerra dello Schleswig del 1864.",
+        "La colonna situata nel parco Großer Tiergarten a Berlino commemora la vittoria della Prussia sulla Danimarca nella guerra danese del 1864.",
     },
     "berlin-music": {
-      title: "Memoriale Beethoven-Haydn-Mozart",
+      title: "Monumento a Beethoven, Haydn e Mozart",
       location: "Berlino, Germania",
-      alt: "Memoriale ai tre geni musicali",
+      alt: "Monumento ai tre geni musicali",
       description:
-        "Un memoriale all'aperto ai compositori classici Ludwig van Beethoven, Joseph Haydn e Wolfgang Amadeus Mozart, creato nel 1904.",
+        "Monumento all'aperto ai compositori classici: Ludwig van Beethoven, Joseph Haydn e Wolfgang Amadeus Mozart, eretto nel 1904.",
     },
     "prague-bridge": {
-      title: "Vista sulla Moldava a Praga",
+      title: "Vista sul fiume Moldava a Praga",
       location: "Praga, Repubblica Ceca",
       alt: "Fiume Moldava a Praga",
       description:
-        "Tutta Praga si specchia nella Moldava e le sorride, come a uno specchio magico.",
+        "Tutta Praga si specchia nella Moldava e le si ingrazia, come a uno specchio magico.",
     },
     "prague-wit": {
       title: "Tesoro di San Vito",
@@ -254,59 +285,51 @@ export default {
       location: "Praga, Repubblica Ceca",
       alt: "Ginger e Fred",
       description:
-        "Un edificio all'avanguardia progettato dalla coppia di architetti Vlado Milunić e Frank Gehry in stile decostruttivista.",
+        "Edificio all'avanguardia progettato dalla coppia di architetti Vlado Milunić e Frank Gehry in stile decostruttivista.",
     },
     "prague-kafka": {
       title: "Testa rotante di Franz Kafka",
       location: "Praga, Repubblica Ceca",
       alt: "Testa di Franz Kafka",
       description:
-        "David Černý ha progettato questa controversa opera d'arte per l'edificio commerciale e direzionale 'Quadrio' in via Národní třída.",
+        "David Černý ha progettato questa controversa opera d'arte per l'edificio commerciale e per uffici 'Quadrio' in via Národní třída.",
     },
-  }, // <<<--- TUTAJ BRAKOWAŁO PRZECINKA
-  destinationsData: {
-    lisbon: { name: "Lisbona", country: "Portogallo" },
-    paris: { name: "Parigi", country: "Francia" },
-    berlin: { name: "Berlino", country: "Germania" },
-    capri: { name: "Capri", country: "Italia" },
-    naples: { name: "Napoli", country: "Italia" },
-    prague: { name: "Praga", country: "Repubblica Ceca" },
   },
-
-  // About Section - Chi Siamo
+  // About Section - Chi siamo
   about: {
-    title: "Riguardo a EuroTrek",
+    title: "Su EuroTrek",
     description1:
       "EuroTrek è un diario fotografico collettivo creato da studenti universitari che studiano in Polonia. La nostra missione è mostrare la bellezza, la cultura e le esperienze dei viaggi studenteschi attraverso la fotografia autentica.",
     description2:
-      "Questa piattaforma funge sia da ispirazione per futuri studenti viaggiatori sia da libro dei ricordi per coloro che hanno già intrapreso le loro avventure europee. Tutte le foto sono scattate da studenti, offrendo una prospettiva fresca e giovanile sull'Europa.",
-    pageTitle: "Riguardo al Nostro Viaggio",
+      "Questa piattaforma serve sia da ispirazione per i futuri studenti viaggiatori sia da libro dei ricordi per coloro che hanno già iniziato le loro avventure europee. Tutte le foto sono scattate da studenti, mostrando l'Europa attraverso una prospettiva fresca e giovanile.",
+    pageTitle: "Sul Nostro Viaggio",
     pageDescription1:
       "EuroTrek è nato dalla passione per la fotografia di viaggio e dal desiderio di catturare le esperienze uniche degli studenti esploratori nelle città più vivaci d'Europa.",
     pageDescription2:
-      "Ciò che è iniziato come un piccolo gruppo di condivisione di foto tra compagni di classe che studiavano in Polonia si è trasformato in una piattaforma che collega studenti fotografi provenienti da diversi paesi, background e discipline accademiche, tutti accomunati dall'amore per l'esplorazione e la narrazione visiva.",
+      "Ciò che è iniziato come un piccolo gruppo che condivideva foto tra compagni di classe che studiavano in Polonia è cresciuto fino a diventare una piattaforma che collega studenti fotografi di diversi paesi, background e discipline accademiche che condividono un amore comune per l'esplorazione e la narrazione visiva.",
     pageDescription3:
       "I nostri collaboratori sono studenti come te, che bilanciano i loro studi con avventure in tutto il continente, catturando momenti autentici lungo il percorso.",
     mission: {
       title: "La Nostra Missione",
       description:
-        "Ispirare i viaggi studenteschi attraverso l'autentica narrazione visiva e promuovere una comunità di supporto per giovani fotografi che esplorano l'Europa.",
+        "Ispirare i viaggi studenteschi attraverso un'autentica narrazione visiva e promuovere una comunità di supporto per giovani fotografi che esplorano l'Europa.",
     },
     team: {
-      title: "Il Collettivo Studentesco",
+      title: "Collettivo Studentesco",
       description:
-        "Il nostro team è composto interamente da studenti fotografi, scrittori e sviluppatori web provenienti da università di tutto il mondo. Ogni collaboratore porta la sua prospettiva ed esperienza unica alla piattaforma.",
+        "Il nostro team è composto interamente da studenti fotografi, scrittori e sviluppatori web provenienti da università di tutto il mondo. Ogni collaboratore porta la propria prospettiva ed esperienza uniche alla piattaforma.",
     },
     feature1: {
-      title: "Fotografi Studenti",
+      title: "Studenti Fotografi",
       description: "Foto scattate da studenti internazionali da tutto il mondo",
     },
     feature2: {
       title: "Esperienze Autentiche",
-      description: "Momenti di viaggio reali oltre i tipici luoghi turistici",
+      description:
+        "Momenti di viaggio reali al di là delle tipiche attrazioni turistiche",
     },
     feature3: {
-      title: "Viaggi Multipli",
+      title: "Molti Viaggi",
       description:
         "Una collezione crescente di foto da tutto il continente europeo",
     },
@@ -315,50 +338,48 @@ export default {
       description: "Monastero dos Jerónimos.",
     },
     image2: {
-      title: "Germania & Francia",
+      title: "Germania e Francia",
       description: "Un viaggio indimenticabile attraverso Germania e Francia.",
     },
     image3: {
       title: "Napoli",
-      description: "Gli splendidi paesaggi di Napoli.",
+      description: "Paesaggi straordinari di Napoli.",
     },
   },
-
-  // Featured Section - In Evidenza
+  // Featured Section - Sezione in primo piano
   featured: {
-    title: "In Evidenza: Primavera a Parigi",
+    title: "In primo piano: Primavera a Parigi",
     description1:
-      "Parigi in primavera è un sogno per gli studenti fotografi. La città si anima con ciliegi in fiore, terrazze di caffè e la luce perfetta per catturare monumenti iconici.",
+      "Parigi in primavera è un sogno per gli studenti fotografi. La città si anima con ciliegi in fiore, terrazze di caffè e luce perfetta per catturare monumenti iconici.",
     description2:
-      "La nostra collezione in primo piano mostra la magia di Parigi attraverso gli occhi degli studenti polacchi che hanno trascorso la loro pausa studio all'estero nella Città della Luce.",
-    exploreLink: "Esplora la Collezione di Parigi",
-    image1Alt: "Torre Eiffel in Primavera",
+      "La nostra collezione in primo piano mostra il fascino di Parigi attraverso gli occhi degli studenti polacchi che hanno trascorso le loro vacanze studio all'estero nella Città della Luce.",
+    exploreLink: "Esplora la Collezione Parigi",
+    image1Alt: "Torre Eiffel in primavera",
     image2Alt: "Fiume Senna a Parigi",
-    image3Alt: "Terrazza di Caffè Parigina",
+    image3Alt: "Caffè parigino",
     image4Alt: "Museo del Louvre",
   },
-
-  // Contact Section - Contatti
+  // Contact Section - Sezione contatti
   contact: {
-    title: "Contattaci",
+    title: "Contatti",
     description:
-      "Hai domande o vuoi inviare le tue foto di viaggi studenteschi? Ci piacerebbe sentirti!",
+      "Hai domande o vuoi inviare le tue foto di viaggio studentesche? Ci farebbe piacere sentirti!",
     pageTitle: "Mettiti in Contatto",
     getInTouch: "Come Possiamo Aiutarti?",
     getInTouchDescription:
-      "Che tu voglia inviare le tue foto di viaggio, abbia domande sulla nostra piattaforma o voglia semplicemente salutarci, siamo qui per aiutarti.",
+      "Sia che tu voglia inviare le tue foto di viaggio, abbia domande sulla nostra piattaforma o semplicemente voglia salutare, siamo qui per aiutarti.",
     email: {
       title: "Inviaci un'Email",
       description: "Per richieste generali e invio di foto",
     },
     location: {
       title: "La Nostra Sede",
-      description: "Visita il nostro ufficio del collettivo studentesco",
-      address: "University Creative Hub, European Campus, Amsterdam",
+      description: "Visita l'ufficio del nostro collettivo studentesco",
+      address: "University Creative Hub, European Campus, Amsterdam", // Tradurre o mantenere l'indirizzo?
     },
     phone: {
       title: "Chiamaci",
-      description: "Disponibile nei giorni feriali dalle 10:00 alle 18:00 CET",
+      description: "Disponibili nei giorni feriali dalle 10:00 alle 18:00 CET",
     },
     form: {
       name: "Il Tuo Nome",
@@ -379,11 +400,10 @@ export default {
       successMessage: "Grazie per averci contattato. Ti risponderemo presto.",
     },
   },
-
   // Footer - Piè di pagina
   footer: {
     description:
-      "Un viaggio visivo attraverso l'Europa catturato da studenti che esplorano gli angoli più belli del continente.",
+      "Un viaggio visivo attraverso l'Europa catturato dall'obiettivo di studenti che esplorano gli angoli più belli del continente.",
     quickLinks: "Link Rapidi",
     resources: "Risorse",
     parisCollection: "Collezione Parigi",
@@ -395,87 +415,80 @@ export default {
     cookieSettings: "Impostazioni Cookie",
     faq: "Domande Frequenti (FAQ)",
     sitemap: "Mappa del Sito",
-    support: "Aiuto & Supporto",
+    support: "Aiuto e Supporto",
     copyright: "Tutti i diritti riservati.",
-    tagline: "Fatto con ❤ dagli studenti, per gli studenti.",
+    tagline: "Creato con ❤ da studenti, per studenti.",
     instagram: "Seguici su Instagram",
     twitter: "Seguici su Twitter",
     facebook: "Seguici su Facebook",
     pinterest: "Seguici su Pinterest",
-    linkedin: "Seguici su LinkedIn",
-    messenger: "Contattaci via Messenger",
   },
-
-  // Slider Controls - Controlli Slider
+  // Slider Controls - Controlli slider
   slider: {
-    previous: "Diapositiva precedente",
-    next: "Diapositiva successiva",
-    goToSlide: "Vai alla diapositiva {{index}}",
+    previous: "Slide precedente",
+    next: "Slide successiva",
+    goToSlide: "Vai alla slide {{index}}",
   },
-
-  // Lightbox - Visualizzatore Immagini
+  // Lightbox - Visualizzatore foto
   lightbox: {
     close: "Chiudi visualizzatore",
-    previous: "Immagine precedente",
-    next: "Immagine successiva",
+    previous: "Foto precedente",
+    next: "Foto successiva",
   },
-
-  // Theme Toggle - Cambio Tema
+  // Theme Toggle - Selettore tema
   theme: {
-    toggleLight: "Passa alla modalità chiara",
-    toggleDark: "Passa alla modalità scura",
+    toggleLight: "Passa a modalità chiara",
+    toggleDark: "Passa a modalità scura",
   },
-
   // Language - Lingua
   language: {
     changeLanguage: "Cambia lingua",
   },
-
   // Home - Home
   home: {
     heroAriaLabel: "Destinazioni in primo piano",
   },
 
-  // --- Pagine Informative ---
+  // --- Sezioni per nuove pagine informative ---
   privacyPolicy: {
     title: "Informativa sulla Privacy",
     metaDescription: "Leggi l'informativa sulla privacy del servizio EuroTrek.",
     introduction:
-      "Benvenuti nell'Informativa sulla Privacy di EuroTrek. La tua privacy è importante per noi e ci impegniamo a proteggere i tuoi dati personali in conformità con le normative applicabili, incluso il GDPR.",
+      "Benvenuto nell'Informativa sulla Privacy di EuroTrek. La tua privacy è importante per noi e ci impegniamo a proteggere i tuoi dati personali in conformità con le normative applicabili, incluso il GDPR.",
     section1Title: "1. Quali informazioni raccogliamo?",
     section1Content:
-      "Raccogliamo le informazioni che ci fornisci direttamente (ad es. tramite il modulo di contatto: nome, indirizzo email, contenuto del messaggio) e i dati raccolti automaticamente durante l'utilizzo del servizio (ad es. indirizzo IP, tipo di browser, informazioni sul dispositivo, dati sull'attività nel servizio tramite cookie – vedi Informativa sui Cookie).",
+      "Raccogliamo informazioni che ci fornisci direttamente (ad es. tramite il modulo di contatto: nome, indirizzo email, contenuto del messaggio) e dati raccolti automaticamente durante l'utilizzo del servizio (ad es. indirizzo IP, tipo di browser, informazioni sul dispositivo, dati sull'attività nel servizio tramite cookie – vedi Informativa sui Cookie).",
     section2Title: "2. Come utilizziamo le tue informazioni?",
     section2Content:
-      "Utilizziamo i tuoi dati per fornire e migliorare i nostri servizi, comunicare con te (rispondere alle richieste), analizzare il traffico del sito web, garantire la sicurezza del servizio e adempiere agli obblighi legali.",
+      "Utilizziamo i tuoi dati per fornire e migliorare i nostri servizi, comunicare con te (rispondere alle richieste), analizzare il traffico del sito, garantire la sicurezza del servizio e adempiere agli obblighi legali.",
     contactTitle: "Contatto per la privacy",
     contactContent:
-      "Per questioni relative al trattamento dei tuoi dati personali o all'esercizio dei tuoi diritti, contattaci a: [la-tua-email@esempio.it].", // Sostituisci con l'email reale
+      "Per questioni relative al trattamento dei tuoi dati personali o all'esercizio dei tuoi diritti, ti preghiamo di contattarci a: [puaro@vp.pl].", // Aggiornare indirizzo email
   },
   termsOfUse: {
     title: "Termini di Utilizzo",
     metaDescription: "Leggi i termini di utilizzo del servizio EuroTrek.",
     introduction:
-      "Questi Termini di Utilizzo regolano l'uso del servizio web EuroTrek. Utilizzando il servizio, accetti le seguenti disposizioni.",
+      "Questi Termini di Utilizzo regolano le regole per l'utilizzo del servizio online EuroTrek. Utilizzando il servizio, accetti le seguenti disposizioni.",
     section1Title: "1. Regole generali e accettazione dei termini",
     section1Content:
-      "Il servizio EuroTrek è una piattaforma che presenta fotografie di viaggio. Gli utenti sono obbligati ad utilizzare il servizio in conformità con la legge e le buone pratiche. È vietato pubblicare contenuti illegali, offensivi o che violino i diritti di terzi.",
+      "Il servizio EuroTrek è una piattaforma che presenta fotografie di viaggio. Gli utenti sono obbligati a utilizzare il servizio in conformità con la legge e le buone pratiche. È vietato pubblicare contenuti illegali, offensivi o che violino i diritti di terzi.",
     contactTitle: "Contatto per i Termini di Utilizzo",
     contactContent:
-      "Le domande riguardanti questi Termini di Utilizzo devono essere indirizzate a: [la-tua-email@esempio.it].", // Sostituisci con l'email reale
+      "Le domande relative a questi Termini di Utilizzo devono essere indirizzate a: [puaro@vp.pl].", // Aggiornare indirizzo email
   },
   accessibility: {
     title: "Dichiarazione di Accessibilità",
     metaDescription:
       "Scopri il nostro impegno per l'accessibilità digitale su EuroTrek.",
     introduction:
-      "EuroTrek si impegna a garantire l'accessibilità digitale del servizio per la più ampia gamma possibile di utenti, comprese le persone con disabilità. Lavoriamo continuamente per migliorare l'interfaccia e applicare gli standard di accessibilità pertinenti, come le WCAG (Web Content Accessibility Guidelines).",
-    section1Title: "1. I nostri sforzi per l'accessibilità",
+      "EuroTrek si impegna a garantire l'accessibilità digitale del servizio per la più ampia gamma possibile di utenti, comprese le persone con disabilità. Lavoriamo costantemente per migliorare l'interfaccia e applicare gli standard di accessibilità pertinenti, come le WCAG (Web Content Accessibility Guidelines).",
+    section1Title: "1. Le nostre azioni per l'accessibilità",
     section1Content:
-      "Ci sforziamo di implementare soluzioni come: l'uso di codice HTML semantico, garantire la navigazione tramite tastiera, un contrasto cromatico adeguato, descrizioni alternative per le immagini e testare il servizio utilizzando varie tecnologie assistive.",
-    contactTitle: "Feedback e informazioni di contatto",
+      "Ci sforziamo di implementare soluzioni come: l'uso di codice HTML semantico, la garanzia della navigazione tramite tastiera, un adeguato contrasto cromatico, testo alternativo per le immagini e il test del servizio utilizzando varie tecnologie assistive.",
+    contactTitle: "Feedback e dati di contatto",
     contactContent:
-      "Se riscontri barriere di accessibilità nel nostro servizio, ti preghiamo di contattarci. I tuoi commenti sono preziosi per noi. Contattaci a: [la-tua-email@esempio.it].", // Sostituisci con l'email reale
+      "Se incontri barriere di accessibilità sul nostro servizio, ti preghiamo di contattarci. Il tuo feedback è prezioso per noi. Contattaci a: [puaro@vp.pl].", // Aggiornare indirizzo email
   },
   cookiePolicy: {
     title: "Informativa sui Cookie",
@@ -484,37 +497,37 @@ export default {
       "Il nostro servizio utilizza i cookie per garantire il corretto funzionamento del sito, migliorare la tua esperienza e per scopi analitici e di marketing (con il tuo consenso).",
     section1Title: "1. Cosa sono i cookie?",
     section1Content:
-      "I cookie sono piccoli file di testo salvati sul tuo dispositivo (computer, smartphone) quando visiti siti web. Consentono al sito di 'ricordare' le tue azioni e preferenze per un certo periodo.",
+      "I cookie sono piccoli file di testo salvati sul tuo dispositivo (computer, smartphone) quando visiti siti web. Permettono al sito di 'ricordare' le tue azioni e preferenze per un periodo di tempo.",
     section2Title: "2. Quali tipi di cookie utilizziamo?",
-    section2Content: "Utilizziamo vari tipi di cookie, tra cui:",
+    section2Content: "Utilizziamo diversi tipi di cookie, tra cui:",
     type1:
-      "Cookie necessari: Essenziali per il funzionamento di base del servizio (es. sessione utente). Non richiedono consenso.",
+      "Cookie necessari: Essenziali per il funzionamento di base del servizio (ad es. sessione utente). Non richiedono consenso.",
     type2:
-      "Cookie analitici: Ci aiutano a capire come gli utenti interagiscono con il sito (es. Google Analytics). Richiedono il tuo consenso.",
+      "Cookie analitici: Ci aiutano a capire come gli utenti utilizzano il sito (ad es. Google Analytics). Richiedono il tuo consenso.",
     type3:
-      "Cookie funzionali: Permettono di ricordare le tue scelte e preferenze (es. lingua). Possono richiedere consenso.",
+      "Cookie funzionali: Consentono di ricordare le tue scelte e preferenze (ad es. lingua). Possono richiedere consenso.",
     type4:
-      "Cookie di marketing: Utilizzati per visualizzare pubblicità personalizzata (es. Pixel di Facebook). Richiedono il tuo consenso.",
+      "Cookie di marketing: Utilizzati per visualizzare pubblicità personalizzata (ad es. Pixel di Facebook). Richiedono il tuo consenso.",
     section3Title: "3. Gestione dei cookie",
     section3Content:
       "Puoi gestire i tuoi consensi ai cookie in qualsiasi momento utilizzando lo strumento di gestione del consenso disponibile sul nostro sito (fai clic sul pulsante 'Impostazioni Cookie'). Puoi anche modificare le impostazioni dei cookie nel tuo browser web.",
     settingsError:
-      "Impossibile aprire le impostazioni dei cookie. Contatta l'assistenza o prova a gestire le impostazioni nel tuo browser.",
+      "Impossibile aprire le impostazioni dei cookie. Contatta il supporto tecnico o prova a gestire le impostazioni nel tuo browser.",
     settingsInfoPlaceholder:
       "Facendo clic sul pulsante si aprirà il pannello di gestione delle impostazioni dei cookie.",
-    contactTitle: "Contatto riguardo l'Informativa sui Cookie",
+    contactTitle: "Contatto per l'Informativa sui Cookie",
     contactContent:
-      "In caso di domande sulla nostra politica sui cookie, contattaci a: [la-tua-email@esempio.it].", // Sostituisci con l'email reale
+      "In caso di domande sulla nostra informativa sui cookie, ti preghiamo di contattarci: [puaro@vp.pl].", // Aggiornare indirizzo email
   },
   faq: {
     title: "Domande Frequenti (FAQ)",
     metaDescription: "Trova le risposte alle domande più comuni su EuroTrek.",
     q1: "Domanda 1: Come posso inviare le mie foto?",
-    a1: "Attualmente raccogliamo foto da studenti affiliati. Se sei interessato a collaborare, ti preghiamo di contattarci tramite il modulo di contatto, descrivendo brevemente i tuoi viaggi e il tuo portfolio.",
-    q2: "Domanda 2: L'utilizzo del servizio è gratuito?",
-    a2: "Sì, la navigazione di foto e contenuti sul servizio EuroTrek è completamente gratuita per tutti gli utenti.",
-    q3: "Domanda 3: Chi possiede i diritti d'autore delle foto?",
-    a3: "I diritti d'autore delle foto appartengono agli studenti autori. EuroTrek possiede una licenza per pubblicarle sul servizio. I dettagli sono specificati nell'accordo con l'autore e nei nostri Termini di Utilizzo.",
+    a1: "Attualmente raccogliamo foto da studenti associati. Se sei interessato a collaborare, ti preghiamo di contattarci tramite il modulo di contatto, descrivendo brevemente i tuoi viaggi e il tuo portfolio.",
+    q2: "Domanda 2: L'uso del servizio è a pagamento?",
+    a2: "No, la navigazione tra foto e contenuti nel servizio EuroTrek è completamente gratuita per tutti gli utenti.",
+    q3: "Domanda 3: Chi detiene il copyright delle foto?",
+    a3: "Il copyright delle foto appartiene agli studenti autori. EuroTrek detiene una licenza per la loro pubblicazione nel servizio. I dettagli sono specificati nell'accordo con l'autore e nei nostri Termini di Utilizzo.",
     stillHaveQuestions: "Hai altre domande?",
     contactUs: "Contattaci",
   },
@@ -522,26 +535,26 @@ export default {
     title: "Mappa del Sito",
     metaDescription: "Esplora la struttura del sito EuroTrek.",
     introduction:
-      "Di seguito è riportato un elenco delle principali sezioni e pagine disponibili sul servizio EuroTrek per aiutarti a navigare.",
+      "Di seguito è riportato un elenco delle principali sezioni e pagine disponibili nel servizio EuroTrek per facilitare la tua navigazione.",
   },
   support: {
-    title: "Aiuto & Supporto",
+    title: "Aiuto e Supporto",
     metaDescription:
       "Hai bisogno di aiuto? Trova informazioni di contatto e supporto per EuroTrek.",
     introduction:
-      "Siamo qui per aiutare! Se hai domande sul funzionamento del servizio, hai riscontrato un problema tecnico o hai altre preoccupazioni, ti preghiamo di utilizzare le opzioni di supporto disponibili.",
-    faqTitle: "Controlla prima le FAQ",
+      "Siamo qui per aiutarti! Se hai domande sul funzionamento del servizio, hai riscontrato un problema tecnico o hai altre preoccupazioni, ti preghiamo di utilizzare le opzioni di supporto disponibili.",
+    faqTitle: "Controlla Prima le FAQ",
     faqDescription:
       "Molte risposte a domande comuni si trovano nella nostra sezione Domande Frequenti (FAQ).",
     goToFaq: "Vai alle FAQ",
     contactFormTitle: "Modulo di Contatto",
     contactFormDescription:
-      "Il modo migliore per contattarci per la maggior parte delle richieste è inviare un messaggio tramite il nostro modulo di contatto.",
+      "Il modo migliore per contattarci per la maggior parte delle questioni è inviare un messaggio tramite il nostro modulo di contatto.",
     goToContact: "Vai ai Contatti",
     phoneTitle: "Supporto Telefonico",
     phoneDescription:
-      "Per problemi tecnici urgenti, puoi contattarci telefonicamente durante [es. 10:00 - 16:00] dal lunedì al venerdì.",
-    phoneNumber: "Chiama: [Il Tuo Numero di Telefono]", // Sostituisci con il numero di telefono reale
+      "Per questioni tecniche urgenti, puoi contattarci telefonicamente durante [ad es. 10:00 - 16:00] dal lunedì al venerdì.", // Aggiornare orario
+    phoneNumber: "Chiama: [000 000 000]", // Aggiornare numero di telefono
     responseInfo:
       "Ci sforziamo di rispondere alle richieste inviate tramite il modulo di contatto entro 1-2 giorni lavorativi.",
   },

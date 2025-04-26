@@ -1,6 +1,5 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-
 import enTranslation from "../translations/en";
 import frTranslation from "../translations/fr";
 import esTranslation from "../translations/es";
@@ -31,10 +30,10 @@ i18n.use(initReactI18next).init({
     },
     cs: { translation: cs },
   },
-  lng: "pl", // Default language
+  lng: "pl",
   fallbackLng: "en",
   interpolation: {
-    escapeValue: false, // React already escapes values
+    escapeValue: false,
   },
 });
 

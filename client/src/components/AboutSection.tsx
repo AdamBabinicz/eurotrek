@@ -18,10 +18,9 @@ const AboutSection = () => {
           </p>
         </div>
       </div>
-      {/* Sekcja zdjęć na pełną szerokość */}
+
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Pierwsze zdjęcie - po lewej stronie na desktopie */}
           <div className="relative">
             <img
               src="/assets/lizbona/6.avif"
@@ -38,7 +37,6 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* Dwie pozostałe fotki - jedna pod drugą, równa wysokość */}
           <div className="grid grid-rows-2 gap-4">
             <div className="relative">
               <img
@@ -77,7 +75,6 @@ const AboutSection = () => {
 
       <div className="container mx-auto px-4 mt-8">
         <div className="max-w-3xl mx-auto">
-          {/* Sekcja z ikonami i opisami */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex items-center">
               <span className="text-primary text-3xl mb-2 mr-4">

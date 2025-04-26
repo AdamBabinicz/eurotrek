@@ -26,16 +26,13 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  // Initialize language state (prefer local storage or browser language)
   const [language, setLanguage] = useState<string>(() => {
     try {
-      // Try to get language from localStorage
       const savedLanguage = localStorage.getItem("language");
       if (savedLanguage) {
         return savedLanguage;
       }
 
-      // Check browser language
       const browserLang = navigator.language.split("-")[0];
       const supportedLanguages = ["pl", "en", "fr", "es", "de", "it", "cs"];
 
@@ -46,18 +43,14 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
       console.error("Error accessing localStorage or navigator:", error);
     }
 
-    // Default to English
     return "en";
   });
 
-  // Apply language changes when the language state changes
   useEffect(() => {
     console.log("Setting language to:", language);
 
-    // Update i18n language
     i18n.changeLanguage(language);
 
-    // Save language preference to localStorage
     try {
       localStorage.setItem("language", language);
     } catch (error) {
@@ -65,7 +58,6 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     }
   }, [language]);
 
-  // Change the language
   const changeLanguage = (lang: string) => {
     console.log("Change language called, current:", language, "new:", lang);
     setLanguage(lang);

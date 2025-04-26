@@ -2,19 +2,47 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 
+// --- Deklaracja typu dla obiektu CookieScript w window (dla TypeScript) ---
+// Możesz to umieścić na górze pliku lub w dedykowanym pliku *.d.ts
+declare global {
+  interface Window {
+    CookieScript?: {
+      // ? oznacza, że obiekt może nie istnieć
+      instance?: {
+        // ? oznacza, że instancja może nie istnieć
+        show?: () => void; // ? oznacza, że metoda może nie istnieć
+        // Dodaj inne metody API CookieScript, jeśli ich potrzebujesz
+      };
+      // Dodaj inne właściwości/metody CookieScript, jeśli są potrzebne
+    };
+  }
+}
+// --- Koniec deklaracji typu ---
+
 const CookiePolicyPage: React.FC = () => {
   const { t } = useTranslation();
 
   const handleCookieSettings = () => {
-    // !!! WAŻNE: Dostosuj to do API Twojego dostawcy zgody na cookie (np. CookieScript) !!!
-    // Przykłady (mogą nie działać, sprawdź dokumentację CookieScript):
-    // if (window.CookieScript && typeof window.CookieScript.instance.show === 'function') {
-    //   window.CookieScript.instance.show();
-    // } else {
-    //   alert(t('cookiePolicy.settingsError')); // Komunikat błędu
-    // }
-    console.warn("Implement Cookie Settings trigger from CookieScript API");
-    alert(t("cookiePolicy.settingsInfoPlaceholder")); // Tymczasowy placeholder
+    // Sprawdź, czy obiekt CookieScript i jego instancja oraz metoda show istnieją
+    if (
+      window.CookieScript &&
+      typeof window.CookieScript.instance?.show === "function"
+    ) {
+      // Używamy optional chaining (?.)
+      // Wywołaj funkcję API CookieScript, aby pokazać panel ustawień
+      window.CookieScript.instance.show();
+    } else {
+      // Jeśli API nie jest dostępne, poinformuj użytkownika i/lub zaloguj błąd
+      console.error(
+        "CookieScript API not found or 'show' method is not available."
+      );
+      alert(
+        t(
+          "cookiePolicy.settingsError",
+          "Nie można otworzyć ustawień cookies. Skontaktuj się z pomocą techniczną lub spróbuj zarządzać ustawieniami w przeglądarce."
+        )
+      ); // Użyj klucza z tłumaczeń
+    }
   };
 
   return (
@@ -28,7 +56,8 @@ const CookiePolicyPage: React.FC = () => {
           {t("cookiePolicy.title")}
         </h2>
         <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">
-          {t("common.lastUpdated")}: 2024-07-27
+          {t("common.lastUpdated")}: 2024-07-27{" "}
+          {/* Możesz to dynamicznie aktualizować */}
         </p>
         <article className="prose dark:prose-invert lg:prose-xl max-w-none text-gray-700 dark:text-gray-300">
           <p>{t("cookiePolicy.introduction")}</p>
@@ -36,7 +65,6 @@ const CookiePolicyPage: React.FC = () => {
           <section className="mt-6">
             <h2>{t("cookiePolicy.section1Title")}</h2>
             <p>{t("cookiePolicy.section1Content")}</p>
-            {/* <p>{t("common.placeholderContent")}</p> */}
           </section>
 
           <section className="mt-6">
@@ -48,22 +76,21 @@ const CookiePolicyPage: React.FC = () => {
               <li>{t("cookiePolicy.type3")}</li>
               <li>{t("cookiePolicy.type4")}</li>
             </ul>
-            {/* <p>{t("common.placeholderContent")}</p> */}
           </section>
 
           <section className="mt-6">
             <h2>{t("cookiePolicy.section3Title")}</h2>
             <p>{t("cookiePolicy.section3Content")}</p>
-            {/* Dodaj przycisk do otwierania ustawień CookieScript */}
+            {/* Przycisk do otwierania ustawień CookieScript */}
             <button
               onClick={handleCookieSettings}
               className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-primary-dark dark:hover:bg-primary"
             >
-              {t("footer.cookieSettings")}
+              {t("footer.cookieSettings")} {/* Użyj klucza z tłumaczeń */}
             </button>
           </section>
 
-          {/* DODAJ TUTAJ RZECZYWISTE SEKCJE DOT. COOKIES */}
+          {/* Możesz dodać więcej sekcji wyjaśniających konkretne ciasteczka */}
 
           <section className="mt-6">
             <h2>{t("cookiePolicy.contactTitle")}</h2>

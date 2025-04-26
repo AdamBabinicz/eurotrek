@@ -9,7 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  // SheetDescription, // Można dodać, jeśli potrzebny opis
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   Accordion,
   AccordionContent,
@@ -18,7 +25,7 @@ import {
 } from "@/components/ui/accordion";
 import ThemeToggle from "./ThemeToggle";
 import LanguageSelector from "./LanguageSelector";
-import { destinations, getSlugForDestination } from "@/data/destinations";
+import { destinations, getSlugForDestination } from "@/data/destinations"; // Upewnij się, że ścieżka i eksport są poprawne
 
 interface NavbarProps {
   currentPath: string;
@@ -27,20 +34,24 @@ interface NavbarProps {
 const Navbar = ({ currentPath }: NavbarProps) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
-  const defaultLang = "pl";
+  const defaultLang = "pl"; // Ustaw język domyślny
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [, setLocation] = useLocation();
 
   const createLocalizedPath = (routeKey: string, params = ""): string => {
     const prefix = currentLang === defaultLang ? "" : `/${currentLang}`;
     const slug =
-      t(routeKey, { ns: "translation", keyPrefix: "routes" }) || routeKey;
+      t(`routes.${routeKey}`, { defaultValue: routeKey }) || routeKey;
+
     if (routeKey === "home") {
-      // Dla języka domyślnego zwróć '/', dla innych sam prefix (np. '/en')
       return prefix || "/";
     }
-    const finalSlug = slug ? `/${slug}` : "";
-    return `${prefix}${finalSlug}${params}`;
+    const cleanSlug = slug.startsWith("/") ? slug.substring(1) : slug;
+    const finalSlug = cleanSlug ? `/${cleanSlug}` : "";
+    const cleanParams = params.startsWith("/") ? params.substring(1) : params;
+    const finalParams = cleanParams ? `/${cleanParams}` : "";
+
+    return `${prefix}${finalSlug}${finalParams}`;
   };
 
   const goToHome = () => {
@@ -51,25 +62,48 @@ const Navbar = ({ currentPath }: NavbarProps) => {
 
   const isActive = (routeKey: string, params = ""): boolean => {
     const pathToCheck = createLocalizedPath(routeKey, params);
+    if (!params || params === "/") {
+      // Dokładne dopasowanie dla strony głównej
+      return currentPath === pathToCheck;
+    }
+    // Sprawdzenie, czy bieżąca ścieżka zaczyna się od pathToCheck,
+    // ale upewnienie się, że dopasowanie nie jest tylko częściowe (np. /blog vs /blog/post)
+    // Chyba że to główna ścieżka sekcji (np. /podroze)
+    if (
+      routeKey === "destinations" ||
+      routeKey === "about" ||
+      routeKey === "contact"
+    ) {
+      return (
+        currentPath === pathToCheck || currentPath.startsWith(pathToCheck + "/")
+      );
+    }
+    // Dla detali destynacji, dopasowanie musi być dokładne lub zaczynać się od...
+    if (routeKey === "destinationDetail") {
+      return currentPath.startsWith(pathToCheck);
+    }
 
-    if (!params && params !== "/") return currentPath === pathToCheck;
-
-    return currentPath.startsWith(pathToCheck);
+    return currentPath.startsWith(pathToCheck); // Domyślne sprawdzenie dla innych przypadków
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm dark:shadow-md">
+      {" "}
+      {/* Użycie zmiennych tła i cienia */}
       <nav
         className="container mx-auto px-4 py-3 flex items-center justify-between"
-        aria-label="Main navigation"
+        aria-label={t("navbar.mainNavLabel", "Główna nawigacja")}
       >
         {/* Logo */}
         <Link
           href={createLocalizedPath("home")}
-          className="flex items-center gap-2 text-foreground dark:text-primary"
+          className="flex items-center gap-2 text-foreground dark:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           onClick={goToHome}
+          aria-label={t("navbar.goToHome", "Przejdź do strony głównej")}
         >
-          <span className="text-2xl">🌍</span>
+          <span className="text-2xl" aria-hidden="true">
+            🌍
+          </span>
           <span className="font-heading font-bold text-lg md:text-xl">
             EuroTrek
           </span>
@@ -81,19 +115,30 @@ const Navbar = ({ currentPath }: NavbarProps) => {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
-              aria-label="Toggle menu"
+              className="md:hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              aria-label={t("navbar.toggleMenu", "Otwórz/Zamknij menu")}
+              aria-expanded={isMobileMenuOpen}
             >
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <div className="mt-8 flex flex-col gap-4">
+          <SheetContent
+            side="right"
+            className="w-[300px] sm:w-[400px] bg-background p-6 flex flex-col"
+          >
+            <SheetHeader className="mb-4 text-left">
+              <SheetTitle>{t("navbar.mobileMenuTitle", "Menu")}</SheetTitle>
+              {/* <SheetDescription>Wybierz opcję nawigacji.</SheetDescription> */}
+            </SheetHeader>
+
+            <div className="flex-grow overflow-y-auto flex flex-col gap-2 pr-2">
               {/* Mobile Home Link */}
               <Link
                 href={createLocalizedPath("home")}
-                className={`px-2 py-1 rounded-md ${
-                  isActive("home") ? "bg-primary/10 text-primary" : ""
+                className={`block px-3 py-2 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground ${
+                  isActive("home", "/")
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -101,24 +146,29 @@ const Navbar = ({ currentPath }: NavbarProps) => {
               </Link>
 
               {/* Mobile Destinations Accordion */}
-              <Accordion type="single" collapsible>
-                <AccordionItem value="destinations">
-                  <AccordionTrigger>
+              {/* --- PRZYWRÓCONO type="single" --- */}
+              <Accordion type="single" collapsible className="w-full -mx-3">
+                <AccordionItem value="destinations" className="border-b-0">
+                  <AccordionTrigger
+                    className={`flex w-full items-center justify-between px-3 py-2 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground hover:no-underline ${
+                      isActive("destinations")
+                        ? "text-accent-foreground"
+                        : "text-muted-foreground"
+                    }`}
+                  >
                     {t("navbar.destinations")}
                   </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="flex flex-col space-y-2 pl-4">
+                  <AccordionContent className="pt-1 pb-0">
+                    <div className="flex flex-col space-y-1 pl-8 pr-3">
                       {destinations.map((destination) => {
                         const localizedDestinationSlug = getSlugForDestination(
                           destination.id,
                           currentLang
                         );
-
                         const destinationPath = createLocalizedPath(
                           "destinationDetail",
                           `/${localizedDestinationSlug}`
                         );
-
                         const destinationName = t(
                           destination.nameKey ||
                             `destinations.${destination.id}`
@@ -129,13 +179,13 @@ const Navbar = ({ currentPath }: NavbarProps) => {
                             key={destination.id}
                             href={destinationPath}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className={`px-2 py-1 rounded-md hover:bg-primary/10 hover:text-primary ${
+                            className={`block px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground ${
                               currentPath.startsWith(destinationPath)
-                                ? "bg-primary/10 text-primary"
-                                : ""
+                                ? "bg-accent text-accent-foreground"
+                                : "text-muted-foreground"
                             }`}
                           >
-                            {destinationName}{" "}
+                            {destinationName}
                           </Link>
                         );
                       })}
@@ -143,12 +193,15 @@ const Navbar = ({ currentPath }: NavbarProps) => {
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
+              {/* --- KONIEC POPRAWKI --- */}
 
               {/* Mobile About Link */}
               <Link
                 href={createLocalizedPath("about")}
-                className={`px-2 py-1 rounded-md ${
-                  isActive("about") ? "bg-primary/10 text-primary" : ""
+                className={`block px-3 py-2 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground ${
+                  isActive("about")
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -158,19 +211,21 @@ const Navbar = ({ currentPath }: NavbarProps) => {
               {/* Mobile Contact Link */}
               <Link
                 href={createLocalizedPath("contact")}
-                className={`px-2 py-1 rounded-md ${
-                  isActive("contact") ? "bg-primary/10 text-primary" : ""
+                className={`block px-3 py-2 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground ${
+                  isActive("contact")
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {t("navbar.contact")}
               </Link>
+            </div>
 
-              {/* Mobile Controls */}
-              <div className="flex items-center justify-between mt-4">
-                <LanguageSelector />
-                <ThemeToggle />
-              </div>
+            {/* Mobile Controls (na dole) */}
+            <div className="flex items-center justify-between mt-auto pt-6 border-t">
+              <LanguageSelector />
+              <ThemeToggle />
             </div>
           </SheetContent>
         </Sheet>
@@ -181,8 +236,8 @@ const Navbar = ({ currentPath }: NavbarProps) => {
             {/* Desktop Home Link */}
             <Link
               href={createLocalizedPath("home")}
-              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
-                isActive("home") ? "!text-primary" : ""
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm ${
+                isActive("home", "/") ? "!text-primary" : ""
               }`}
               onClick={goToHome}
             >
@@ -191,10 +246,10 @@ const Navbar = ({ currentPath }: NavbarProps) => {
 
             {/* Desktop Destinations Dropdown */}
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors focus:outline-none">
+              <DropdownMenuTrigger className="flex items-center gap-1 font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm">
                 {t("navbar.destinations")} <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
+              <DropdownMenuContent align="start">
                 {destinations.map((destination) => {
                   const localizedDestinationSlug = getSlugForDestination(
                     destination.id,
@@ -209,10 +264,18 @@ const Navbar = ({ currentPath }: NavbarProps) => {
                   );
 
                   return (
-                    <DropdownMenuItem key={destination.id} asChild>
+                    <DropdownMenuItem
+                      key={destination.id}
+                      asChild
+                      className="focus:bg-accent"
+                    >
                       <Link
                         href={destinationPath}
-                        className="focus:outline-none focus:bg-accent w-full text-left"
+                        className={`w-full text-left block px-2 py-1.5 text-sm ${
+                          currentPath.startsWith(destinationPath)
+                            ? "bg-accent text-accent-foreground"
+                            : ""
+                        }`}
                       >
                         {destinationName}
                       </Link>
@@ -225,7 +288,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
             {/* Desktop About Link */}
             <Link
               href={createLocalizedPath("about")}
-              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm ${
                 isActive("about") ? "text-primary" : ""
               }`}
             >
@@ -235,7 +298,7 @@ const Navbar = ({ currentPath }: NavbarProps) => {
             {/* Desktop Contact Link */}
             <Link
               href={createLocalizedPath("contact")}
-              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors ${
+              className={`font-medium text-foreground hover:text-primary dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm ${
                 isActive("contact") ? "text-primary" : ""
               }`}
             >

@@ -1,6 +1,6 @@
-import { useEffect } from "react"; // Usunięto nieużywany useState
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "wouter"; // Nadal potrzebujemy useLocation do przekazywania, jeśli jest używane wyżej
+import { Link } from "wouter"; // Usunięto useLocation, bo nie jest używane tutaj
 import {
   FaInstagram,
   FaTwitter,
@@ -9,131 +9,167 @@ import {
   FaFacebookMessenger,
 } from "react-icons/fa";
 
+// --- Deklaracja typu dla obiektu CookieScript w window (dla TypeScript) ---
+declare global {
+  interface Window {
+    CookieScript?: {
+      instance?: {
+        show?: () => void;
+      };
+    };
+  }
+}
+// --- Koniec deklaracji typu ---
+
 interface FooterProps {
-  onParisLinkClick: () => void;
+  onParisLinkClick: () => void; // Zakładam, że to jest potrzebne
 }
 
 const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
-  // Dodano i18n
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
-  const defaultLang = "pl"; // <<<--- ZDEFINIUJ SWÓJ DOMYŚLNY JĘZYK
+  const defaultLang = "pl";
 
-  // --- NOWA FUNKCJA POMOCNICZA DO TWORZENIA URL (taka sama jak w Navbar) ---
+  // Funkcja createLocalizedPath (bez zmian)
   const createLocalizedPath = (routeKey: string, params = ""): string => {
     const prefix = currentLang === defaultLang ? "" : `/${currentLang}`;
     const slug =
-      t(routeKey, { ns: "translation", keyPrefix: "routes" }) || routeKey;
+      t(`routes.${routeKey}`, { defaultValue: routeKey }) || routeKey;
     if (routeKey === "home") {
       return prefix || "/";
     }
-    const finalSlug = slug ? `/${slug}` : "";
-    return `${prefix}${finalSlug}${params}`;
+    const cleanSlug = slug.startsWith("/") ? slug.substring(1) : slug;
+    const finalSlug = cleanSlug ? `/${cleanSlug}` : "";
+    const cleanParams = params.startsWith("/") ? params.substring(1) : params;
+    const finalParams = cleanParams ? `/${cleanParams}` : "";
+    return `${prefix}${finalSlug}${finalParams}`;
   };
 
-  // Funkcja do przewijania na górę
+  // Funkcja scrollTop (bez zmian)
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
 
-  // Usunięto navigateAndScrollTop - Link sam nawiguje
-
-  // Logika dla #paris - bez zmian
+  // useEffect (bez zmian, chociaż jego logika może wymagać przeglądu w kontekście SPA)
   useEffect(() => {
+    // Ta logika zadziała tylko przy pierwszym załadowaniu strony,
+    // a nie przy nawigacji wewnątrz SPA za pomocą wouter, chyba że używasz hasha
     if (window.location.hash === "#paris") {
-      const element = document.getElementById("paris");
+      const element = document.getElementById("paris"); // Zakładam, że jest element o ID "paris"
       if (element) {
-        // Dajemy chwilę na ewentualne renderowanie
         const timer = setTimeout(() => {
           window.scrollTo({ top: element.offsetTop, behavior: "smooth" });
-        }, 100);
+        }, 100); // Drobne opóźnienie na render
         return () => clearTimeout(timer);
       }
     }
-  }, []); // Uruchamiamy tylko raz przy montowaniu komponentu
+  }, []); // Pusta tablica zależności oznacza, że wykona się tylko raz po zamontowaniu
 
-  // Obsługa przycisku Ustawień Cookies - bez zmian w logice, użyto t()
+  // --- ZAKTUALIZOWANA FUNKCJA handleCookieSettings ---
   const handleCookieSettings = () => {
-    console.warn("Implement Cookie Settings trigger from CookieScript API");
-    alert(t("cookiePolicy.settingsInfoPlaceholder"));
-    // if (window.CookieScript && typeof window.CookieScript.instance.show === 'function') {
-    //   window.CookieScript.instance.show();
-    // }
+    // Sprawdź, czy obiekt CookieScript i jego instancja oraz metoda show istnieją
+    if (
+      window.CookieScript &&
+      typeof window.CookieScript.instance?.show === "function"
+    ) {
+      // Używamy optional chaining (?.)
+      // Wywołaj funkcję API CookieScript, aby pokazać panel ustawień
+      window.CookieScript.instance.show();
+    } else {
+      // Jeśli API nie jest dostępne, poinformuj użytkownika i/lub zaloguj błąd
+      console.error(
+        "CookieScript API not found or 'show' method is not available in Footer."
+      );
+      // Używamy klucza tłumaczenia dla błędu
+      alert(
+        t(
+          "cookiePolicy.settingsError",
+          "Nie można otworzyć ustawień cookies. Spróbuj odświeżyć stronę lub skontaktuj się z pomocą techniczną."
+        )
+      );
+    }
   };
+  // --- KONIEC AKTUALIZACJI ---
 
   return (
-    <footer className="bg-gray-800 text-white py-10">
+    <footer className="bg-gray-800 text-white py-10 dark:bg-gray-900">
+      {" "}
+      {/* Dodano dark:bg-gray-900 dla trybu ciemnego */}
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Sekcja Opis i Social Media (bez zmian) */}
+          {/* Kolumna z logo i opisem */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🌍</span>
+              <span className="text-2xl" aria-hidden="true">
+                🌍
+              </span>
               <span className="font-heading font-bold text-xl">EuroTrek</span>
             </div>
-            <p className="text-gray-300 mb-4 max-w-md">
+            <p className="text-gray-300 dark:text-gray-400 mb-4 max-w-md">
               {t("footer.description")}
             </p>
+            {/* Ikony społecznościowe */}
             <div className="flex gap-4">
               <a
-                href="https://instagram.com"
+                href="https://instagram.com" // Zmień na prawdziwy link
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-primary transition-colors"
+                className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm" // Dodano style focus
                 aria-label={t("footer.instagram")}
               >
                 <FaInstagram className="h-5 w-5" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://twitter.com" // Zmień na prawdziwy link
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-primary transition-colors"
+                className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                 aria-label={t("footer.twitter")}
               >
                 <FaTwitter className="h-5 w-5" />
               </a>
               <a
-                href="https://www.facebook.com/profile.php?id=100011937734013"
+                href="https://www.facebook.com/profile.php?id=100011937734013" // Zmień na prawdziwy link
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-primary transition-colors"
+                className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                 aria-label={t("footer.facebook")}
               >
                 <FaFacebook className="h-5 w-5" />
               </a>
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com" // Zmień na prawdziwy link
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-primary transition-colors"
-                aria-label={t("footer.linkedin")} // Dodano aria-label
+                className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                aria-label={t("footer.linkedin")}
               >
                 <FaLinkedin className="h-5 w-5" />
               </a>
               <a
-                href="https://m.me/profile.php?id=100011937734013"
+                href="https://m.me/profile.php?id=100011937734013" // Zmień na prawdziwy link
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-primary transition-colors"
-                aria-label={t("footer.messenger")} // Dodano aria-label
+                className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                aria-label={t("footer.messenger")} // Dodaj tłumaczenie dla 'messenger'
               >
                 <FaFacebookMessenger className="h-5 w-5" />
               </a>
             </div>
           </div>
 
-          {/* Sekcja Szybkie Linki (ZAKTUALIZOWANA) */}
+          {/* Kolumna Szybkie Linki */}
           <div>
-            <h3 className="font-heading font-bold text-lg mb-4">
+            <h3 className="font-heading font-bold text-lg mb-4 text-white">
+              {" "}
+              {/* Upewniono się, że kolor jest biały */}
               {t("footer.quickLinks")}
             </h3>
             <ul className="space-y-2">
               <li>
-                {/* Używamy createLocalizedPath i scrollTop */}
                 <Link
                   href={createLocalizedPath("home")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("navbar.home")}
@@ -142,16 +178,16 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("about")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("navbar.about")}
                 </Link>
               </li>
+              {/* Przycisk Kolekcja Paryż - używa propa onClick */}
               <li>
-                {/* Przycisk do Paryża bez zmian */}
                 <button
-                  className="text-gray-300 hover:text-white transition-colors text-left"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={onParisLinkClick}
                 >
                   {t("footer.parisCollection")}
@@ -160,35 +196,34 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("contact")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("navbar.contact")}
                 </Link>
               </li>
-              {/* Dodano link do ogólnej strony podróży */}
               <li>
                 <Link
                   href={createLocalizedPath("destinations")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
-                  {t("navbar.destinations")} {/* Używamy tekstu z navbara */}
+                  {t("navbar.destinations")}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Sekcja Zasoby (ZAKTUALIZOWANA) */}
+          {/* Kolumna Zasoby */}
           <div>
-            <h3 className="font-heading font-bold text-lg mb-4">
+            <h3 className="font-heading font-bold text-lg mb-4 text-white">
               {t("footer.resources")}
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   href={createLocalizedPath("privacy")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("footer.privacyPolicy")}
@@ -197,7 +232,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("terms")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("footer.termsOfUse")}
@@ -206,7 +241,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("accessibility")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("footer.accessibility")}
@@ -215,17 +250,17 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("cookiePolicy")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("footer.cookiePolicy")}
                 </Link>
               </li>
+              {/* Przycisk Ustawienia Cookies */}
               <li>
-                {/* Przycisk ustawień cookies bez zmian w logice */}
                 <button
-                  onClick={handleCookieSettings}
-                  className="text-gray-300 hover:text-white transition-colors text-left w-full"
+                  onClick={handleCookieSettings} // Wywołuje zaktualizowaną funkcję
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors text-left w-full focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                 >
                   {t("footer.cookieSettings")}
                 </button>
@@ -233,7 +268,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("faq")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("footer.faq")}
@@ -242,7 +277,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("sitemap")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("footer.sitemap")}
@@ -251,7 +286,7 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
               <li>
                 <Link
                   href={createLocalizedPath("support")}
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-300 hover:text-white dark:hover:text-primary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                   onClick={scrollTop}
                 >
                   {t("footer.support")}
@@ -261,8 +296,8 @@ const Footer: React.FC<FooterProps> = ({ onParisLinkClick }) => {
           </div>
         </div>
 
-        {/* Copyright (bez zmian) */}
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+        {/* Dolna sekcja copyright */}
+        <div className="border-t border-gray-700 dark:border-gray-600 mt-8 pt-8 text-center text-gray-400 dark:text-gray-500 text-sm">
           <p>
             © 2021 - {new Date().getFullYear()} EuroTrek Gdańsk.{" "}
             {t("footer.copyright")}

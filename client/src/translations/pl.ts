@@ -1,26 +1,20 @@
-import { Description } from "@radix-ui/react-toast";
+import { Description } from "@radix-ui/react-toast"; // Chociaż nieużywany, zostawiam zgodnie z prośbą
 
 export default {
   // Common
   common: {
     no_photos_data: "Brak danych zdjęć.",
-    // --- DODANE ---
     lastUpdated: "Ostatnia aktualizacja",
     placeholderContent:
       "Treść tej sekcji jest w przygotowaniu. Wkrótce zostanie uzupełniona.",
-    // --- KONIEC DODANYCH ---
   },
 
   routes: {
-    // --- Główne strony (zgodne z navbar i sitemap) ---
     home: "",
     destinations: "podroze",
     about: "o-nas",
     contact: "kontakt",
-
     destinationDetail: "podroz",
-
-    // --- Strony z stopki i nowe sekcje ---
     faq: "faq",
     privacy: "polityka-prywatnosci",
     terms: "regulamin",
@@ -29,7 +23,6 @@ export default {
     cookiePolicy: "polityka-cookies",
     support: "pomoc",
   },
-  // --- KONIEC NOWEJ SEKCJI routes ---
 
   // Navbar
   navbar: {
@@ -52,6 +45,9 @@ export default {
     prague: "Praga",
     loadMore: "Załaduj więcej",
     ariaLabel: "Kategorie podróży",
+    // --- DODANY WPIS ---
+    noMorePhotos: "Nie ma więcej zdjęć do załadowania dla tej kategorii",
+    // --- KONIEC DODANEGO WPISU ---
   },
   destinationsData: {
     lisbon: { name: "Lizbona", country: "Portugalia" },
@@ -81,13 +77,14 @@ export default {
     "frankfurt-hero": {
       location: "Frankfurt nad Menem, Niemcy",
       description:
-        "Lizbona to miasto pełne światła, gdzie brukowane uliczki wiją się między kolorowymi kamienicami, a życie płynie spokojnie w rytmie fado i aromatu świeżych 'pasteis de nata'.",
+        "Lizbona to miasto pełne światła, gdzie brukowane uliczki wiją się między kolorowymi kamienicami, a życie płynie spokojnie w rytmie fado i aromatu świeżych 'pasteis de nata'.", // Uwaga: powtórzony opis z Lizbony
     },
   },
   // Photos
   photos: {
     view: "Zobacz zdjęcie {{title}}",
     noPhotos: "Nie ma jeszcze dostępnych zdjęć dla tej podróży.",
+    // ... (reszta tłumaczeń zdjęć bez zmian) ...
     "paris-sunset": {
       title: "Zachód słońca w Paryżu",
       location: "Paryż, Francja",
@@ -450,7 +447,7 @@ export default {
     heroAriaLabel: "Polecane destynacje",
   },
 
-  // --- DODANE SEKCJE DLA NOWYCH STRON INFORMACYJNYCH
+  // --- SEKCJE DLA NOWYCH STRON INFORMACYJNYCH (bez zmian) ---
   privacyPolicy: {
     title: "Polityka Prywatności",
     metaDescription: "Przeczytaj politykę prywatności serwisu EuroTrek.",
@@ -462,7 +459,6 @@ export default {
     section2Title: "2. Jak wykorzystujemy Twoje informacje?",
     section2Content:
       "Twoje dane wykorzystujemy w celu świadczenia i ulepszania naszych usług, komunikacji z Tobą (odpowiedzi na zapytania), analizy ruchu na stronie, zapewnienia bezpieczeństwa serwisu oraz wypełniania obowiązków prawnych.",
-
     contactTitle: "Kontakt w sprawie prywatności",
     contactContent:
       "W sprawach dotyczących przetwarzania Twoich danych osobowych lub realizacji swoich praw, skontaktuj się z nami pod adresem: [puaro@vp.pl].",
@@ -475,7 +471,6 @@ export default {
     section1Title: "1. Zasady ogólne i akceptacja warunków",
     section1Content:
       "Serwis EuroTrek jest platformą prezentującą fotografie podróżnicze. Użytkownicy zobowiązani są do korzystania z serwisu zgodnie z prawem i dobrymi obyczajami. Zabronione jest publikowanie treści niezgodnych z prawem, obraźliwych lub naruszających prawa osób trzecich.",
-
     contactTitle: "Kontakt w sprawie Warunków Użytkowania",
     contactContent:
       "Pytania dotyczące niniejszych Warunków Użytkowania prosimy kierować na adres: [puaro@vp.pl].",
@@ -511,7 +506,6 @@ export default {
       "Funkcjonalne pliki cookie: Umożliwiają zapamiętanie Twoich wyborów i preferencji (np. język). Mogą wymagać zgody.",
     type4:
       "Marketingowe pliki cookie: Służą do wyświetlania spersonalizowanych reklam (np. Facebook Pixel). Wymagają Twojej zgody.",
-
     section3Title: "3. Zarządzanie plikami cookie",
     section3Content:
       "Możesz zarządzać swoimi zgodami na pliki cookie w dowolnym momencie za pomocą narzędzia do zarządzania zgodami dostępnego na naszej stronie (kliknij przycisk 'Ustawienia Cookies'). Możesz również zmienić ustawienia plików cookie w swojej przeglądarce internetowej.",
@@ -533,7 +527,6 @@ export default {
     a2: "Nie, przeglądanie zdjęć i treści w serwisie EuroTrek jest całkowicie darmowe dla wszystkich użytkowników.",
     q3: "Pytanie 3: Kto jest właścicielem praw autorskich do zdjęć?",
     a3: "Prawa autorskie do zdjęć należą do studentów-autorów. EuroTrek posiada licencję na ich publikację w serwisie. Szczegóły określa umowa z autorem oraz nasze Warunki Użytkowania.",
-
     stillHaveQuestions: "Masz inne pytania?",
     contactUs: "Skontaktuj się z nami",
   },
@@ -564,5 +557,4 @@ export default {
     responseInfo:
       "Staramy się odpowiadać na zapytania wysłane przez formularz kontaktowy w ciągu 1-2 dni roboczych.",
   },
-  // --- KONIEC ZMODYFIKOWANYCH SEKCJI ---
 };
