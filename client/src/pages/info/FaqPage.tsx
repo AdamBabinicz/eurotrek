@@ -1,16 +1,28 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
+import { Link } from "wouter";
 
 const FaqPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  // Możesz pobierać FAQ z API lub zdefiniować tutaj
+  const defaultLang = "pl";
+  const currentLang = i18n.language || defaultLang;
+
+  const localizedSlug = (routeKey: string): string => {
+    return t(routeKey, { ns: "translation", keyPrefix: "routes" }) || routeKey;
+  };
+
+  const contactSlug = localizedSlug("contact");
+  const contactPath =
+    currentLang === defaultLang
+      ? `/${contactSlug}`
+      : `/${currentLang}/${contactSlug}`;
+
   const faqItems = [
     { qKey: "faq.q1", aKey: "faq.a1" },
     { qKey: "faq.q2", aKey: "faq.a2" },
     { qKey: "faq.q3", aKey: "faq.a3" },
-    // Dodaj więcej pytań
   ];
 
   return (
@@ -26,7 +38,6 @@ const FaqPage: React.FC = () => {
 
         <div className="space-y-4">
           {faqItems.map((item, index) => (
-            // Użycie <details> i <summary> dla akordeonu
             <details
               key={index}
               className="group bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-sm"
@@ -53,8 +64,6 @@ const FaqPage: React.FC = () => {
               </summary>
               <div className="text-gray-700 dark:text-gray-300 mt-3 group-open:animate-fadeIn">
                 <p>{t(item.aKey)}</p>
-                {/* Dodaj placeholder, jeśli odpowiedź nie jest gotowa */}
-                {/* <p>{t('common.placeholderContent')}</p> */}
               </div>
             </details>
           ))}
@@ -62,12 +71,13 @@ const FaqPage: React.FC = () => {
 
         <div className="mt-10 text-center text-gray-600 dark:text-gray-400">
           <p>{t("faq.stillHaveQuestions")}</p>
-          <a
-            href="/contact"
+
+          <Link
+            href={contactPath}
             className="text-primary hover:underline font-medium"
           >
             {t("faq.contactUs")}
-          </a>
+          </Link>
         </div>
       </div>
     </>

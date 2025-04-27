@@ -1,11 +1,13 @@
-import { Description } from "@radix-ui/react-toast"; // Ponecháno dle požadavku, i když není použito
-
 export default {
-  // Common - Běžné
+  // Common
   common: {
     no_photos_data: "Chybí data fotografií.",
     lastUpdated: "Poslední aktualizace",
     placeholderContent: "Obsah této sekce se připravuje. Brzy bude doplněn.",
+    no_alt_text: "Fotografie",
+    no_title: "Bez názvu",
+    no_location: "Neznámá lokalita",
+    photo_not_found: "Fotografii nelze načíst",
   },
 
   routes: {
@@ -15,27 +17,36 @@ export default {
     contact: "kontakt",
     destinationDetail: "cesta",
     faq: "faq",
-    privacy: "zasady-ochrany-osobnich-udaju",
-    terms: "podminky-pouziti",
+    privacy: "ochrana-soukromi",
+    terms: "podminky-uzivani",
     sitemap: "mapa-stranek",
     accessibility: "pristupnost",
     cookiePolicy: "zasady-cookies",
     support: "podpora",
   },
 
-  // Navbar - Navigační lišta
+  // Navbar
   navbar: {
     home: "Domů",
     destinations: "Cesty",
     about: "O nás",
     contact: "Kontakt",
+    mainNavLabel: "Hlavní navigace",
+    goToHome: "Přejít na hlavní stránku",
+    toggleMenu: "Otevřít/Zavřít menu",
+    mobileMenuTitle: "Menu",
   },
-  // Destinations - Cíle cest
+  // Destinations List Page
+  destinationsListPage: {
+    title: "Naše Cesty",
+    metaDescription: "Objevte všechna úžasná místa, která nabízíme v EuroTrek.",
+    header: "Objevte Naše Cesty",
+  },
+  // Destinations general terms
   destinations: {
-    exploreTitle: "Objevte Cesty",
+    exploreTitle: "Objevujte Cesty",
     exploreDescription:
       "Prohlédněte si naši sbírku studentských fotografií z cest po nejkrásnějších městech Evropy.",
-    allDestinations: "Všechny Cesty",
     lisbon: "Lisabon",
     paris: "Paříž",
     berlin: "Berlín",
@@ -44,42 +55,55 @@ export default {
     prague: "Praha",
     loadMore: "Načíst více",
     ariaLabel: "Kategorie cest",
-    noMorePhotos: "Pro tuto kategorii již nejsou žádné další fotografie.",
+    noMorePhotos:
+      "Pro tuto kategorii nejsou k dispozici žádné další fotografie",
   },
+  // Specific destination data
   destinationsData: {
     lisbon: { name: "Lisabon", country: "Portugalsko" },
     paris: { name: "Paříž", country: "Francie" },
     berlin: { name: "Berlín", country: "Německo" },
     capri: { name: "Capri", country: "Itálie" },
-    naples: { name: "Neapol", country: "Itálie" },
+    naples: {
+      name: "Neapol",
+      country: "Itálie",
+      description:
+        "Neapol, pulzující město v jižní Itálii, ležící v Neapolském zálivu. Je proslulé svou bohatou historií, uměním, kulturou, architekturou, hudbou a gastronomií.",
+    },
     prague: { name: "Praha", country: "Česká republika" },
   },
-  // Hero Slides - Úvodní snímky
+  // Hero Slides
   heroSlides: {
     "paris-hero": {
-      location: "Paříž, Francie",
+      title: "Versailles - perla baroka",
+      alt: "Palác Versailles u Paříže",
+      location: "Versailles, Francie",
       description:
         "Město světel očima studenta - zachycení kouzla pařížské architektury a kultury.",
     },
     "rome-hero": {
-      // Poznámka: V pl.ts je zde Neapol, ne Řím. Překládám kontext Neapole.
+      title: "Cesta nad Tyrhénským mořem",
+      alt: "Pohled na pobřeží a Vesuv v Neapoli",
       location: "Neapol, Itálie",
       description:
-        "Neapol je místo, kde život plyne v rytmu espressa, rozhovorů na ulici a vůně čerstvě upečené pizzy, která se vznáší v teplém středomořském vzduchu.",
+        "Neapol je místo, kde život plyne v rytmu espressa, pouličních rozhovorů a vůně čerstvě upečené pizzy vznášející se v teplém středomořském vzduchu.",
     },
     "lisbon-hero": {
+      title: "Klášter Jeronymitů",
+      alt: "Klášter Jeronymitů v Belému, Lisabon",
       location: "Lisabon, Portugalsko",
       description:
-        "Lisabon je město plné světla, kde se dlážděné uličky vinou mezi barevnými domy a život klidně plyne v rytmu fado a vůně čerstvých 'pasteis de nata'.",
+        "Lisabon je město plné světla, kde se dlážděné uličky vinou mezi barevnými domy a život plyne klidně v rytmu fado a vůně čerstvých 'pasteis de nata'.",
     },
     "frankfurt-hero": {
+      title: "Stará opera (Alte Oper)",
+      alt: "Budova Staré opery ve Frankfurtu",
       location: "Frankfurt nad Mohanem, Německo",
       description:
-        // Poznámka: V pl.ts je zde zkopírovaný popis z Lisabonu. Překládám tento text.
-        "Lisabon je město plné světla, kde se dlážděné uličky vinou mezi barevnými domy a život klidně plyne v rytmu fado a vůně čerstvých 'pasteis de nata'.",
+        "Objevte Frankfurt nad Mohanem, kde lesklé mrakodrapy bankovní čtvrti tvoří neobvyklý kontrast s historickým náměstím Opernplatz.",
     },
   },
-  // Photos - Fotografie
+  // Photos
   photos: {
     view: "Zobrazit fotografii {{title}}",
     noPhotos: "Pro tuto cestu zatím nejsou k dispozici žádné fotografie.",
@@ -93,467 +117,463 @@ export default {
       location: "Lisabon, Portugalsko",
       description:
         "Historická budova divadla je jedním z nejprestižnějších sálů Portugalska a nachází se na náměstí Rossio v centru města.",
+      alt: "Žlutá historická tramvaj na náměstí Rossio v Lisabonu",
     },
     "lisbon-belem": {
       title: "Střechy Starého Města",
       location: "Lisabon, Portugalsko",
       description:
-        "Nejstarší čtvrtí Lisabonu je Alfama, postavená na svahu nad řekou Tejo za vlády Maurů. Právě zde můžete pocítit atmosféru středověkého Lisabonu.",
+        "Nejstarší čtvrtí Lisabonu je Alfama, postavená na svahu nad řekou Tagus za vlády Maurů. Právě zde můžete pocítit atmosféru středověkého Lisabonu.",
+      alt: "Pohled na červené střechy Alfamy v Lisabonu",
     },
     "lisbon-bele": {
       title: "Belémská věž",
       location: "Lisabon, Portugalsko",
-      description: "Středověká pevnost s výhledem na ústí řeky Tejo.", // Mírně upraveno pro plynulost
+      description: "Středověká pevnost s výhledem na ústí řeky Tagus",
+      alt: "Belémská věž u řeky Tagus v Lisabonu",
     },
     "boca do inferno": {
-      title: "Ústa Pekla",
+      title: "Ústa pekla",
       location: "Cascais, Portugalsko",
       description:
-        "Propast nacházející se v pobřežních útesech poblíž portugalského města Cascais.",
+        "Propast umístěná v pobřežních útesech poblíž portugalského města Cascais",
+      alt: "Skalní útvar Ústa pekla v Cascais",
     },
     "capri-marina": {
       title: "Pláž Luigia u Faraglioni",
       location: "Capri, Itálie",
       description:
-        "Nachází se v Tyrhénském moři, zaujímá 19. místo mezi 118 plážemi neapolského regionu.",
+        "Nachází se v Tyrhénském moři a zaujímá 19. místo mezi 118 plážemi neapolského regionu.",
+      alt: "Pláž Luigia a skalní útvary Faraglioni na Capri",
     },
     "paris-hero": {
-      // Poznámka: Možný konflikt ID s heroSlides
-      title: "Versailles – Perla Baroka",
-      location: "Paříž, Francie", // Mělo by být Versailles?
-      alt: "Palác Versailles u Paříže",
+      title: "Versailles – Perla baroka",
+      location: "Versailles, Francie",
+      alt: "Palác Versailles a zahrady",
       description:
         "Versailles je symbolem francouzské absolutní monarchie a jedním z nejvelkolepějších příkladů barokní architektury na světě.",
     },
     "naples-view": {
       title: "Cesta nad Tyrhénským mořem",
       location: "Neapol, Itálie",
-      alt: "Cesta na úpatí hory",
+      alt: "Cesta na úpatí hory Vesuv",
       description: "Malebná trasa podél pobřeží.",
     },
     "naples-mummy": {
       title: "Odlitek oběti Vesuvu",
       location: "Pompeje, Itálie",
-      alt: "Oběti výbuchu sopky",
+      alt: "Sádrový odlitek těla oběti výbuchu Vesuvu",
       description:
-        "Odlitky těl objevil v roce 1863 archeolog Giuseppe Fiorelli. „Dodnes nebyly inventarizovány z etických důvodů a kvůli citům, s jakými se vždy zacházelo s lidskými ostatky.“",
+        "Odlitky těl objevil v roce 1863 archeolog Giuseppe Fiorelli. „Dodnes nebyly inventarizovány z etických důvodů a citů, s jakými se vždy zacházelo s lidskými ostatky.“",
     },
     "naples-stadion": {
       title: "Amfiteátr v Pompejích",
       location: "Pompeje, Itálie",
-      alt: "Část stadionu ve starověkém městě Pompeje",
+      alt: "Ruiny amfiteátru ve starověkém městě Pompeje",
       description:
-        "Amfiteátr v Pompejích – starověký římský amfiteátr, nacházející se v Pompejích. Je nejstarší dochovanou stavbou tohoto typu.",
+        "Amfiteátr v Pompejích – starověký římský amfiteátr nacházející se v Pompejích. Je nejstarší dochovanou stavbou tohoto typu.",
     },
     "naples-museum": {
       title: "Malý pergamonský dar",
       location: "Neapol, Itálie",
-      alt: "Národní archeologické muzeum v Neapoli",
+      alt: "Socha 'Umírající Gal' v Národním archeologickém muzeu v Neapoli",
       description:
         "Kopie z 2. století n. l. podle řeckého originálu z 2. století př. n. l.",
     },
     "capri-taras": {
       title: "Capri poblíž Marina Piccola",
       location: "Capri, Itálie",
-      alt: "Terasy na Capri",
+      alt: "Vyhlídková terasa s kaktusy na Capri",
       description:
-        "Okouzlující střešní terasa s kaktusy. Většina střech budov na Capri je plochá. A jak je vidět výše, na některých z těchto budov jsou založeny terasy.",
+        "Okouzlující střešní terasa s kaktusy. Většina střech budov na Capri je plochá. A jak je vidět výše, na některých z těchto budov jsou zřízeny terasy.",
     },
     "capri-street": {
-      title: "Nákupní ulice na Capri",
+      title: "Nákupní ulice v Capri",
       location: "Capri, Itálie",
-      alt: "Obchody na Capri",
+      alt: "Úzká nákupní ulice s obchody v Capri",
       description:
         "Capri se vyznačuje půvabnými nákupními uličkami, které začínají na Piazzettě a vedou přes Via Camerelle a Via Le Botteghe.",
     },
     "capri-port": {
       title: "Přístav v Marina Grande",
       location: "Capri, Itálie",
-      alt: "Zakotvené jachty",
+      alt: "Lodě a jachty kotvící v přístavu Marina Grande na Capri",
       description:
-        "Nosiči zavazadel z hlavních hotelů čekají, aby vzali zavazadla na vozíku, a vy můžete jet lanovkou nebo kabrioletem, protože na Capri není automobilový provoz.",
+        "Nosiči zavazadel z hlavních hotelů čekají, aby odvezli zavazadla na vozíku, a vy můžete jet lanovkou nebo kabrioletem, protože na Capri není automobilový provoz.",
     },
     "lisbon-hero": {
-      // Poznámka: Možný konflikt ID s heroSlides
-      title: "Klášter Jeronýmů",
+      title: "Klášter Jeronymitů",
       location: "Lisabon, Portugalsko",
-      alt: "Klášter Jeronýmů v Belému",
+      alt: "Fasáda Kláštera Jeronymitů v Belému",
       description:
-        "Postavený v první polovině 16. století, je považován za perlu a kvintesenci manuelského stylu, který je pro Portugalsko specifickým spojením gotiky a renesance.",
+        "Postaven v první polovině 16. století, je považován za perlu a kvintesenci manuelského stylu, specifického portugalského spojení gotiky a renesance.",
     },
     "paris-eiffel": {
       title: "Eiffelova věž",
       location: "Paříž, Francie",
-      alt: "Večerní osvětlení Eiffelovy věže v Paříži",
+      alt: "Večerní osvětlení Eiffelovy věže na pozadí oblohy",
       description:
-        "Nejznámější architektonický objekt Paříže, považovaný za symbol tohoto města a někdy i celé Francie.",
+        "Nejznámější architektonický objekt Paříže, považovaný za symbol tohoto města a někdy celé Francie.",
     },
     "paris-louvre": {
       title: "Louvre",
       location: "Paříž, Francie",
-      alt: "Bývalý královský palác v Paříži",
+      alt: "Skleněná pyramida před palácem Louvre v Paříži",
       description:
         "Jedno z největších muzeí na světě, je také nejnavštěvovanější institucí tohoto typu na světě.",
     },
     "paris-panteon": {
       title: "Pohled na Pantheon z Place du Pantheon",
       location: "Paříž, Francie",
-      alt: "Pantheon z Place du Pantheon",
+      alt: "Fasáda Pantheonu v Paříži viděná z náměstí",
       description:
         "Pantheon – budova v Latinské čtvrti v Paříži, postavená na konci 18. století jako kostel zasvěcený svaté Jenovéfě.",
     },
     "paris-snails": {
       title: "Slavní francouzští šneci",
       location: "Paříž, Francie",
-      alt: "Pokrm ze šneků",
+      alt: "Talíř s připravenými šneky po burgundsku",
       description:
-        "Těžko si představit kuchyni nad Seinou, a zvláště nad Rhônou, bez lahodného šneka na talíři.",
+        "Je těžké si představit kuchyni na Seině, a zvláště na Rhôně, bez lahodného šneka na talíři.",
     },
     "paris-1": {
-      alt: "Pohled na Národní knihovnu na jaře",
       title: "Národní knihovna Francie, pobočka Richelieu, Oválný sál",
       location: "Paříž, Francie",
+      alt: "Interiér Oválného sálu Národní knihovny Francie",
     },
     "paris-2": {
-      alt: "Versailles, Chrám lásky",
       title: "Versailles, Chrám lásky",
       location: "Versailles, Francie",
+      alt: "Chrám lásky v zahradách Versailles",
     },
     "paris-3": {
-      alt: "Francouzská zahrada",
       title: "Nádherné historické zahrady",
       location: "Paříž, Francie",
+      alt: "Procházková alej ve francouzské zahradě v Paříži",
     },
     "paris-4": {
-      alt: "Tančící Faun",
-      title: "Římský mýtický bůh lesů a kouzelných hvozdů",
+      title: "Tančící Faun",
       location: "Paříž, Francie",
+      alt: "Socha Tančícího Fauna",
     },
     "frankfurt-hero": {
-      // Poznámka: Možný konflikt ID s heroSlides
       title: "Stará opera (Alte Oper), Frankfurt",
       location: "Frankfurt nad Mohanem, Německo",
-      alt: "Stará opera (Alte Oper), Frankfurt",
+      alt: "Budova Staré opery ve Frankfurtu v noci",
       description:
         "Tyčící se nad malebným náměstím zdobeným elegantní fontánou se nachází Opera s fasádou v renesančním stylu.",
     },
     "berlin-gate": {
       title: "Braniborská brána",
       location: "Berlín, Německo",
-      alt: "Braniborská brána",
+      alt: "Braniborská brána v noci",
       description:
         "Braniborská brána jako symbol Míru a Svobody od 3. října 1990, v den výročí sjednocení Německa.",
     },
     "berlin-museum": {
-      title: "Staré muzeum (Altes Museum)",
+      title: "Staré muzeum",
       location: "Berlín, Německo",
-      alt: "Staré muzeum",
+      alt: "Kolonáda před Starým muzeem v Berlíně",
       description:
         "Muzeum bylo postaveno s cílem zpřístupnit sbírky antického umění široké veřejnosti na příkaz pruského krále Fridricha Viléma III.",
     },
     "berlin-victory-column": {
-      title: "Vítězný sloup (Siegessäule)",
+      title: "Vítězný sloup",
       location: "Berlín, Německo",
-      alt: "Vítězný sloup",
+      alt: "Zlatá socha na vrcholu Vítězného sloupu v Berlíně",
       description:
         "Sloup nacházející se v parku Großer Tiergarten v Berlíně připomínající vítězství Pruska nad Dánskem v dánské válce z roku 1864.",
     },
     "berlin-music": {
       title: "Pomník Beethovena, Haydna a Mozarta",
       location: "Berlín, Německo",
-      alt: "Pomník tří hudebních géniů",
+      alt: "Pomník tří skladatelů v parku Tiergarten",
       description:
         "Venkovní pomník klasických skladatelů: Ludwiga van Beethovena, Josepha Haydna a Wolfganga Amadea Mozarta z roku 1904.",
     },
     "prague-bridge": {
       title: "Pohled na Vltavu v Praze",
       location: "Praha, Česká republika",
-      alt: "Řeka Vltava v Praze",
+      alt: "Karlův most přes Vltavu v Praze za soumraku",
       description:
-        "Celá Praha se zhlíží ve Vltavě a lichotí si k ní jako k magickému zrcadlu.",
+        "Celá Praha se zrcadlí ve Vltavě a koketuje s ní jako s magickým zrcadlem.",
     },
     "prague-wit": {
       title: "Svatovítský poklad",
       location: "Praha, Česká republika",
-      alt: "Pokladnice v Praze",
+      alt: "Relikviář ve Svatovítském pokladu",
       description:
-        "Artefakty v pokladnici Katedrály svatého Víta na Hradčanech v Praze.",
+        "Artefakty ve Svatovítském pokladu v Katedrále svatého Víta na Pražském hradě.",
     },
     "prague-dance": {
       title: "Tančící dům",
       location: "Praha, Česká republika",
-      alt: "Ginger a Fred",
+      alt: "Moderní budova Tančící dům v Praze",
       description:
         "Avantgardní budova navržená dvojicí architektů: Vlado Milunićem a Frankem Gehrym ve stylu dekonstruktivismu.",
     },
     "prague-kafka": {
       title: "Otočná hlava Franze Kafky",
       location: "Praha, Česká republika",
-      alt: "Hlava Franze Kafky",
+      alt: "Kinetická socha Hlava Franze Kafky v Praze",
       description:
-        "David Černý navrhl toto kontroverzní umělecké dílo pro obchodně-kancelářskou budovu 'Quadrio' na Národní třídě.",
+        "David Černý navrhl toto kontroverzní umělecké dílo pro obchodní a kancelářskou budovu 'Quadrio' na Národní třídě.",
     },
   },
-  // About Section - O nás
+  // About Section
   about: {
     title: "O EuroTrek",
     description1:
       "EuroTrek je kolektivní fotografický deník vytvořený univerzitními studenty studujícími v Polsku. Naším posláním je prezentovat krásu, kulturu a zážitky ze studentských cest prostřednictvím autentické fotografie.",
     description2:
-      "Tato platforma slouží jak jako inspirace pro budoucí studenty-cestovatele, tak jako pamětní kniha pro ty, kteří již začali svá evropská dobrodružství. Všechny fotografie jsou pořízeny studenty a ukazují Evropu ze svěží, mladistvé perspektivy.",
-    pageTitle: "O Naší Cestě",
+      "Tato platforma slouží jako inspirace pro budoucí studenty-cestovatele i jako pamětní kniha pro ty, kteří již svá evropská dobrodružství zahájili. Všechny fotografie jsou pořízeny studenty a ukazují Evropu svěží, mladistvou perspektivou.",
+    pageTitle: "O naší cestě",
     pageDescription1:
       "EuroTrek se zrodil z vášně pro cestovatelskou fotografii a touhy zachytit jedinečné zážitky studentů-objevitelů v nejživějších městech Evropy.",
     pageDescription2:
-      "To, co začalo jako malá skupina sdílení fotografií mezi spolužáky studujícími v Polsku, se rozrostlo v platformu spojující studenty-fotografy z různých zemí, prostředí a akademických oborů, kteří sdílejí společnou lásku k objevování a vizuálnímu vyprávění příběhů.",
+      "To, co začalo jako malá skupina sdílení fotografií mezi spolužáky studujícími v Polsku, se rozrostlo v platformu spojující studenty-fotografy z různých zemí, prostředí a akademických oborů, kteří sdílejí společnou lásku k objevování a vizuálnímu vyprávění.",
     pageDescription3:
-      "Naši přispěvatelé jsou studenti jako vy, kteří vyvažují svá studia s dobrodružstvími po celém kontinentu a zachycují autentické okamžiky na cestě.",
+      "Naši přispěvatelé jsou studenti jako vy, kteří vyvažují studium s dobrodružstvími po celém kontinentu a cestou zachycují autentické okamžiky.",
     mission: {
-      title: "Naše Mise",
+      title: "Naše mise",
       description:
-        "Inspirovat ke studentským cestám prostřednictvím autentického vizuálního vyprávění příběhů a vytvářet podpůrnou komunitu pro mladé fotografy objevující Evropu.",
+        "Inspirovat studentské cestování prostřednictvím autentického vizuálního vyprávění a vytvářet podpůrnou komunitu pro mladé fotografy objevující Evropu.",
     },
     team: {
-      title: "Studentský Kolektiv",
+      title: "Studentský kolektiv",
       description:
         "Náš tým se skládá výhradně ze studentů-fotografů, spisovatelů a webových vývojářů z univerzit po celém světě. Každý přispěvatel přináší na platformu svou jedinečnou perspektivu a zkušenosti.",
     },
     feature1: {
-      title: "Studenti-Fotografové",
-      description: "Fotografie pořízené zahraničními studenty z celého světa.",
+      title: "Studenti-fotografové",
+      description: "Fotografie pořízené zahraničními studenty z celého světa",
     },
     feature2: {
-      title: "Autentické Zážitky",
-      description: "Skutečné okamžiky z cest mimo typické turistické atrakce.",
+      title: "Autentické zážitky",
+      description: "Skutečné cestovní okamžiky mimo typické turistické atrakce",
     },
     feature3: {
-      title: "Mnoho Cest",
-      description: "Rostoucí sbírka fotografií z celého evropského kontinentu.",
+      title: "Mnoho cest",
+      description: "Rostoucí sbírka fotografií z celého evropského kontinentu",
     },
-    image1: {
-      title: "Lisabon",
-      description: "Klášter Jeronýmů.",
-    },
+    image1: { title: "Lisabon", description: "Klášter Jeronymitů." },
     image2: {
       title: "Německo a Francie",
       description: "Nezapomenutelná cesta Německem a Francií.",
     },
-    image3: {
-      title: "Neapol",
-      description: "Neobyčejná krajina Neapole.",
-    },
+    image3: { title: "Neapol", description: "Neobvyklé krajiny Neapole." },
   },
-  // Featured Section - Doporučená sekce
+  // Featured Section
   featured: {
     title: "Doporučeno: Jaro v Paříži",
     description1:
       "Paříž na jaře je snem pro studenty-fotografy. Město ožívá kvetoucími třešněmi, kavárenskými zahrádkami a ideálním světlem pro zachycení ikonických památek.",
     description2:
-      "Naše doporučená kolekce ukazuje kouzlo Paříže očima polských studentů, kteří strávili své zahraniční prázdniny ve Městě světel.",
-    exploreLink: "Objevte Kolekci Paříž",
+      "Naše doporučená sbírka ukazuje kouzlo Paříže očima polských studentů, kteří strávili své zahraniční prázdniny ve Městě světel.",
+    exploreLink: "Objevte Pařížskou sbírku",
     image1Alt: "Eiffelova věž na jaře",
     image2Alt: "Řeka Seina v Paříži",
     image3Alt: "Pařížská kavárna",
     image4Alt: "Muzeum Louvre",
   },
-  // Contact Section - Kontaktní sekce
+  // Contact Section
   contact: {
     title: "Kontakt",
     description:
-      "Máte dotazy nebo chcete zaslat vlastní studentské fotografie z cest? Rádi se s vámi seznámíme!",
-    pageTitle: "Kontaktujte Nás",
-    getInTouch: "Jak Vám Můžeme Pomoci?",
+      "Máte dotazy nebo chcete zaslat vlastní studentské fotografie z cest? Rádi se s vámi spojíme!",
+    pageTitle: "Kontaktujte nás",
+    getInTouch: "Jak vám můžeme pomoci?",
     getInTouchDescription:
       "Ať už chcete zaslat své fotografie z cest, máte dotazy ohledně naší platformy, nebo se jen chcete pozdravit, jsme tu, abychom vám pomohli.",
     email: {
-      title: "Napište Nám",
+      title: "Napište nám",
       description: "Pro obecné dotazy a zasílání fotografií",
     },
     location: {
-      title: "Naše Poloha",
-      description: "Navštivte naši kancelář studentského kolektivu",
-      address: "University Creative Hub, European Campus, Amsterdam", // Adresa - přeložit nebo nechat?
+      title: "Naše sídlo",
+      description:
+        "Navštivte naši kancelář studentského kolektivu (po domluvě)",
+      address: "Univerzita Gdaňsk, ul. Bażyńskiego 8, 80-309 Gdaňsk",
     },
     phone: {
-      title: "Zavolejte Nám",
-      description: "Dostupní v pracovní dny od 10:00 do 18:00 SEČ",
+      title: "Zavolejte nám",
+      description: "K dispozici ve všední dny od 10:00 do 18:00 SEČ",
     },
     form: {
-      name: "Vaše Jméno",
+      name: "Vaše jméno",
       namePlaceholder: "Zadejte své jméno",
       nameError: "Jméno je povinné",
-      email: "Váš Email",
-      emailPlaceholder: "Zadejte svůj email",
-      emailError: "Je vyžadován platný email",
+      email: "Váš e-mail",
+      emailPlaceholder: "Zadejte svůj e-mail",
+      emailError: "Je vyžadován platný e-mail",
       subject: "Předmět",
       subjectPlaceholder: "O čem chcete mluvit?",
       subjectError: "Předmět je povinný",
       message: "Zpráva",
-      messagePlaceholder: "Sem napište svou zprávu...",
+      messagePlaceholder: "Zde zadejte svou zprávu...",
       messageError: "Zpráva musí mít alespoň 10 znaků",
-      send: "Odeslat Zprávu",
+      send: "Odeslat zprávu",
       sending: "Odesílání...",
-      successTitle: "Zpráva Odeslána!",
-      successMessage: "Děkujeme za kontakt. Brzy se ozveme.",
+      successTitle: "Zpráva odeslána!",
+      successMessage: "Děkujeme za kontakt. Brzy se vám ozveme.",
     },
   },
-  // Footer - Patička
+  // Footer
   footer: {
     description:
-      "Vizuální cesta Evropou zachycená objektivem studentů objevujících nejkrásnější zákoutí kontinentu.",
-    quickLinks: "Rychlé Odkazy",
+      "Vizuální cesta Evropou zachycená objektivem studentů, kteří objevují nejkrásnější zákoutí kontinentu.",
+    quickLinks: "Rychlé odkazy",
     resources: "Zdroje",
-    parisCollection: "Kolekce Paříž",
-    submitPhotos: "Odeslat Fotografie",
-    privacyPolicy: "Zásady Ochrany Osobních Údajů",
-    termsOfUse: "Podmínky Použití",
+    parisCollection: "Pařížská sbírka",
+    submitPhotos: "Zaslat fotografie",
+    privacyPolicy: "Zásady ochrany osobních údajů",
+    termsOfUse: "Podmínky používání",
     accessibility: "Přístupnost",
-    cookiePolicy: "Zásady Cookies",
-    cookieSettings: "Nastavení Cookies",
-    faq: "Často Kladené Otázky (FAQ)",
-    sitemap: "Mapa Stránek",
-    support: "Pomoc a Podpora",
+    cookiePolicy: "Zásady používání souborů cookie",
+    cookieSettings: "Nastavení cookies",
+    faq: "Často kladené otázky (FAQ)",
+    sitemap: "Mapa stránek",
+    support: "Nápověda a podpora",
     copyright: "Všechna práva vyhrazena.",
-    tagline: "Vytvořeno s ❤ studenty, pro studenty.",
+    tagline: "Vytvořeno s ❤ studenty pro studenty.",
     instagram: "Sledujte nás na Instagramu",
     twitter: "Sledujte nás na Twitteru",
     facebook: "Sledujte nás na Facebooku",
     pinterest: "Sledujte nás na Pinterestu",
   },
-  // Slider Controls - Ovládání slideru
+  // Slider Controls
   slider: {
     previous: "Předchozí snímek",
     next: "Další snímek",
     goToSlide: "Přejít na snímek {{index}}",
   },
-  // Lightbox - Prohlížeč fotek
+  // Lightbox
   lightbox: {
     close: "Zavřít prohlížeč",
     previous: "Předchozí fotografie",
     next: "Další fotografie",
   },
-  // Theme Toggle - Přepínač motivu
+  // Theme Toggle
   theme: {
     toggleLight: "Přepnout na světlý režim",
     toggleDark: "Přepnout na tmavý režim",
   },
-  // Language - Jazyk
+  // Language
   language: {
     changeLanguage: "Změnit jazyk",
   },
-  // Home - Domů
+  // Home
   home: {
     heroAriaLabel: "Doporučené destinace",
   },
 
-  // --- Sekce pro nové informační stránky ---
+  // --- SECTIONS FOR INFO PAGES ---
   privacyPolicy: {
-    title: "Zásady Ochrany Osobních Údajů",
-    metaDescription:
-      "Přečtěte si zásady ochrany osobních údajů služby EuroTrek.",
+    title: "Zásady ochrany osobních údajů",
+    metaDescription: "Přečtěte si zásady ochrany osobních údajů webu EuroTrek.",
     introduction:
-      "Vítejte v zásadách ochrany osobních údajů EuroTrek. Vaše soukromí je pro nás důležité a vynakládáme veškeré úsilí na ochranu vašich osobních údajů v souladu s platnými předpisy, včetně GDPR.",
+      "Vítejte v zásadách ochrany osobních údajů EuroTrek. Vaše soukromí je pro nás důležité a zavazujeme se chránit vaše osobní údaje v souladu s platnými předpisy, včetně GDPR.",
     section1Title: "1. Jaké informace shromažďujeme?",
     section1Content:
-      "Shromažďujeme informace, které nám přímo poskytnete (např. prostřednictvím kontaktního formuláře: jméno, e-mailová adresa, obsah zprávy) a údaje shromažďované automaticky při používání služby (např. IP adresa, typ prohlížeče, informace o zařízení, údaje o aktivitě ve službě pomocí souborů cookie – viz Zásady Cookies).",
+      "Shromažďujeme informace, které nám přímo poskytnete (např. prostřednictvím kontaktního formuláře: jméno, e-mailová adresa, obsah zprávy) a údaje shromážděné automaticky při používání webu (např. IP adresa, typ prohlížeče, informace o zařízení, údaje o aktivitě na webu pomocí souborů cookie – viz Zásady používání souborů cookie).",
     section2Title: "2. Jak používáme vaše informace?",
     section2Content:
-      "Vaše údaje používáme k poskytování a zlepšování našich služeb, komunikaci s vámi (odpovědi na dotazy), analýze návštěvnosti stránek, zajištění bezpečnosti služby a plnění právních povinností.",
+      "Vaše údaje používáme k poskytování a zlepšování našich služeb, komunikaci s vámi (odpovědi na dotazy), analýze návštěvnosti webu, zajištění bezpečnosti webu a plnění právních povinností.",
     contactTitle: "Kontakt ohledně ochrany osobních údajů",
     contactContent:
-      "V záležitostech týkajících se zpracování vašich osobních údajů nebo uplatnění vašich práv nás kontaktujte na adrese: [puaro@vp.pl].", // Aktualizujte e-mailovou adresu
+      "V záležitostech týkajících se zpracování vašich osobních údajů nebo uplatnění vašich práv nás kontaktujte na adrese: puaro@vp.pl",
   },
   termsOfUse: {
-    title: "Podmínky Použití",
-    metaDescription: "Přečtěte si podmínky použití služby EuroTrek.",
+    title: "Podmínky používání",
+    metaDescription: "Přečtěte si podmínky používání webu EuroTrek.",
     introduction:
-      "Tyto Podmínky Použití upravují pravidla používání webové služby EuroTrek. Používáním služby souhlasíte s níže uvedenými ustanoveními.",
+      "Tyto Podmínky používání upravují pravidla používání webových stránek EuroTrek. Používáním webu souhlasíte s níže uvedenými ustanoveními.",
     section1Title: "1. Obecná pravidla a přijetí podmínek",
     section1Content:
-      "Služba EuroTrek je platforma prezentující cestovatelské fotografie. Uživatelé jsou povinni používat službu v souladu se zákonem a dobrými mravy. Je zakázáno zveřejňovat obsah nezákonný, urážlivý nebo porušující práva třetích stran.",
-    contactTitle: "Kontakt ohledně Podmínek použití",
+      "Web EuroTrek je platforma prezentující cestovatelské fotografie. Uživatelé jsou povinni používat web v souladu se zákonem a dobrými mravy. Je zakázáno zveřejňovat obsah, který je nezákonný, urážlivý nebo porušuje práva třetích stran.",
+    contactTitle: "Kontakt ohledně Podmínek používání",
     contactContent:
-      "Dotazy týkající se těchto Podmínek použití směřujte na adresu: [puaro@vp.pl].", // Aktualizujte e-mailovou adresu
+      "Dotazy týkající se těchto Podmínek používání směřujte na adresu: puaro@vp.pl",
   },
   accessibility: {
-    title: "Prohlášení o Přístupnosti",
+    title: "Prohlášení o přístupnosti",
     metaDescription:
-      "Zjistěte více o našem závazku k digitální přístupnosti v EuroTrek.",
+      "Zjistěte více o našem závazku k digitální přístupnosti na EuroTrek.",
     introduction:
-      "EuroTrek se snaží zajistit digitální přístupnost služby pro co nejširší okruh uživatelů, včetně osob se zdravotním postižením. Neustále pracujeme na zlepšování rozhraní a uplatňování příslušných standardů přístupnosti, jako jsou WCAG (Web Content Accessibility Guidelines).",
-    section1Title: "1. Naše kroky k přístupnosti",
+      "EuroTrek se snaží zajistit digitální přístupnost webu pro co nejširší okruh uživatelů, včetně osob se zdravotním postižením. Neustále pracujeme na zlepšování rozhraní a uplatňování příslušných standardů přístupnosti, jako jsou WCAG (Web Content Accessibility Guidelines).",
+    section1Title: "1. Naše kroky k zajištění přístupnosti",
     section1Content:
-      "Snažíme se implementovat řešení jako: používání sémantického kódu HTML, zajištění navigace pomocí klávesnice, odpovídající kontrast barev, alternativní popisy obrázků a testování služby pomocí různých podpůrných technologií.",
+      "Snažíme se implementovat řešení jako: používání sémantického HTML kódu, zajištění navigace pomocí klávesnice, odpovídající barevný kontrast, alternativní popisy obrázků a testování webu pomocí různých podpůrných technologií.",
     contactTitle: "Zpětná vazba a kontaktní údaje",
     contactContent:
-      "Pokud narazíte na bariéry přístupnosti v naší službě, kontaktujte nás prosím. Vaše připomínky jsou pro nás cenné. Kontaktujte nás na adrese: [puaro@vp.pl].", // Aktualizujte e-mailovou adresu
+      "Pokud narazíte na bariéry přístupnosti na našem webu, kontaktujte nás prosím. Vaše připomínky jsou pro nás cenné. Kontaktujte nás na adrese: puaro@vp.pl",
   },
   cookiePolicy: {
-    title: "Zásady Cookies",
+    title: "Zásady používání souborů cookie",
     metaDescription: "Zjistěte, jak EuroTrek používá soubory cookie.",
     introduction:
-      "Naše služba používá soubory cookie (ciasteczka), aby zajistila správné fungování stránky, zlepšila vaše zkušenosti a pro analytické a marketingové účely (s vaším souhlasem).",
+      "Náš web používá soubory cookie, aby zajistil správné fungování stránek, zlepšil váš zážitek a pro analytické a marketingové účely (s vaším souhlasem).",
     section1Title: "1. Co jsou soubory cookie?",
     section1Content:
-      "Soubory cookie jsou malé textové soubory ukládané na vašem zařízení (počítači, smartphonu) při návštěvě webových stránek. Umožňují stránce 'pamatovat' si vaše akce a preference po určitou dobu.",
+      "Soubory cookie jsou malé textové soubory ukládané do vašeho zařízení (počítače, smartphonu) při návštěvě webových stránek. Umožňují stránce 'pamatovat si' vaše akce a preference po určitou dobu.",
     section2Title: "2. Jaké typy souborů cookie používáme?",
     section2Content: "Používáme různé typy souborů cookie, včetně:",
     type1:
-      "Nezbytné soubory cookie: Nutné pro základní fungování služby (např. relace uživatele). Nevyžadují souhlas.",
+      "Nezbytné soubory cookie: Nutné pro základní fungování webu (např. relace uživatele). Nevyžadují souhlas.",
     type2:
-      "Analytické soubory cookie: Pomáhají nám porozumět, jak uživatelé používají stránku (např. Google Analytics). Vyžadují váš souhlas.",
+      "Analytické soubory cookie: Pomáhají nám pochopit, jak uživatelé používají stránky (např. Google Analytics). Vyžadují váš souhlas.",
     type3:
       "Funkční soubory cookie: Umožňují zapamatovat si vaše volby a preference (např. jazyk). Mohou vyžadovat souhlas.",
     type4:
       "Marketingové soubory cookie: Slouží k zobrazování personalizovaných reklam (např. Facebook Pixel). Vyžadují váš souhlas.",
     section3Title: "3. Správa souborů cookie",
     section3Content:
-      "Svůj souhlas se soubory cookie můžete kdykoli spravovat pomocí nástroje pro správu souhlasů dostupného na našich stránkách (klikněte na tlačítko 'Nastavení Cookies'). Nastavení souborů cookie můžete také změnit ve svém webovém prohlížeči.",
+      "Své souhlasy se soubory cookie můžete kdykoli spravovat pomocí nástroje pro správu souhlasů dostupného na našich stránkách (klikněte na tlačítko 'Nastavení cookies'). Nastavení souborů cookie můžete také změnit ve svém webovém prohlížeči.",
     settingsError:
       "Nelze otevřít nastavení cookies. Kontaktujte technickou podporu nebo zkuste spravovat nastavení v prohlížeči.",
     settingsInfoPlaceholder:
       "Kliknutím na tlačítko se otevře panel pro správu nastavení souborů cookie.",
-    contactTitle: "Kontakt ohledně Zásad cookies",
+    contactTitle: "Kontakt ohledně Zásad používání souborů cookie",
     contactContent:
-      "V případě dotazů ohledně našich zásad cookies nás kontaktujte: [puaro@vp.pl].", // Aktualizujte e-mailovou adresu
+      "V případě dotazů ohledně našich zásad používání souborů cookie nás kontaktujte: puaro@vp.pl",
   },
   faq: {
-    title: "Často Kladené Otázky (FAQ)",
+    title: "Často kladené otázky (FAQ)",
     metaDescription:
       "Najděte odpovědi na nejčastější otázky týkající se EuroTrek.",
     q1: "Otázka 1: Jak mohu zaslat své fotografie?",
     a1: "V současné době shromažďujeme fotografie od spřátelených studentů. Pokud máte zájem o spolupráci, kontaktujte nás prostřednictvím kontaktního formuláře a stručně popište své cesty a portfolio.",
-    q2: "Otázka 2: Je používání služby zpoplatněno?",
-    a2: "Ne, prohlížení fotografií a obsahu ve službě EuroTrek je pro všechny uživatele zcela zdarma.",
-    q3: "Otázka 3: Kdo je vlastníkem autorských práv k fotografiím?",
-    a3: "Autorská práva k fotografiím náleží studentům-autorům. EuroTrek má licenci k jejich zveřejnění ve službě. Podrobnosti stanoví smlouva s autorem a naše Podmínky použití.",
+    q2: "Otázka 2: Je používání webu zpoplatněno?",
+    a2: "Ne, prohlížení fotografií a obsahu na webu EuroTrek je pro všechny uživatele zcela zdarma.",
+    q3: "Otázka 3: Kdo vlastní autorská práva k fotografiím?",
+    a3: "Autorská práva k fotografiím náleží studentům-autorům. EuroTrek má licenci k jejich zveřejnění na webu. Podrobnosti stanoví smlouva s autorem a naše Podmínky používání.",
     stillHaveQuestions: "Máte další otázky?",
     contactUs: "Kontaktujte nás",
   },
   sitemap: {
-    title: "Mapa Stránek",
-    metaDescription: "Prohlédněte si strukturu stránek EuroTrek.",
+    title: "Mapa stránek",
+    metaDescription: "Prohlédněte si strukturu webu EuroTrek.",
     introduction:
-      "Níže naleznete seznam hlavních sekcí a stránek dostupných ve službě EuroTrek, abyste se mohli snadněji orientovat.",
+      "Níže je uveden seznam hlavních sekcí a stránek dostupných na webu EuroTrek pro usnadnění navigace.",
   },
   support: {
-    title: "Pomoc a Podpora",
+    title: "Nápověda a podpora",
     metaDescription:
       "Potřebujete pomoc? Najděte kontaktní informace a podporu pro EuroTrek.",
     introduction:
-      "Jsme tu, abychom vám pomohli! Pokud máte dotazy ohledně fungování služby, narazili jste na technický problém nebo máte jiné pochybnosti, využijte dostupné možnosti podpory.",
-    faqTitle: "Nejprve Zkontrolujte FAQ",
+      "Jsme tu, abychom vám pomohli! Pokud máte dotazy ohledně fungování webu, narazili jste na technický problém nebo máte jiné pochybnosti, využijte dostupné možnosti podpory.",
+    faqTitle: "Nejprve zkontrolujte FAQ",
     faqDescription:
-      "Mnoho odpovědí na běžné otázky naleznete v naší sekci Často Kladených Otázek (FAQ).",
-    goToFaq: "Přejít do FAQ",
-    contactFormTitle: "Kontaktní Formulář",
+      "Mnoho odpovědí na běžné otázky najdete v naší sekci Často kladených otázek (FAQ).",
+    goToFaq: "Přejít na FAQ",
+    contactFormTitle: "Kontaktní formulář",
     contactFormDescription:
       "Nejlepším způsobem, jak nás kontaktovat ve většině případů, je zaslání zprávy prostřednictvím našeho kontaktního formuláře.",
     goToContact: "Přejít na Kontakt",
-    phoneTitle: "Telefonická Podpora",
+    phoneTitle: "Telefonická podpora",
     phoneDescription:
-      "V naléhavých technických záležitostech nás můžete kontaktovat telefonicky v hodinách [např. 10:00 - 16:00] od pondělí do pátku.", // Aktualizujte hodiny
-    phoneNumber: "Zavolejte: [000 000 000]", // Aktualizujte telefonní číslo
+      "V naléhavých technických záležitostech nás můžete kontaktovat telefonicky v době [např. 10:00 - 16:00] od pondělí do pátku.",
+    phoneNumber: "Zavolejte: +420 000 000 000",
     responseInfo:
       "Snažíme se odpovídat na dotazy zaslané prostřednictvím kontaktního formuláře během 1-2 pracovních dnů.",
   },

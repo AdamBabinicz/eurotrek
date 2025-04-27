@@ -1,4 +1,4 @@
-import { Description } from "@radix-ui/react-toast"; // Chociaż nieużywany, zostawiam zgodnie z prośbą
+import { Description } from "@radix-ui/react-toast"; // Nadal nieużywany, ale zgodnie z życzeniem
 
 export default {
   // Common
@@ -7,11 +7,16 @@ export default {
     lastUpdated: "Ostatnia aktualizacja",
     placeholderContent:
       "Treść tej sekcji jest w przygotowaniu. Wkrótce zostanie uzupełniona.",
+    // Klucze fallback dla zdjęć
+    no_alt_text: "Zdjęcie",
+    no_title: "Bez tytułu",
+    no_location: "Nieznana lokalizacja",
+    photo_not_found: "Nie można załadować zdjęcia",
   },
 
   routes: {
     home: "",
-    destinations: "podroze",
+    destinations: "podroze", // Mimo usunięcia trasy, slug może być potrzebny gdzieś indziej
     about: "o-nas",
     contact: "kontakt",
     destinationDetail: "podroz",
@@ -30,13 +35,23 @@ export default {
     destinations: "Podróże",
     about: "O nas",
     contact: "Kontakt",
+    mainNavLabel: "Główna nawigacja",
+    goToHome: "Przejdź do strony głównej",
+    toggleMenu: "Otwórz/Zamknij menu",
+    mobileMenuTitle: "Menu",
   },
-  // Destinations
+  // Destinations (dla strony listy, jeśli kiedyś powstanie)
+  destinationsListPage: {
+    title: "Nasze Podróże",
+    metaDescription:
+      "Odkryj wszystkie niesamowite miejsca, które oferujemy w EuroTrek.",
+    header: "Odkryj Nasze Podróże",
+  },
+  // Destinations (ogólne terminy)
   destinations: {
     exploreTitle: "Odkryj Podróże",
     exploreDescription:
       "Przeglądaj naszą kolekcję studenckich zdjęć z podróży po najpiękniejszych miastach Europy.",
-    allDestinations: "Wszystkie Podróże",
     lisbon: "Lizbona",
     paris: "Paryż",
     berlin: "Berlin",
@@ -45,46 +60,57 @@ export default {
     prague: "Praga",
     loadMore: "Załaduj więcej",
     ariaLabel: "Kategorie podróży",
-    // --- DODANY WPIS ---
     noMorePhotos: "Nie ma więcej zdjęć do załadowania dla tej kategorii",
-    // --- KONIEC DODANEGO WPISU ---
   },
+  // Dane specyficzne dla destynacji
   destinationsData: {
     lisbon: { name: "Lizbona", country: "Portugalia" },
     paris: { name: "Paryż", country: "Francja" },
     berlin: { name: "Berlin", country: "Niemcy" },
     capri: { name: "Capri", country: "Włochy" },
-    naples: { name: "Neapol", country: "Włochy" },
+    naples: {
+      name: "Neapol",
+      country: "Włochy",
+      description:
+        "Neapol, tętniące życiem miasto w południowych Włoszech, położone nad Zatoką Neapolitańską. Słynie z bogatej historii, sztuki, kultury, architektury, muzyki i gastronomii.",
+    },
     prague: { name: "Praga", country: "Czechy" },
   },
-  // Hero Slides
+  // Hero Slides (z uzupełnionymi/poprawionymi alt i tytułami)
   heroSlides: {
     "paris-hero": {
-      location: "Paryż, Francja",
+      title: "Wersal - perła baroku",
+      alt: "Pałac Wersalski pod Paryżem",
+      location: "Wersal, Francja", // Poprawiono lokalizację
       description:
         "Miasto świateł oczami studenta - uchwycenie czaru paryskiej architektury i kultury.",
     },
     "rome-hero": {
+      title: "Droga nad Morzem Tyrreńskim",
+      alt: "Widok na wybrzeże i Wezuwiusz w Neapolu",
       location: "Neapol, Włochy",
       description:
         "Neapol to miejsce, gdzie życie toczy się w rytmie espresso, rozmów na ulicy i zapachu świeżo wypiekanej pizzy unoszącego się w ciepłym, śródziemnomorskim powietrzu.",
     },
     "lisbon-hero": {
+      title: "Klasztor Hieronimitów",
+      alt: "Klasztor Hieronimitów w Belem, Lizbona",
       location: "Lizbona, Portugalia",
       description:
         "Lizbona to miasto pełne światła, gdzie brukowane uliczki wiją się między kolorowymi kamienicami, a życie płynie spokojnie w rytmie fado i aromatu świeżych 'pasteis de nata'.",
     },
     "frankfurt-hero": {
+      title: "Stara Opera (Alte Oper)",
+      alt: "Budynek Starej Opery we Frankfurcie",
       location: "Frankfurt nad Menem, Niemcy",
       description:
-        "Lizbona to miasto pełne światła, gdzie brukowane uliczki wiją się między kolorowymi kamienicami, a życie płynie spokojnie w rytmie fado i aromatu świeżych 'pasteis de nata'.", // Uwaga: powtórzony opis z Lizbony
+        "Odkryj Frankfurt nad Menem, gdzie lśniące wieżowce dzielnicy bankowej tworzą niezwykły kontrast z historycznym Opernplatz (Plac Operowy).",
     },
   },
-  // Photos
+  // Photos (z uzupełnionymi/poprawionymi alt)
   photos: {
     view: "Zobacz zdjęcie {{title}}",
     noPhotos: "Nie ma jeszcze dostępnych zdjęć dla tej podróży.",
-    // ... (reszta tłumaczeń zdjęć bez zmian) ...
     "paris-sunset": {
       title: "Zachód słońca w Paryżu",
       location: "Paryż, Francja",
@@ -95,200 +121,205 @@ export default {
       location: "Lizbona, Portugalia",
       description:
         "Zabytkowy budynek teatru jest jednym z najbardziej prestiżowych sal Portugalii i znajduje się na placu Rossio w centrum miasta.",
+      alt: "Żółty, zabytkowy tramwaj na placu Rossio w Lizbonie", // Uzupełniono alt
     },
     "lisbon-belem": {
       title: "Dachy Starego Miasta",
       location: "Lizbona, Portugalia",
       description:
         "Najstarszą dzielnicą Lizbony jest Alfama, wybudowana na zboczu nad Tagiem w czasach panowania Maurów. To właśnie tutaj można poczuć klimat średniowiecznej Lizbony.",
+      alt: "Widok na czerwone dachy Alfamy w Lizbonie", // Uzupełniono alt
     },
     "lisbon-bele": {
       title: "Wieża Belema",
       location: "Lizbona, Portugalia",
       description: "Średniowieczna twierdza z widokime na ujście rzeki Tagus",
+      alt: "Wieża Belem nad rzeką Tag w Lizbonie", // Uzupełniono alt
     },
     "boca do inferno": {
       title: "Usta Piekieł",
       location: "Cascais, Portugalia",
       description:
         "Przepaść położona w nadmorskich klifach blisko portugalskiego miasta Cascais",
+      alt: "Skalna formacja Usta Piekieł w Cascais", // Uzupełniono alt
     },
     "capri-marina": {
       title: "Plaża Luigia u Faraglioni",
       location: "Capri, Włochy",
       description:
         "Usytuowana w Morzu Tyrreńskim, zajmuje 19. miejsce wśród 118 plaż regionu neapolitańskiego.",
+      alt: "Plaża Luigia i formacje skalne Faraglioni na Capri", // Uzupełniono alt
     },
     "paris-hero": {
       title: "Wersal – Perła Baroku",
-      location: "Paryż, Francja",
-      alt: "Pałac Wersalski pod Paryżem",
+      location: "Wersal, Francja", // Poprawiono lokalizację
+      alt: "Pałac Wersalski i ogrody",
       description:
         "Wersal jest symbolem francuskiej monarchii absolutnej i jednym z najwspanialszych przykładów barokowej architektury na świecie.",
     },
     "naples-view": {
       title: "Droga nad Morzem Tyrreńskim",
       location: "Neapol, Włochy",
-      alt: "Droga u podnóża góry",
+      alt: "Droga u podnóża góry Wezuwiusz",
       description: "Malownicza trasa wzdłuż wybrzeża.",
     },
     "naples-mummy": {
       title: "Odlew ofiary Wezuwiusza",
       location: "Pompeje, Włochy",
-      alt: "Ofiary wybuchu wulkanu",
+      alt: "Gipsowy odlew ciała ofiary wybuchu Wezuwiusza",
       description:
         "Odlewy ciał zostały wydobyte w 1863 roku przez archeologa Giuseppe Fiorellego. „Do tej pory nie zostały zinwentaryzowane z powodów etycznych i uczuć, z jakimi zawsze traktowano szczątki ludzkie.",
     },
     "naples-stadion": {
       title: "Amfiteatr w Pompejach",
       location: "Pompeje, Włochy",
-      alt: "Część stadionu w starożytnym mieście Pompeje",
+      alt: "Ruiny amfiteatru w starożytnym mieście Pompeje",
       description:
         "Amfiteatr w Pompejach – starożytny rzymski amfiteatr, znajdujący się w Pompejach. Jest najstarszą zachowaną budowlą tego typu.",
     },
     "naples-museum": {
       title: "Mały dar pergamski",
       location: "Neapol, Włochy",
-      alt: "Narodowe Muzeum Archeologiczne w Neapolu",
+      alt: "Rzeźba 'Umierający Gal' w Narodowym Muzeum Archeologicznym w Neapolu",
       description:
         "Kopia z II wieku n.e. z greckiego oryginału z II wieku p.n.e.",
     },
     "capri-taras": {
       title: "Capri w pobliżu Marina Piccola",
       location: "Capri, Włochy",
-      alt: "Tarasy na Capri",
+      alt: "Taras widokowy z kaktusami na Capri",
       description:
         "Uroczy taras na dachu z kaktusami. Większość dachów budynków na Capri jest płaska. A jak widać powyżej, tarasy są założone na niektórych z tych budynków.",
     },
     "capri-street": {
       title: "Ulica handlowa w Capri",
       location: "Capri, Włochy",
-      alt: "Sklepy w Capri",
+      alt: "Wąska ulica handlowa ze sklepami w Capri",
       description:
         "Capri charakteryzuje się urokliwymi uliczkami handlowymi, które zaczynają się od Piazzetty i prowadzą przez Via Camerelle oraz Via Le Botteghe.",
     },
     "capri-port": {
       title: "Port w Marina Grande",
       location: "Capri, Włochy",
-      alt: "Zacumowane jachty",
+      alt: "Łodzie i jachty zacumowane w porcie Marina Grande na Capri",
       description:
         "Nosiciele bagaży z głównych hoteli czekają, aby zabrać bagaż na wózku, a Ty możesz wjechać funikularem lub jechać kabrioletem, ponieważ na Capri nie ma ruchu samochodowego.",
     },
     "lisbon-hero": {
       title: "Klasztor Hieronimitów",
       location: "Lizbona, Portugalia",
-      alt: "Klasztor Hieronimitów w Belem",
+      alt: "Fasada Klasztoru Hieronimitów w Belem",
       description:
         "Zbudowany w I połowie XVI w., uważany jest za perłę i kwintesencję stylu manuelińskiego, będącego specyficznym dla Portugalii połączeniem gotyku i renesansu.",
     },
     "paris-eiffel": {
       title: "Wieża Eiffla",
       location: "Paryż, Francja",
-      alt: "Wieczorna iluminacja Wieży Eiffla w Paryżu",
+      alt: "Wieczorna iluminacja Wieży Eiffla na tle nieba",
       description:
         "Najbardziej znany obiekt architektoniczny Paryża, uznawany za symbol tego miasta i niekiedy całej Francji.",
     },
     "paris-louvre": {
       title: "Luwr",
       location: "Paryż, Francja",
-      alt: "Dawny pałac królewski w Paryżu",
+      alt: "Szklana piramida przed pałacem Luwr w Paryżu",
       description:
         "Jedno z największych muzeów na świecie, jest też najczęściej odwiedzaną placówką tego typu na świecie.",
     },
     "paris-panteon": {
       title: "Widok Panteon od Place du Pantheon",
       location: "Paryż, Francja",
-      alt: "Panteon od Place du Pantheon",
+      alt: "Fasada Panteonu w Paryżu widziana z placu",
       description:
         "Panteon – budowla w Dzielnicy Łacińskiej w Paryżu, wzniesiona pod koniec XVIII wieku jako kościół pod wezwaniem świętej Genowefy.",
     },
     "paris-snails": {
       title: "Słynne francuskie ślimaki",
       location: "Paryż, Francja",
-      alt: "Danie ze ślimaków",
+      alt: "Talerz z przygotowanymi ślimakami po burgundzku",
       description:
         "Trudno sobie wyobrazić kuchnię nad Sekwaną, a szczególnie nad Rodanem, bez pysznego ślimaka na talerzu.",
     },
     "paris-1": {
-      alt: "Widok na Narodową Bibliotekę wiosną",
       title: "Narodowa Biblioteka Francji, oddział Richelieu, sala Owalna",
       location: "Paryż, Francja",
+      alt: "Wnętrze Sali Owalnej Biblioteki Narodowej Francji",
     },
     "paris-2": {
-      alt: "Wersal, Świątynia miłości",
       title: "Wersal, Świątynia miłości",
       location: "Wersal, Francja",
+      alt: "Świątynia Miłości w ogrodach Wersalu",
     },
     "paris-3": {
-      alt: "Ogród francuski",
       title: "Wspaniałe historyczne ogrody",
       location: "Paryż, Francja",
+      alt: "Alejka spacerowa w ogrodzie francuskim w Paryżu",
     },
     "paris-4": {
-      alt: "Tańczący Faun",
       title: "Rzymski mityczny bóg lasu i zaczarowanych kniei",
       location: "Paryż, Francja",
+      alt: "Rzeźba Tańczącego Fauna",
     },
     "frankfurt-hero": {
       title: "Stara Opera (Alte Oper), Frankfurt",
       location: "Frankfurt nad Menem, Niemcy",
-      alt: "Stara Opera (Alte Oper), Frankfurt",
+      alt: "Budynek Starej Opery we Frankfurcie nocą",
       description:
         "Wznosząca się nad malowniczym placem ozdobionym elegancką fontanną znajduje się Opera, posiadająca fasadę w stylu renesansowym.",
     },
     "berlin-gate": {
       title: "Brama Brandenburska",
       location: "Berlin, Niemcy",
-      alt: "Brama Brandenburska",
+      alt: "Brama Brandenburska nocą",
       description:
         "Brama Brandenburska jako symbol Pokoju i Wolności od 3 października 1990, w rocznicę zjednoczenia Niemiec.",
     },
     "berlin-museum": {
       title: "Stare Muzeum",
       location: "Berlin, Niemcy",
-      alt: "Stare Muzeum",
+      alt: "Kolumnada przed Starym Muzeum w Berlinie",
       description:
         "Muzeum wybudowano z myślą o udostępnieniu zbiorów sztuki antycznej szerokiej publiczności, na polecenie pruskiego króla Fryderyka Wilhelma III.",
     },
     "berlin-victory-column": {
       title: "Kolumna Zwycięstwa",
       location: "Berlin, Niemcy",
-      alt: "Kolumna Zwycięstwa",
+      alt: "Złota figura na szczycie Kolumny Zwycięstwa w Berlinie",
       description:
         "Kolumna znajdująca się w parku Großer Tiergarten w Berlinie upamiętniejąca zwycięstwo Prus nad Danią w wojnie duńskiej z 1864.",
     },
     "berlin-music": {
       title: "Pomnik Beethovena Haydna i Mozarta",
       location: "Berlin, Niemcy",
-      alt: "Pomnik trzech geniuszy muzycznych",
+      alt: "Pomnik trzech kompozytorów w parku Tiergarten",
       description:
         "Plenerowy pomnik kompozytorów klasycznych: Ludwiga van Beethovena, Josepha Haydna i Wolfganga Amadeusza Mozarta w 1904 roku.",
     },
     "prague-bridge": {
       title: "Widok na Wełtawę w Pradze",
       location: "Praga, Czechy",
-      alt: "Rzeka Wełtawa w Pradze",
+      alt: "Most Karola nad Wełtawą w Pradze o zmierzchu",
       description:
         "Cała Praga przegląda się w Wełtawie i wdzięczy do niej, jak do magicznego lusterka.",
     },
     "prague-wit": {
       title: "Skarbiec Św. Wita",
       location: "Praga, Czechy",
-      alt: "Skarbiec w Pradze",
+      alt: "Relikwiarz w Skarbcu Katedry Św. Wita",
       description:
         "Artefakty w Skarbcu Katedry Świętego Wita na Hradczanach w Pradze.",
     },
     "prague-dance": {
       title: "Tańczący Dom",
       location: "Praga, Czechy",
-      alt: "Ginger i Fred",
+      alt: "Nowoczesny budynek Tańczący Dom w Pradze",
       description:
         "Awangardowy budynek projektu pary architektów: Vlado Milunića i Franka Gehry’ego w stylu dekonstruktywistycznym.",
     },
     "prague-kafka": {
       title: "Obrotowa głowa Franza Kafki",
       location: "Praga, Czechy",
-      alt: "Głowa Franza Kafki",
+      alt: "Kinetyczna rzeźba Głowa Franza Kafki w Pradze",
       description:
         "David Ern zaprojektował to kontrowersyjne dzieło sztuki dla budynku handlowo-biurowego 'Quadrio' przy ulicy Národní třída.",
     },
@@ -331,18 +362,12 @@ export default {
       title: "Wiele Podróży",
       description: "Rosnąca kolekcja zdjęć z całego kontynentu europejskiego",
     },
-    image1: {
-      title: "Lizbona",
-      description: "Klasztor Hieronimitów.",
-    },
+    image1: { title: "Lizbona", description: "Klasztor Hieronimitów." },
     image2: {
       title: "Niemcy i Francja",
       description: "Niezapomniana podróż przez Niemcy i Francję.",
     },
-    image3: {
-      title: "Neapol",
-      description: "Niezwykłe krajobrazy Neapolu.",
-    },
+    image3: { title: "Neapol", description: "Niezwykłe krajobrazy Neapolu." },
   },
   // Featured Section
   featured: {
@@ -372,8 +397,8 @@ export default {
     },
     location: {
       title: "Nasza Lokalizacja",
-      description: "Odwiedź nasze biuro studenckiego kolektywu",
-      address: "University Creative Hub, European Campus, Amsterdam",
+      description: "Odwiedź nas (po umówieniu)",
+      address: "Uniwersytet Gdański, ul. Bażyńskiego 8, 80-309 Gdańsk",
     },
     phone: {
       title: "Zadzwoń do Nas",
@@ -419,7 +444,7 @@ export default {
     instagram: "Śledź nas na Instagramie",
     twitter: "Śledź nas na Twitterze",
     facebook: "Śledź nas na Facebooku",
-    pinterest: "Śledź nas na Pintereście",
+    pinterest: "Śledź nas na Pintereście", // Zostawione, jeśli planujesz dodać
   },
   // Slider Controls
   slider: {
@@ -447,7 +472,7 @@ export default {
     heroAriaLabel: "Polecane destynacje",
   },
 
-  // --- SEKCJE DLA NOWYCH STRON INFORMACYJNYCH (bez zmian) ---
+  // --- SEKCJE DLA STRON INFORMACYJNYCH ---
   privacyPolicy: {
     title: "Polityka Prywatności",
     metaDescription: "Przeczytaj politykę prywatności serwisu EuroTrek.",
@@ -461,7 +486,7 @@ export default {
       "Twoje dane wykorzystujemy w celu świadczenia i ulepszania naszych usług, komunikacji z Tobą (odpowiedzi na zapytania), analizy ruchu na stronie, zapewnienia bezpieczeństwa serwisu oraz wypełniania obowiązków prawnych.",
     contactTitle: "Kontakt w sprawie prywatności",
     contactContent:
-      "W sprawach dotyczących przetwarzania Twoich danych osobowych lub realizacji swoich praw, skontaktuj się z nami pod adresem: [puaro@vp.pl].",
+      "W sprawach dotyczących przetwarzania Twoich danych osobowych lub realizacji swoich praw, skontaktuj się z nami pod adresem: puaro@vp.pl",
   },
   termsOfUse: {
     title: "Warunki Użytkowania",
@@ -473,7 +498,7 @@ export default {
       "Serwis EuroTrek jest platformą prezentującą fotografie podróżnicze. Użytkownicy zobowiązani są do korzystania z serwisu zgodnie z prawem i dobrymi obyczajami. Zabronione jest publikowanie treści niezgodnych z prawem, obraźliwych lub naruszających prawa osób trzecich.",
     contactTitle: "Kontakt w sprawie Warunków Użytkowania",
     contactContent:
-      "Pytania dotyczące niniejszych Warunków Użytkowania prosimy kierować na adres: [puaro@vp.pl].",
+      "Pytania dotyczące niniejszych Warunków Użytkowania prosimy kierować na adres: puaro@vp.pl",
   },
   accessibility: {
     title: "Oświadczenie o Dostępności",
@@ -486,7 +511,7 @@ export default {
       "Staramy się wdrażać rozwiązania takie jak: stosowanie semantycznego kodu HTML, zapewnienie nawigacji za pomocą klawiatury, odpowiedni kontrast kolorów, opisy alternatywne dla obrazów oraz testowanie serwisu z użyciem różnych technologii wspomagających.",
     contactTitle: "Informacje zwrotne i dane kontaktowe",
     contactContent:
-      "Jeśli napotkasz na bariery dostępności w naszym serwisie, prosimy o kontakt. Twoje uwagi są dla nas cenne. Skontaktuj się z nami pod adresem: [puaro@vp.pl].",
+      "Jeśli napotkasz na bariery dostępności w naszym serwisie, prosimy o kontakt. Twoje uwagi są dla nas cenne. Skontaktuj się z nami pod adresem: puaro@vp.pl",
   },
   cookiePolicy: {
     title: "Polityka Cookies",
@@ -515,7 +540,7 @@ export default {
       "Kliknięcie przycisku otworzy panel zarządzania ustawieniami plików cookie.",
     contactTitle: "Kontakt w sprawie Polityki Cookies",
     contactContent:
-      "W razie pytań dotyczących naszej polityki cookies, skontaktuj się z nami: [puaro@vp.pl].",
+      "W razie pytań dotyczących naszej polityki cookies, skontaktuj się z nami: puaro@vp.pl",
   },
   faq: {
     title: "Najczęściej Zadawane Pytania (FAQ)",
@@ -553,7 +578,7 @@ export default {
     phoneTitle: "Wsparcie Telefoniczne",
     phoneDescription:
       "W pilnych sprawach technicznych możesz skontaktować się telefonicznie w godzinach [np. 10:00 - 16:00] od poniedziałku do piątku.",
-    phoneNumber: "Zadzwoń: [000 000 000]",
+    phoneNumber: "Zadzwoń: +48 000 000 000", // Zmieniono placeholder
     responseInfo:
       "Staramy się odpowiadać na zapytania wysłane przez formularz kontaktowy w ciągu 1-2 dni roboczych.",
   },

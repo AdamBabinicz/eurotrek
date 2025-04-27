@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PhotoLightbox from "./PhotoLightbox";
-import { Photo } from "@/data/photos";
+import { Photo, photos } from "@/data/photos";
 
 interface FeaturedDestinationProps {}
 
@@ -11,7 +11,9 @@ interface PreviewImage {
   src: string;
   alt: string;
 }
-
+const lightboxImages: Photo[] = photos.filter(
+  (photo) => photo.city === "paris" && photo.isFeatured // Filtruj te oznaczone jako polecane dla Paryża
+);
 const FeaturedDestination = forwardRef<HTMLElement, FeaturedDestinationProps>(
   (props, ref) => {
     const { t } = useTranslation();

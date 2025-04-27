@@ -2,6 +2,7 @@ export interface Destination {
   id: string;
   nameKey: string;
   countryKey: string;
+  descriptionKey?: string;
   slugs: {
     pl: string;
     en: string;
@@ -19,6 +20,7 @@ export const destinations: Destination[] = [
     id: "lisbon",
     nameKey: "destinationsData.lisbon.name",
     countryKey: "destinationsData.lisbon.country",
+    descriptionKey: "destinationsData.lisbon.description",
     slugs: {
       pl: "lizbona",
       en: "lisbon",
@@ -33,6 +35,7 @@ export const destinations: Destination[] = [
     id: "paris",
     nameKey: "destinationsData.paris.name",
     countryKey: "destinationsData.paris.country",
+    descriptionKey: "destinationsData.paris.description",
     slugs: {
       pl: "paryz",
       en: "paris",
@@ -47,6 +50,7 @@ export const destinations: Destination[] = [
     id: "berlin",
     nameKey: "destinationsData.berlin.name",
     countryKey: "destinationsData.berlin.country",
+    descriptionKey: "destinationsData.berlin.description",
     slugs: {
       pl: "berlin",
       en: "berlin",
@@ -61,6 +65,7 @@ export const destinations: Destination[] = [
     id: "capri",
     nameKey: "destinationsData.capri.name",
     countryKey: "destinationsData.capri.country",
+    descriptionKey: "destinationsData.capri.description",
     slugs: {
       pl: "capri",
       en: "capri",
@@ -75,6 +80,7 @@ export const destinations: Destination[] = [
     id: "naples",
     nameKey: "destinationsData.naples.name",
     countryKey: "destinationsData.naples.country",
+    descriptionKey: "destinationsData.naples.description",
     slugs: {
       pl: "neapol",
       en: "naples",
@@ -89,6 +95,7 @@ export const destinations: Destination[] = [
     id: "prague",
     nameKey: "destinationsData.prague.name",
     countryKey: "destinationsData.prague.country",
+    descriptionKey: "destinationsData.prague.description",
     slugs: {
       pl: "praga",
       en: "prague",

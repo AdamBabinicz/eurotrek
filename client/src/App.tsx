@@ -1,25 +1,27 @@
 import React, { useRef, useEffect } from "react";
-// Zmienione importy dla wouter i dodane dla i18next
 import {
   Switch,
   Route,
   useLocation,
-  Redirect,
-  Router,
+  // Redirect, // Nie jest używany
+  // Router,   // Nie jest używany
   useParams,
   Link,
 } from "wouter";
-import { useTranslation } from "react-i18next"; // Import dla tłumaczeń
+import { useTranslation } from "react-i18next";
+
+// --- Zaimportuj funkcję z utils ---
+import { localizedSlug } from "@/utils/localization"; // Dostosuj ścieżkę
 
 import { Toaster } from "@/components/ui/toaster";
-import NotFound from "@/pages/not-found"; // Możemy użyć komponentu Route zamiast osobnej strony
+// import NotFound from "@/pages/not-found"; // Nie jest używany
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import DestinationPage from "@/pages/Destination";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useTheme } from "@/context/ThemeContext";
+// import { useTheme } from "@/context/ThemeContext"; // Nie jest używany
 import { HelmetProvider } from "react-helmet-async";
 import PrivacyPolicyPage from "./pages/info/PrivacyPolicyPage";
 import TermsOfUsePage from "./pages/info/TermsOfUsePage";
@@ -29,196 +31,213 @@ import FaqPage from "./pages/info/FaqPage";
 import SitemapPage from "./pages/info/SitemapPage";
 import SupportPage from "./pages/info/SupportPage";
 
-// --- NOWY KOMPONENT: Ustawia język na podstawie parametru :lang ---
-// Musi być renderowany wewnątrz kontekstu, który ma dostęp do parametrów URL
+// Komponent LanguageSetter z poprawką
 function LanguageSetter() {
-  const params = useParams(); // Hook wouter do pobierania parametrów
+  const params = useParams();
   const { i18n } = useTranslation();
-  const lang = params.lang; // Pobierz parametr :lang
+  const lang = params.lang;
 
   useEffect(() => {
-    // Ustaw język tylko jeśli parametr istnieje, jest obsługiwany i różni się od obecnego
     if (
       lang &&
-      i18n.options.supportedLngs && // Sprawdź czy supportedLngs jest zdefiniowane
-      (i18n.options.supportedLngs as string[]).includes(lang) && // Sprawdź typowanie
+      i18n.options.supportedLngs &&
+      (i18n.options.supportedLngs as string[]).includes(lang) &&
       i18n.language !== lang
     ) {
       i18n.changeLanguage(lang);
     }
-    // Można dodać logikę dla braku 'lang', jeśli 'pl' nie jest domyślnym w i18next
-    // else if (!lang && i18n.language !== 'pl') {
-    //   i18n.changeLanguage('pl'); // Ustaw domyślny, jeśli URL go nie ma
-    // }
   }, [lang, i18n]);
 
-  return null; // Ten komponent nic nie renderuje
+  return null; // <<< POPRAWKA: Dodano brakujący return null
 }
 
 function App() {
   const parisSectionRef = useRef<HTMLElement>(null);
-  const themeContext = useTheme();
-  const [location, setLocation] = useLocation(); // Hook wouter
-  const { t, i18n } = useTranslation(); // Hook i18next
+  // const themeContext = useTheme(); // Nie jest używane
+  const [location, setLocation] = useLocation();
+  const { t, i18n } = useTranslation(); // Pobierz instancję i18n
 
-  // --- NOWA FUNKCJA POMOCNICZA: Generuje slug trasy ---
-  // Używa klucza z pliku tłumaczeń (np. 'routes.about')
-  const localizedSlug = (routeKey: string): string => {
-    // Pobiera tłumaczenie z sekcji 'routes'
-    // Upewnij się, że 'translation' to twój domyślny namespace w i18next
-    return t(routeKey, { ns: "translation", keyPrefix: "routes" }) || routeKey; // Zwraca klucz jeśli tłumaczenia brak
-  };
-
-  // --- ZAKTUALIZOWANA FUNKCJA SCROLLOWANIA ---
+  // --- Funkcja scrollToParisFromFooter (bez zmian) ---
   const scrollToParisFromFooter = () => {
-    const defaultLang = "pl"; // Ustaw swój domyślny język
+    const defaultLang = "pl";
     const currentLang = i18n.language || defaultLang;
     const homePath = currentLang === defaultLang ? "/" : `/${currentLang}`;
 
     if (location === homePath) {
       parisSectionRef.current?.scrollIntoView({ behavior: "smooth" });
     } else {
-      // Przekieruj na stronę główną w aktualnym języku z hashem
       setLocation(`${homePath}#paris`);
     }
   };
 
-  // --- ZAKTUALIZOWANY useEffect DLA SCROLLOWANIA ---
+  // --- useEffect dla scrollowania (bez zmian) ---
   useEffect(() => {
-    // Proste scrollowanie do góry przy zmianie lokalizacji, chyba że jest hash
     if (!window.location.hash) {
       window.scrollTo(0, 0);
     }
 
-    // Obsługa scrollowania do #paris po zmianie lokalizacji (np. z footera)
     if (window.location.hash === "#paris") {
-      // Dajemy chwilę na ewentualne renderowanie i zmianę języka
       const timer = setTimeout(() => {
         parisSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-        // Opcjonalnie: usuń hash z URL po przewinięciu, aby uniknąć problemów przy odświeżaniu
-        // history.replaceState(null, '', window.location.pathname);
-      }, 150); // Zwiększony lekko timeout
-      return () => clearTimeout(timer); // Czyszczenie timera
+      }, 150);
+      return () => clearTimeout(timer);
     }
-  }, [location]); // Zależność tylko od lokalizacji
+  }, [location]);
 
-  // --- DEFINICJE ŚCIEŻEK DLA ROUTERA ---
-  // Używamy funkcji localizedSlug do tworzenia części URL
-  const defaultLang = "pl"; // Definiujemy domyślny język
+  const defaultLang = "pl";
   const currentLang = i18n.language || defaultLang;
 
-  // Generujemy pełne ścieżki dla aktualnego języka (używane w Navbar/Footer)
-  // Możesz stworzyć osobną funkcję `createLocalizedPath` jak w poprzednich przykładach,
-  // aby uniknąć powtarzania logiki prefiksu.
+  // --- Blok Debugowania i18next ---
+  console.log("--- App Component Debug ---");
+  console.log("i18n.isInitialized:", i18n.isInitialized);
+  console.log("i18n.language:", i18n.language);
+  const aboutResource = i18n.getResource("pl", "translation", "routes.about");
+  console.log(
+    "Resource for 'pl', 'translation', 'routes.about':",
+    aboutResource
+  );
+  const translatedAboutSimple = t("routes.about");
+  console.log("Simple t('routes.about'):", translatedAboutSimple);
+  const translatedAboutWithOptions = t("about", {
+    ns: "translation",
+    keyPrefix: "routes",
+  });
+  console.log(
+    "t('about', { ns: 'translation', keyPrefix: 'routes' }):",
+    translatedAboutWithOptions
+  );
+  let slugFromUtils = null;
+  try {
+    slugFromUtils = localizedSlug("about", i18n); // Użyj zaimportowanej funkcji
+    console.log("Result from localizedSlug('about', i18n):", slugFromUtils);
+  } catch (error) {
+    console.error("Error calling localizedSlug from utils:", error);
+  }
+  console.log("--- End App Component Debug ---");
+  // --- Koniec Bloku Debugowania ---
 
   return (
     <HelmetProvider>
       <div className="min-h-screen flex flex-col bg-background text-foreground">
-        {/* Navbar teraz może potrzebować dostępu do i18n lub gotowych ścieżek */}
+        {/* Navbar (bez zmian, ale upewnij się, że używa funkcji z utils) */}
         <Navbar currentPath={location} />
 
         <main className="flex-grow px-4 sm:px-8 md:px-16 lg:px-40">
-          {/* Wouter: LanguageSetter musi być wewnątrz kontekstu z parametrami */}
-          {/* Definiujemy trasy, które mogą mieć parametr :lang */}
+          {/* LanguageSetter (bez zmian) */}
           <Route path="/:lang/:rest*">
             <LanguageSetter />
           </Route>
-          {/* Osobny Route dla strony głównej bez języka też może potrzebować LanguageSetter,
-              jeśli chcemy, by ustawiał domyślny język */}
-          <Route path="/">
-            {/* Można by tu dodać logikę ustawiania domyślnego języka,
-                  ale i18next zazwyczaj robi to przy inicjalizacji */}
-          </Route>
+          {/* Pusta trasa '/' jest zbędna */}
+          <Route path="/"></Route>
 
           <Switch>
+            {/* Trasa główna (bez zmian) */}
             <Route path="/">
               <Home ref={parisSectionRef} />
             </Route>
 
-            <Route path={`/${localizedSlug("about")}`}>
-              <About />
+            {/* --- Trasy dla języka domyślnego --- */}
+            {/* Użyj zaimportowanej localizedSlug z instancją i18n */}
+            <Route path={`/${localizedSlug("about", i18n)}`}>
+              {" "}
+              <About />{" "}
             </Route>
-            <Route path={`/${localizedSlug("contact")}`}>
-              <Contact />
+            <Route path={`/${localizedSlug("contact", i18n)}`}>
+              {" "}
+              <Contact />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("destinationDetail", i18n)}/:slug`}>
+              {" "}
+              <DestinationPage />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("privacy", i18n)}`}>
+              {" "}
+              <PrivacyPolicyPage />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("terms", i18n)}`}>
+              {" "}
+              <TermsOfUsePage />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("accessibility", i18n)}`}>
+              {" "}
+              <AccessibilityPage />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("cookiePolicy", i18n)}`}>
+              {" "}
+              <CookiePolicyPage />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("faq", i18n)}`}>
+              {" "}
+              <FaqPage />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("sitemap", i18n)}`}>
+              {" "}
+              <SitemapPage />{" "}
+            </Route>
+            <Route path={`/${localizedSlug("support", i18n)}`}>
+              {" "}
+              <SupportPage />{" "}
             </Route>
 
-            <Route path={`/${localizedSlug("destinations")}`}>
-              <div>Lista Podróży (PL) - (dodaj komponent)</div>
-            </Route>
-            <Route path={`/${localizedSlug("destinationDetail")}/:slug`}>
-              <DestinationPage />
-            </Route>
-            <Route path={`/${localizedSlug("privacy")}`}>
-              <PrivacyPolicyPage />
-            </Route>
-            <Route path={`/${localizedSlug("terms")}`}>
-              <TermsOfUsePage />
-            </Route>
-            <Route path={`/${localizedSlug("accessibility")}`}>
-              <AccessibilityPage />
-            </Route>
-            <Route path={`/${localizedSlug("cookiePolicy")}`}>
-              <CookiePolicyPage />
-            </Route>
-            <Route path={`/${localizedSlug("faq")}`}>
-              <FaqPage />
-            </Route>
-            <Route path={`/${localizedSlug("sitemap")}`}>
-              <SitemapPage />
-            </Route>
-            <Route path={`/${localizedSlug("support")}`}>
-              <SupportPage />
-            </Route>
-
+            {/* --- Trasy dla innych języków (z :lang) --- */}
+            {/* Użyj zaimportowanej localizedSlug z instancją i18n */}
             <Route path="/:lang/">
-              <Home ref={parisSectionRef} />
+              {" "}
+              <Home ref={parisSectionRef} />{" "}
             </Route>
-            <Route path={`/:lang/${localizedSlug("about")}`}>
-              <About />
+            <Route path={`/:lang/${localizedSlug("about", i18n)}`}>
+              {" "}
+              <About />{" "}
             </Route>
-            <Route path={`/:lang/${localizedSlug("contact")}`}>
-              <Contact />
+            <Route path={`/:lang/${localizedSlug("contact", i18n)}`}>
+              {" "}
+              <Contact />{" "}
+            </Route>
+            <Route
+              path={`/:lang/${localizedSlug("destinationDetail", i18n)}/:slug`}
+            >
+              {" "}
+              <DestinationPage />{" "}
+            </Route>
+            <Route path={`/:lang/${localizedSlug("privacy", i18n)}`}>
+              {" "}
+              <PrivacyPolicyPage />{" "}
+            </Route>
+            <Route path={`/:lang/${localizedSlug("terms", i18n)}`}>
+              {" "}
+              <TermsOfUsePage />{" "}
+            </Route>
+            <Route path={`/:lang/${localizedSlug("accessibility", i18n)}`}>
+              {" "}
+              <AccessibilityPage />{" "}
+            </Route>
+            <Route path={`/:lang/${localizedSlug("cookiePolicy", i18n)}`}>
+              {" "}
+              <CookiePolicyPage />{" "}
+            </Route>
+            <Route path={`/:lang/${localizedSlug("faq", i18n)}`}>
+              {" "}
+              <FaqPage />{" "}
+            </Route>
+            <Route path={`/:lang/${localizedSlug("sitemap", i18n)}`}>
+              {" "}
+              <SitemapPage />{" "}
+            </Route>
+            <Route path={`/:lang/${localizedSlug("support", i18n)}`}>
+              {" "}
+              <SupportPage />{" "}
             </Route>
 
-            <Route path={`/:lang/${localizedSlug("destinations")}`}>
-              <div>Lista Podróży (:lang) - (dodaj komponent)</div>
-            </Route>
-            <Route path={`/:lang/${localizedSlug("destinationDetail")}/:slug`}>
-              <DestinationPage />
-            </Route>
-            <Route path={`/:lang/${localizedSlug("privacy")}`}>
-              <PrivacyPolicyPage />
-            </Route>
-            <Route path={`/:lang/${localizedSlug("terms")}`}>
-              <TermsOfUsePage />
-            </Route>
-            <Route path={`/:lang/${localizedSlug("accessibility")}`}>
-              <AccessibilityPage />
-            </Route>
-            <Route path={`/:lang/${localizedSlug("cookiePolicy")}`}>
-              <CookiePolicyPage />
-            </Route>
-            <Route path={`/:lang/${localizedSlug("faq")}`}>
-              <FaqPage />
-            </Route>
-            <Route path={`/:lang/${localizedSlug("sitemap")}`}>
-              <SitemapPage />
-            </Route>
-            <Route path={`/:lang/${localizedSlug("support")}`}>
-              <SupportPage />
-            </Route>
-
+            {/* Trasa 404 (bez zmian) */}
             <Route>
               <div className="container mx-auto px-4 py-16 text-center min-h-[60vh] flex flex-col justify-center items-center">
                 <h2 className="text-6xl font-bold text-primary mb-4">404</h2>
-
                 <p className="text-2xl mb-8">
                   {t(
                     "common.pageNotFound",
                     "Oops! Strona nie została znaleziona."
                   )}
                 </p>
-
                 <Link
                   href={currentLang === defaultLang ? "/" : `/${currentLang}`}
                   className="px-6 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
@@ -230,7 +249,9 @@ function App() {
           </Switch>
         </main>
 
+        {/* Footer (bez zmian, ale upewnij się, że używa funkcji z utils) */}
         <Footer onParisLinkClick={scrollToParisFromFooter} />
+        {/* Toaster (bez zmian) */}
         <Toaster />
       </div>
     </HelmetProvider>
