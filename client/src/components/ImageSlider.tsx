@@ -186,13 +186,13 @@ const ImageSlider = ({
   // --- Renderowanie JSX (z modyfikacją img className) ---
   return (
     <div
-      className="image-slider h-full relative select-none"
+      className="image-slider h-full relative select-none touch-pan-y"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{ touchAction: "pan-y" }}
+      // style={{ touchAction: "pan-y" }}
     >
       <div className="slider-container h-full relative overflow-hidden">
         <AnimatePresence initial={false} custom={direction}>
