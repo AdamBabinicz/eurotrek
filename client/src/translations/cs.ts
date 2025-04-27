@@ -117,7 +117,7 @@ export default {
       location: "Lisabon, Portugalsko",
       description:
         "Historická budova divadla je jedním z nejprestižnějších sálů Portugalska a nachází se na náměstí Rossio v centru města.",
-      alt: "Žlutá historická tramvaj na náměstí Rossio v Lisabonu",
+      alt: "Pohled na náměstí Rossio v Lisabonu",
     },
     "lisbon-belem": {
       title: "Střechy Starého Města",

@@ -119,7 +119,7 @@ export default {
       location: "Lissabon, Portugal",
       description:
         "Das historische Theatergebäude ist einer der renommiertesten Säle Portugals und befindet sich am Rossio-Platz im Stadtzentrum.",
-      alt: "Gelbe historische Straßenbahn am Rossio-Platz in Lissabon",
+      alt: "Blick auf den Rossio-Platz in Lissabon",
     },
     "lisbon-belem": {
       title: "Dächer der Altstadt",

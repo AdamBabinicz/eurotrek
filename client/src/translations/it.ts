@@ -119,7 +119,7 @@ export default {
       location: "Lisbona, Portogallo",
       description:
         "L'edificio storico del teatro è una delle sale più prestigiose del Portogallo e si trova in Piazza Rossio, nel centro della città.",
-      alt: "Tram storico giallo in Piazza Rossio, Lisbona",
+      alt: "Vista su Piazza Rossio a Lisbona",
     },
     "lisbon-belem": {
       title: "Tetti della Città Vecchia",

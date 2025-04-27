@@ -121,7 +121,7 @@ export default {
       location: "Lizbona, Portugalia",
       description:
         "Zabytkowy budynek teatru jest jednym z najbardziej prestiżowych sal Portugalii i znajduje się na placu Rossio w centrum miasta.",
-      alt: "Żółty, zabytkowy tramwaj na placu Rossio w Lizbonie", // Uzupełniono alt
+      alt: "Widok na plac Rossio w Lizbonie", // Uzupełniono alt
     },
     "lisbon-belem": {
       title: "Dachy Starego Miasta",

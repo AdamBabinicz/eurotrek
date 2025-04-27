@@ -118,7 +118,7 @@ export default {
       location: "Lisbon, Portugal",
       description:
         "The historic theater building is one of Portugal's most prestigious halls and is located in Rossio Square in the city center.",
-      alt: "Yellow historic tram in Rossio Square, Lisbon",
+      alt: "View of Rossio Square in Lisbon",
     },
     "lisbon-belem": {
       title: "Roofs of the Old Town",

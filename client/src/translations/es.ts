@@ -119,7 +119,7 @@ export default {
       location: "Lisboa, Portugal",
       description:
         "El histórico edificio del teatro es una de las salas más prestigiosas de Portugal y se encuentra en la Plaza Rossio, en el centro de la ciudad.",
-      alt: "Tranvía histórico amarillo en la Plaza Rossio, Lisboa",
+      alt: "Vista de la Plaza Rossio en Lisboa",
     },
     "lisbon-belem": {
       title: "Tejados del Casco Antiguo",

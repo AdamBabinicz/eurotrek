@@ -119,7 +119,7 @@ export default {
       location: "Lisbonne, Portugal",
       description:
         "Le bâtiment historique du théâtre est l'une des salles les plus prestigieuses du Portugal et est situé sur la place Rossio, au centre-ville.",
-      alt: "Tramway historique jaune sur la place Rossio, Lisbonne",
+      alt: "Vue sur la Place Rossio à Lisbonne",
     },
     "lisbon-belem": {
       title: "Toits de la Vieille Ville",
